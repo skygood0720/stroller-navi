@@ -16,11 +16,18 @@ interface AppStore {
   setReviewsForSpot: (spotId: number, reviews: Review[]) => void;
   addReview: (spotId: number, review: Review) => void;
 
+  // Favorites
+  favoriteSpotIds: Set<number>;
+  setFavoriteSpotIds: (ids: Set<number>) => void;
+  toggleFavorite: (spotId: number) => void;
+
   // UI
   activeTab: string;
   setActiveTab: (tab: string) => void;
   selectedItemId: number | null;
   setSelectedItemId: (id: number | null) => void;
+  selectedRegion: string;
+  setSelectedRegion: (region: string) => void;
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -44,8 +51,20 @@ export const useAppStore = create<AppStore>((set) => ({
       },
     })),
 
+  favoriteSpotIds: new Set(),
+  setFavoriteSpotIds: (ids) => set({ favoriteSpotIds: ids }),
+  toggleFavorite: (spotId) =>
+    set((state) => {
+      const next = new Set(state.favoriteSpotIds);
+      if (next.has(spotId)) next.delete(spotId);
+      else next.add(spotId);
+      return { favoriteSpotIds: next };
+    }),
+
   activeTab: "map",
   setActiveTab: (tab) => set({ activeTab: tab }),
   selectedItemId: null,
   setSelectedItemId: (id) => set({ selectedItemId: id }),
+  selectedRegion: "すべて",
+  setSelectedRegion: (region) => set({ selectedRegion: region }),
 }));

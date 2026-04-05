@@ -11,6 +11,8 @@ export interface BabySpot {
   age_min: number;
   age_max: number;
   age_tips: Record<string, string>;
+  region?: string;
+  is_user_submitted?: boolean;
 }
 
 export interface BarrierFreeToilet {
@@ -20,6 +22,7 @@ export interface BarrierFreeToilet {
   lng: number;
   type: "toilet";
   desc: string;
+  region?: string;
 }
 
 export type MapItem = BabySpot | BarrierFreeToilet;
@@ -40,6 +43,26 @@ export interface BabyProfile {
   user_id: string;
   name: string;
   birth_date: string;
+  created_at: string;
+}
+
+export interface Favorite {
+  id: string;
+  user_id: string;
+  spot_id: number;
+  created_at: string;
+}
+
+export interface UserSubmittedSpot {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  tags: string[];
+  desc: string;
+  submitted_by: string;
+  submitted_by_name: string;
+  status: "pending" | "approved" | "rejected";
   created_at: string;
 }
 
