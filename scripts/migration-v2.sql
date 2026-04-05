@@ -51,6 +51,3 @@ CREATE POLICY "Anyone can read approved spots"
 CREATE POLICY "Authenticated users can submit spots"
   ON user_spots FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
-
-NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-9321048766541642
-NEXT_PUBLIC_ADSENSE_SLOT_HEADER=1234567890
