@@ -141,11 +141,18 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
           region: "jp",
         };
 
-        // Transit: fewer transfers is easier with a stroller
+        // Transit: set departure time to ensure results even during late night
         if (mode === "transit") {
-          request.transitOptions = {
-            routingPreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
-          };
+          // If current time is between 0:00-5:00, set departure to 8:00 AM today
+          const now = new Date();
+          const hour = now.getHours();
+          if (hour >= 0 && hour < 5) {
+            const departure = new Date();
+            departure.setHours(8, 0, 0, 0);
+            request.transitOptions = {
+              departureTime: departure,
+            };
+          }
         }
 
         const result = await service.route(request);
