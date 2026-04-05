@@ -50,4 +50,3 @@ CREATE POLICY "Anyone can read approved spots"
   ON user_spots FOR SELECT USING (status = 'approved');
 CREATE POLICY "Authenticated users can submit spots"
   ON user_spots FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
