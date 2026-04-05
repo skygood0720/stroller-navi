@@ -104,7 +104,8 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
   const searchRoute = useCallback(
     async (
       origin: string | google.maps.LatLngLiteral,
-      destination: string | google.maps.LatLngLiteral
+      destination: string | google.maps.LatLngLiteral,
+      mode: "walking" | "transit" = "walking"
     ): Promise<RouteInfo | null> => {
       if (!mapRef.current) return null;
 
@@ -122,7 +123,7 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
         map: mapRef.current,
         suppressMarkers: false,
         polylineOptions: {
-          strokeColor: "#FF7043",
+          strokeColor: mode === "transit" ? "#1E88E5" : "#FF7043",
           strokeWeight: 5,
           strokeOpacity: 0.8,
         },
@@ -130,14 +131,25 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
       directionsRendererRef.current = renderer;
 
       try {
-        const result = await service.route({
+        const travelMode = mode === "transit" ? TravelMode.TRANSIT : TravelMode.WALKING;
+
+        const request: google.maps.DirectionsRequest = {
           origin,
           destination,
-          travelMode: TravelMode.WALKING,
+          travelMode,
           provideRouteAlternatives: true,
           region: "jp",
-        });
+        };
 
+        // Transit options: prefer rail, allow walking for first/last mile
+        if (mode === "transit") {
+          request.transitOptions = {
+            modes: [google.maps.TransitMode.RAIL, google.maps.TransitMode.SUBWAY],
+            routingPreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
+          };
+        }
+
+        const result = await service.route(request);
         renderer.setDirections(result);
 
         const route = result.routes[0];
@@ -148,31 +160,133 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
         let slopes = 0;
         let stairCount = 0;
         const tips: string[] = [];
+        const segments: import("@/types").TransitSegment[] = [];
 
         steps.forEach((step) => {
-          const inst = step.instructions?.toLowerCase() || "";
-          if (inst.includes("エレベーター") || inst.includes("elevator")) elevators++;
-          if (inst.includes("スロープ") || inst.includes("ramp")) slopes++;
-          if (inst.includes("階段") || inst.includes("stairs")) stairCount++;
+          const inst = step.instructions || "";
+          const instLower = inst.toLowerCase();
+
+          // Count barrier-free features
+          if (instLower.includes("エレベーター") || instLower.includes("elevator")) elevators++;
+          if (instLower.includes("スロープ") || instLower.includes("ramp")) slopes++;
+          if (instLower.includes("階段") || instLower.includes("stairs")) stairCount++;
+
+          if (mode === "transit") {
+            if (step.travel_mode === "WALKING") {
+              // Walking segment — apply stroller speed multiplier
+              const walkDurationSec = step.duration?.value || 0;
+              const strollerDurationMin = Math.ceil(walkDurationSec / 60 * 1.3);
+              const barrierFreeTips: string[] = [];
+
+              // Analyze sub-steps for barrier-free info
+              if (step.steps) {
+                step.steps.forEach((subStep) => {
+                  const subInst = subStep.instructions?.toLowerCase() || "";
+                  if (subInst.includes("階段") || subInst.includes("stairs")) {
+                    barrierFreeTips.push("⚠️ このルートに階段があります。エレベーターを探してください");
+                  }
+                });
+              }
+
+              if (barrierFreeTips.length === 0) {
+                barrierFreeTips.push("✅ 段差なしで移動できます");
+              }
+
+              segments.push({
+                type: "walking",
+                instruction: inst.replace(/<[^>]*>/g, ""),
+                distance: step.distance?.text || "",
+                duration: `約${strollerDurationMin}分（ベビーカー速度）`,
+                barrierFreeTips,
+              });
+            } else if (step.travel_mode === "TRANSIT" && step.transit) {
+              const transit = step.transit;
+              const lineName = transit.line?.short_name || transit.line?.name || "";
+              const lineColor = transit.line?.color || "#1E88E5";
+              const departure = transit.departure_stop?.name || "";
+              const arrival = transit.arrival_stop?.name || "";
+              const numStops = transit.num_stops || 0;
+
+              const barrierFreeTips: string[] = [];
+              barrierFreeTips.push(`🛗 ${departure}駅：エレベーターでホームへ移動してください`);
+              barrierFreeTips.push(`🛗 ${arrival}駅：エレベーターで改札階へ移動してください`);
+              barrierFreeTips.push("🚼 車両の優先席付近またはフリースペースがおすすめです");
+
+              if (numStops <= 2) {
+                barrierFreeTips.push("📍 乗車時間が短いのでドア付近が便利です");
+              }
+
+              segments.push({
+                type: "transit",
+                instruction: `${lineName} に乗車`,
+                distance: step.distance?.text || "",
+                duration: step.duration?.text || "",
+                lineName,
+                lineColor,
+                departureStop: departure,
+                arrivalStop: arrival,
+                numStops,
+                barrierFreeTips,
+              });
+            }
+          }
         });
 
-        if (stairCount === 0) {
-          tips.push("階段なしのバリアフリールートです");
+        // Generate tips
+        if (mode === "transit") {
+          const walkSegments = segments.filter((s) => s.type === "walking");
+          const transitSegments = segments.filter((s) => s.type === "transit");
+
+          if (transitSegments.length > 0) {
+            tips.push(`🚃 ${transitSegments.map((s) => s.lineName).join(" → ")} を利用`);
+          }
+          if (walkSegments.length > 0) {
+            tips.push(`🚶 徒歩区間は${walkSegments.length}箇所（ベビーカー速度で計算済み）`);
+          }
+          tips.push("🛗 各駅でエレベーターを利用してホームへ移動してください");
+          if (stairCount === 0) {
+            tips.push("✅ 経路案内上に階段の記載はありません");
+          } else {
+            tips.push(`⚠️ ${stairCount}箇所の階段表記があります。駅員にエレベーターの場所を確認してください`);
+          }
         } else {
-          tips.push(`${stairCount}箇所の階段があります。迂回ルートを確認してください`);
+          if (stairCount === 0) {
+            tips.push("階段なしのバリアフリールートです");
+          } else {
+            tips.push(`${stairCount}箇所の階段があります。迂回ルートを確認してください`);
+          }
+          tips.push(`総距離: ${leg.distance?.text}`);
+          tips.push(`ベビーカー想定所要時間: 約${Math.ceil((leg.duration?.value || 0) / 60 * 1.3)}分`);
         }
-        tips.push(`総距離: ${leg.distance?.text}`);
-        tips.push(`ベビーカー想定所要時間: 約${Math.ceil((leg.duration?.value || 0) / 60 * 1.3)}分`);
+
+        // Calculate total duration with stroller adjustment for walking parts
+        let totalDurationText: string;
+        if (mode === "transit") {
+          // For transit: adjust only walking portions
+          let totalSeconds = 0;
+          steps.forEach((step) => {
+            if (step.travel_mode === "WALKING") {
+              totalSeconds += Math.ceil((step.duration?.value || 0) * 1.3);
+            } else {
+              totalSeconds += step.duration?.value || 0;
+            }
+          });
+          totalDurationText = `約${Math.ceil(totalSeconds / 60)}分（ベビーカー速度で計算）`;
+        } else {
+          totalDurationText = `約${Math.ceil((leg.duration?.value || 0) / 60 * 1.3)}分（ベビーカー想定）`;
+        }
 
         return {
           distance: leg.distance?.text || "",
-          duration: `約${Math.ceil((leg.duration?.value || 0) / 60 * 1.3)}分（ベビーカー想定）`,
+          duration: totalDurationText,
           elevators,
           slopes,
           steps: stairCount,
           tips,
           polyline: route.overview_polyline,
           legs: route.legs,
+          travelMode: mode,
+          segments,
         };
       } catch (err) {
         console.error("Directions API error:", err);

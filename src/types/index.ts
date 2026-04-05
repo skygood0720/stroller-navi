@@ -43,6 +43,21 @@ export interface BabyProfile {
   created_at: string;
 }
 
+export type TravelModeOption = "walking" | "transit";
+
+export interface TransitSegment {
+  type: "walking" | "transit";
+  instruction: string;
+  distance: string;
+  duration: string;
+  lineName?: string;
+  lineColor?: string;
+  departureStop?: string;
+  arrivalStop?: string;
+  numStops?: number;
+  barrierFreeTips: string[];
+}
+
 export interface RouteInfo {
   distance: string;
   duration: string;
@@ -52,6 +67,8 @@ export interface RouteInfo {
   tips: string[];
   polyline: string | null;
   legs: google.maps.DirectionsLeg[] | null;
+  travelMode: TravelModeOption;
+  segments: TransitSegment[];
 }
 
 export type AgeRangeKey = "0-3" | "4-6" | "7-12" | "13-24" | "25-36";
