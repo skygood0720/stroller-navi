@@ -3,80 +3,7 @@
 import { useRef, useState } from "react";
 import { useGoogleMap } from "@/lib/useGoogleMap";
 import { Spinner } from "@/components/ui";
-import type { RouteInfo, TravelModeOption, TransitSegment } from "@/types";
-
-function SegmentCard({ segment, index }: { segment: TransitSegment; index: number }) {
-  const isTransit = segment.type === "transit";
-
-  return (
-    <div className={`rounded-xl p-3.5 mb-2 border ${
-      isTransit ? "bg-blue-50/50 border-blue-100" : "bg-orange-50/50 border-orange-100"
-    }`}>
-      {/* Segment header */}
-      <div className="flex items-center gap-2.5 mb-2">
-        <div className={`min-w-[28px] h-[28px] rounded-full flex items-center justify-center
-          text-white text-xs font-bold ${isTransit ? "bg-blue-500" : "bg-brand-500"}`}>
-          {index + 1}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-base">{isTransit ? "🚃" : "🚶"}</span>
-            <span className="text-sm font-bold truncate">
-              {isTransit ? segment.instruction : "徒歩で移動"}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-[11px] text-gray-500">{segment.distance}</span>
-            <span className="text-[11px] text-gray-400">•</span>
-            <span className="text-[11px] text-gray-500">{segment.duration}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Transit details */}
-      {isTransit && segment.departureStop && segment.arrivalStop && (
-        <div className="ml-9 mb-2">
-          <div className="flex items-center gap-2 text-xs">
-            <div className="flex flex-col items-center">
-              <div className="w-2.5 h-2.5 rounded-full border-2"
-                style={{ borderColor: segment.lineColor || "#1E88E5" }} />
-              <div className="w-0.5 h-6" style={{ background: segment.lineColor || "#1E88E5" }} />
-              <div className="w-2.5 h-2.5 rounded-full"
-                style={{ background: segment.lineColor || "#1E88E5" }} />
-            </div>
-            <div className="flex flex-col gap-3">
-              <span className="font-semibold">{segment.departureStop}</span>
-              <span className="font-semibold">{segment.arrivalStop}</span>
-            </div>
-          </div>
-          {segment.numStops && (
-            <div className="ml-5 mt-1 text-[11px] text-gray-400">
-              {segment.numStops}駅
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Walking instruction */}
-      {!isTransit && segment.instruction && (
-        <div className="ml-9 mb-2 text-xs text-gray-600 leading-relaxed">
-          {segment.instruction}
-        </div>
-      )}
-
-      {/* Barrier-free tips */}
-      <div className="ml-9 space-y-1">
-        {segment.barrierFreeTips.map((tip, i) => (
-          <div key={i} className={`text-[11px] leading-relaxed font-medium ${
-            tip.startsWith("⚠️") ? "text-red-500" : tip.startsWith("✅") ? "text-green-600" : "text-blue-600"
-          }`}>
-            {tip}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+import type { RouteInfo, TravelModeOption } from "@/types";
 
 export default function RouteSearch() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -87,17 +14,20 @@ export default function RouteSearch() {
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
 
   const handleLocate = async () => {
     try {
       const loc = await getUserLocation();
-      setOrigin(`${loc.lat},${loc.lng}`);
+      setUserCoords(loc);
+      setOrigin("現在地");
     } catch {
       alert("位置情報を取得できませんでした");
     }
   };
 
-  const handleSearch = async () => {
+  // Walking: use Directions API as before
+  const handleWalkingSearch = async () => {
     if (!origin || !destination) return;
     setIsSearching(true);
     setError(null);
@@ -105,12 +35,14 @@ export default function RouteSearch() {
 
     try {
       let originParam: string | google.maps.LatLngLiteral = origin;
-      if (/^-?\d+\.?\d*,-?\d+\.?\d*$/.test(origin)) {
+      if (origin === "現在地" && userCoords) {
+        originParam = userCoords;
+      } else if (/^-?\d+\.?\d*,-?\d+\.?\d*$/.test(origin)) {
         const [lat, lng] = origin.split(",").map(Number);
         originParam = { lat, lng };
       }
 
-      const result = await searchRoute(originParam, destination, travelMode);
+      const result = await searchRoute(originParam, destination, "walking");
       if (result) {
         setRouteInfo(result);
       } else {
@@ -123,12 +55,37 @@ export default function RouteSearch() {
     }
   };
 
+  // Transit: open Google Maps directly
+  const handleTransitSearch = () => {
+    if (!origin || !destination) return;
+
+    const originStr = origin === "現在地" && userCoords
+      ? `${userCoords.lat},${userCoords.lng}`
+      : encodeURIComponent(origin);
+    const destStr = encodeURIComponent(destination);
+
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&origin=${originStr}&destination=${destStr}&travelmode=transit`,
+      "_blank"
+    );
+  };
+
+  const handleSearch = () => {
+    if (travelMode === "walking") {
+      handleWalkingSearch();
+    } else {
+      handleTransitSearch();
+    }
+  };
+
   const openInGoogleMaps = () => {
-    const originEnc = encodeURIComponent(origin);
-    const destEnc = encodeURIComponent(destination);
+    const originStr = origin === "現在地" && userCoords
+      ? `${userCoords.lat},${userCoords.lng}`
+      : encodeURIComponent(origin);
+    const destStr = encodeURIComponent(destination);
     const mode = travelMode === "transit" ? "transit" : "walking";
     window.open(
-      `https://www.google.com/maps/dir/?api=1&origin=${originEnc}&destination=${destEnc}&travelmode=${mode}`,
+      `https://www.google.com/maps/dir/?api=1&origin=${originStr}&destination=${destStr}&travelmode=${mode}`,
       "_blank"
     );
   };
@@ -152,7 +109,7 @@ export default function RouteSearch() {
           ]).map((m) => (
             <button
               key={m.key}
-              onClick={() => { setTravelMode(m.key); setRouteInfo(null); }}
+              onClick={() => { setTravelMode(m.key); setRouteInfo(null); setError(null); }}
               className={`flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5
                 ${travelMode === m.key
                   ? m.key === "transit"
@@ -172,8 +129,8 @@ export default function RouteSearch() {
           <div className="bg-blue-50 rounded-xl px-3 py-2.5 mb-3 flex items-start gap-2">
             <span className="text-base mt-0.5">🛗</span>
             <div className="text-[11px] text-blue-700 leading-relaxed">
-              <span className="font-bold">ベビーカーモード：</span>
-              徒歩区間はベビーカー速度で計算、駅ではエレベーターでの移動を案内します
+              <span className="font-bold">電車モード：</span>
+              Google マップが開き、電車＋徒歩のルートが表示されます。駅ではエレベーターを利用してください
             </div>
           </div>
         )}
@@ -223,13 +180,13 @@ export default function RouteSearch() {
                   : "bg-gray-300 cursor-not-allowed"
                 }`}
             >
-              🔍 ルート検索
+              {travelMode === "transit" ? "🚃 Google マップで検索" : "🔍 ルート検索"}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Route map display */}
+      {/* Route map display (walking only) */}
       <div
         ref={mapContainerRef}
         className={`w-full rounded-2xl overflow-hidden shadow-md transition-all ${
@@ -240,11 +197,7 @@ export default function RouteSearch() {
       {/* Loading */}
       {isSearching && (
         <div className="bg-white rounded-2xl p-6 shadow-md">
-          <Spinner text={
-            travelMode === "transit"
-              ? "電車＋徒歩のベビーカールートを検索中..."
-              : "ベビーカーに最適なルートを検索中..."
-          } />
+          <Spinner text="ベビーカーに最適なルートを検索中..." />
         </div>
       )}
 
@@ -255,22 +208,14 @@ export default function RouteSearch() {
         </div>
       )}
 
-      {/* Route result */}
-      {routeInfo && !isSearching && (
+      {/* Walking route result */}
+      {routeInfo && !isSearching && travelMode === "walking" && (
         <div className="bg-white rounded-2xl p-5 shadow-md space-y-4">
           {/* Distance & time */}
-          <div className={`flex items-center gap-3 p-3 rounded-xl ${
-            routeInfo.travelMode === "transit"
-              ? "bg-gradient-to-r from-blue-50 to-indigo-50"
-              : "bg-gradient-to-r from-brand-50 to-orange-50"
-          }`}>
-            <span className="text-3xl">{routeInfo.travelMode === "transit" ? "🚃" : "🗺️"}</span>
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-brand-50 to-orange-50">
+            <span className="text-3xl">🗺️</span>
             <div>
-              <div className={`text-lg font-black ${
-                routeInfo.travelMode === "transit" ? "text-blue-700" : "text-brand-700"
-              }`}>
-                {routeInfo.distance}
-              </div>
+              <div className="text-lg font-black text-brand-700">{routeInfo.distance}</div>
               <div className="text-xs text-gray-500 font-medium">{routeInfo.duration}</div>
             </div>
           </div>
@@ -286,12 +231,6 @@ export default function RouteSearch() {
                 emoji: "⚠️",
                 color: routeInfo.steps === 0 ? "text-green-600" : "text-red-600",
               },
-              ...(routeInfo.travelMode === "transit" ? [{
-                label: "乗換",
-                value: routeInfo.segments.filter((s) => s.type === "transit").length,
-                emoji: "🔄",
-                color: "text-blue-600",
-              }] : []),
             ].map((s) => (
               <div key={s.label} className="flex-1 text-center bg-gray-50 rounded-xl py-2.5">
                 <div className="text-lg">{s.emoji}</div>
@@ -304,19 +243,7 @@ export default function RouteSearch() {
           {/* Barrier-free badge */}
           {routeInfo.steps === 0 && (
             <div className="bg-green-50 rounded-xl px-3.5 py-2.5 flex items-center gap-2 text-xs font-semibold text-green-700">
-              ✅ 階段表記なし！エレベーターを利用したバリアフリールートです
-            </div>
-          )}
-
-          {/* Transit segments detail */}
-          {routeInfo.travelMode === "transit" && routeInfo.segments.length > 0 && (
-            <div>
-              <h4 className="text-sm font-bold mb-2.5 flex items-center gap-1.5">
-                🗺️ ルート詳細（ベビーカー対応）
-              </h4>
-              {routeInfo.segments.map((seg, i) => (
-                <SegmentCard key={i} segment={seg} index={i} />
-              ))}
+              ✅ 階段なし！完全バリアフリールートです
             </div>
           )}
 
@@ -325,9 +252,8 @@ export default function RouteSearch() {
             <h4 className="text-sm font-bold mb-2.5">💡 ルートのポイント</h4>
             {routeInfo.tips.map((tip, i) => (
               <div key={i} className="flex gap-2.5 items-start mb-2">
-                <div className={`min-w-[22px] h-[22px] rounded-full text-white
-                  flex items-center justify-center text-[10px] font-bold flex-shrink-0
-                  ${routeInfo.travelMode === "transit" ? "bg-blue-500" : "bg-brand-500"}`}>
+                <div className="min-w-[22px] h-[22px] rounded-full bg-brand-500 text-white
+                  flex items-center justify-center text-[10px] font-bold flex-shrink-0">
                   {i + 1}
                 </div>
                 <p className="text-sm leading-relaxed">{tip}</p>
@@ -349,6 +275,56 @@ export default function RouteSearch() {
         </div>
       )}
 
+      {/* Transit guidance (shown when transit mode is selected) */}
+      {travelMode === "transit" && (
+        <div className="bg-white rounded-2xl p-5 shadow-md space-y-4">
+          <h4 className="text-sm font-bold flex items-center gap-2">
+            🚼 ベビーカーで電車に乗るときのポイント
+          </h4>
+
+          <div className="space-y-2.5">
+            {[
+              { emoji: "🛗", title: "駅ではエレベーターを利用", desc: "改札→ホーム間はエレベーターで移動しましょう。場所がわからない場合は駅員さんに聞いてください" },
+              { emoji: "🚃", title: "車両の選び方", desc: "優先席付近またはフリースペース（車椅子・ベビーカーマーク）がある車両がおすすめです" },
+              { emoji: "⏰", title: "時間に余裕を持って", desc: "エレベーター移動は階段より時間がかかります。乗り換えは＋5分を目安に" },
+              { emoji: "🚪", title: "乗降のコツ", desc: "ドアとホームの隙間に注意。前輪を持ち上げて乗り込むと安全です" },
+              { emoji: "📱", title: "事前に確認", desc: "駅のバリアフリー情報は各鉄道会社のアプリやサイトで確認できます" },
+            ].map((tip, i) => (
+              <div key={i} className="flex gap-3 items-start bg-blue-50/50 rounded-xl p-3 border border-blue-100/50">
+                <span className="text-xl mt-0.5">{tip.emoji}</span>
+                <div>
+                  <div className="text-xs font-bold text-blue-800 mb-0.5">{tip.title}</div>
+                  <div className="text-[11px] text-gray-600 leading-relaxed">{tip.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick links to railway barrier-free info */}
+          <div>
+            <h4 className="text-xs font-bold text-gray-500 mb-2">🔗 各社バリアフリー情報</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                { name: "JR東日本", url: "https://www.jreast.co.jp/multi/ja/accessibility/" },
+                { name: "東京メトロ", url: "https://www.tokyometro.jp/lang_ja/support/index.html" },
+                { name: "都営地下鉄", url: "https://www.kotsu.metro.tokyo.jp/subway/kanren/barrierfree.html" },
+              ].map((link) => (
+                <a
+                  key={link.name}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-gray-100 text-[11px] font-semibold text-gray-600
+                    hover:bg-gray-200 transition"
+                >
+                  {link.name} →
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Feature info */}
       <div className={`rounded-2xl p-4 ${
         travelMode === "transit" ? "bg-blue-50/50" : "bg-brand-50/50"
@@ -361,11 +337,10 @@ export default function RouteSearch() {
         <p className="text-xs text-gray-500 leading-7">
           {travelMode === "transit" ? (
             <>
-              ・電車＋徒歩のルートを Directions API で検索<br />
-              ・徒歩区間はベビーカー速度（×1.3倍）で自動補正<br />
-              ・各駅でエレベーター利用を案内<br />
-              ・乗換が少ないルートを優先<br />
-              ・車内のベビーカー推奨位置もアドバイス
+              ・Google マップの電車ルート検索を直接利用<br />
+              ・リアルタイムの時刻表・乗換情報を表示<br />
+              ・駅のバリアフリー情報を案内<br />
+              ・ベビーカー利用時のポイントをアドバイス
             </>
           ) : (
             <>
