@@ -137,14 +137,13 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
           origin,
           destination,
           travelMode,
-          provideRouteAlternatives: true,
+          provideRouteAlternatives: mode === "walking",
           region: "jp",
         };
 
-        // Transit options: prefer rail, allow walking for first/last mile
+        // Transit: fewer transfers is easier with a stroller
         if (mode === "transit") {
           request.transitOptions = {
-            modes: [google.maps.TransitMode.RAIL, google.maps.TransitMode.SUBWAY],
             routingPreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
           };
         }
