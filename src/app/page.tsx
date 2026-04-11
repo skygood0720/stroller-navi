@@ -15,9 +15,12 @@ const RouteSearch = dynamic(() => import("@/components/RouteSearch"), { ssr: fal
 const BabyProfile = dynamic(() => import("@/components/BabyProfile"), { ssr: false });
 const ReviewSection = dynamic(() => import("@/components/ReviewSection"), { ssr: false });
 const SpotSubmitForm = dynamic(() => import("@/components/SpotSubmitForm"), { ssr: false });
+const WeatherRecommend = dynamic(() => import("@/components/WeatherRecommend"), { ssr: false });
+const TripPlan = dynamic(() => import("@/components/TripPlan"), { ssr: false });
 
 const TABS = [
   { key: "map", label: "マップ", icon: "📍" },
+  { key: "plan", label: "プラン", icon: "🗓️" },
   { key: "route", label: "ルート", icon: "🧭" },
   { key: "baby", label: "赤ちゃん", icon: "👶" },
   { key: "spots", label: "スポット", icon: "🍼" },
@@ -211,11 +214,11 @@ export default function HomePage() {
       <AdBanner adSlot={adSlot} />
 
       {/* ─── Tab Navigation ─── */}
-      <nav className="flex bg-white border-b border-gray-100 sticky top-0 z-[8]">
+      <nav className="flex bg-white border-b border-gray-100 sticky top-0 z-[8] overflow-x-auto">
         {TABS.map((tab) => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-            className={`flex-1 py-2.5 flex flex-col items-center gap-1 text-[10px] font-medium
-              border-b-[3px] transition-colors
+            className={`min-w-[64px] flex-1 py-2.5 flex flex-col items-center gap-1 text-[10px] font-medium
+              border-b-[3px] transition-colors whitespace-nowrap
               ${activeTab === tab.key
                 ? "border-brand-500 text-brand-700 font-bold bg-brand-50/50"
                 : "border-transparent text-gray-400"
@@ -233,6 +236,11 @@ export default function HomePage() {
         {activeTab === "map" && (
           <div>
             <MapView />
+
+            {/* Weather-based recommendations */}
+            <div className="px-4 pt-3">
+              <WeatherRecommend />
+            </div>
 
             {/* Region filter */}
             <div className="px-4 pt-3">
@@ -333,6 +341,13 @@ export default function HomePage() {
                   ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ═══ PLAN TAB ═══ */}
+        {activeTab === "plan" && (
+          <div className="p-4">
+            <TripPlan />
           </div>
         )}
 
