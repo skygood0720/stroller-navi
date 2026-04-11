@@ -37,9 +37,21 @@ export default function HomePage() {
   const [detailTab, setDetailTab] = useState<"info" | "reviews">("info");
   const [showSpotForm, setShowSpotForm] = useState(false);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [userSpots, setUserSpots] = useState<any[]>([]);
 
   const supabase = createClient();
   const adSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_HEADER || "";
+
+  // Fetch user-submitted spots
+  const fetchUserSpots = useCallback(async () => {
+    try {
+      const res = await fetch("/api/user-spots?status=approved");
+      const data = await res.json();
+      if (data.spots) setUserSpots(data.spots);
+    } catch {}
+  }, []);
+
+  useEffect(() => { fetchUserSpots(); }, [fetchUserSpots]);
 
   // Auth listener
   useEffect(() => {
@@ -99,8 +111,27 @@ export default function HomePage() {
   const ageRange = babyMonths !== null ? getAgeRange(babyMonths) : null;
   const ageKey = babyMonths !== null ? getAgeRangeKey(babyMonths) : null;
 
-  const regionFilteredSpots = BABY_SPOTS.filter(
-    (s) => selectedRegion === "すべて" || s.region === selectedRegion
+  // Merge built-in spots with user-submitted spots
+  const userSpotsAsBabySpots = userSpots.map((s) => ({
+    id: typeof s.id === "string" ? Math.abs(s.id.split("").reduce((a: number, c: string) => a + c.charCodeAt(0), 0) * 100 + userSpots.indexOf(s)) : s.id,
+    name: s.name,
+    lat: s.lat,
+    lng: s.lng,
+    type: "spot" as const,
+    tags: s.tags || [],
+    desc: s.desc,
+    age_min: 0,
+    age_max: 36,
+    age_tips: {},
+    region: undefined,
+    is_user_submitted: true,
+    _dbId: s.id,
+  }));
+
+  const allSpots = [...BABY_SPOTS, ...userSpotsAsBabySpots];
+
+  const regionFilteredSpots = allSpots.filter(
+    (s) => selectedRegion === "すべて" || s.region === selectedRegion || !s.region
   );
 
   const filteredSpots = regionFilteredSpots.filter(
@@ -120,7 +151,7 @@ export default function HomePage() {
   };
 
   const selectedItem: MapItem | null = selectedItemId
-    ? ([...BABY_SPOTS, ...TOILETS] as MapItem[]).find((i) => i.id === selectedItemId) || null
+    ? ([...allSpots, ...TOILETS] as MapItem[]).find((i) => i.id === selectedItemId) || null
     : null;
 
   const handleLogout = async () => {
@@ -383,6 +414,11 @@ export default function HomePage() {
                             {spot.region}
                           </span>
                         )}
+                        {spot.is_user_submitted && (
+                          <span className="text-[9px] text-brand-500 bg-brand-50 px-1.5 py-0.5 rounded font-medium shrink-0">
+                            👤 投稿
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
@@ -571,7 +607,7 @@ export default function HomePage() {
       {showSpotForm && (
         <SpotSubmitForm
           onClose={() => setShowSpotForm(false)}
-          onSubmitted={() => { /* TODO: refresh spots list */ }}
+          onSubmitted={() => { fetchUserSpots(); }}
         />
       )}
 

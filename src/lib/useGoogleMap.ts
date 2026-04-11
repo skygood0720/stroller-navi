@@ -53,18 +53,29 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
 
       items.forEach((item) => {
         const isSpot = item.type === "spot";
+        const isUserSpot = isSpot && "is_user_submitted" in item && (item as any).is_user_submitted;
+
+        let fillColor = "#7E57C2"; // toilet purple
+        let labelText = "🚻";
+        if (isSpot && isUserSpot) {
+          fillColor = "#43A047"; // green for user-submitted
+          labelText = "📍";
+        } else if (isSpot) {
+          fillColor = "#FF8A65"; // orange for built-in
+          labelText = "🍼";
+        }
 
         const marker = new google.maps.Marker({
           map: mapRef.current!,
           position: { lat: item.lat, lng: item.lng },
           title: item.name,
           label: {
-            text: isSpot ? "🍼" : "🚻",
+            text: labelText,
             fontSize: "16px",
           },
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            fillColor: isSpot ? "#FF8A65" : "#7E57C2",
+            fillColor,
             fillOpacity: 1,
             strokeColor: "#FFFFFF",
             strokeWeight: 2,
