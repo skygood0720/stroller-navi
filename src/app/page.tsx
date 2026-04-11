@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
-import { BABY_SPOTS, TOILETS, getMonthsOld, getAgeRange, getAgeRangeKey } from "@/lib/constants";
+import { BABY_SPOTS, TOILETS, REGIONS, getMonthsOld, getAgeRange, getAgeRangeKey } from "@/lib/constants";
 import { Stars, TagPill, EmptyState } from "@/components/ui";
 import AuthModal from "@/components/AuthModal";
+import AdBanner from "@/components/AdBanner";
 import type { MapItem } from "@/types";
 
-// Dynamic imports (SSR disabled for map components)
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 const RouteSearch = dynamic(() => import("@/components/RouteSearch"), { ssr: false });
 const BabyProfile = dynamic(() => import("@/components/BabyProfile"), { ssr: false });
 const ReviewSection = dynamic(() => import("@/components/ReviewSection"), { ssr: false });
+const SpotSubmitForm = dynamic(() => import("@/components/SpotSubmitForm"), { ssr: false });
 
 const TABS = [
   { key: "map", label: "マップ", icon: "📍" },
@@ -27,14 +28,18 @@ export default function HomePage() {
   const {
     user, setUser, babyProfile, babyMonths, setBabyProfile,
     activeTab, setActiveTab, selectedItemId, setSelectedItemId,
-    reviewsBySpot,
+    reviewsBySpot, favoriteSpotIds, setFavoriteSpotIds, toggleFavorite,
+    selectedRegion, setSelectedRegion,
   } = useAppStore();
 
   const [authOpen, setAuthOpen] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
   const [detailTab, setDetailTab] = useState<"info" | "reviews">("info");
+  const [showSpotForm, setShowSpotForm] = useState(false);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const supabase = createClient();
+  const adSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_HEADER || "";
 
   // Auth listener
   useEffect(() => {
@@ -42,7 +47,6 @@ export default function HomePage() {
       async (event, session) => {
         if (session?.user) {
           setUser({ id: session.user.id, email: session.user.email || "" });
-          // Fetch baby profile
           try {
             const res = await fetch(`/api/baby-profile?user_id=${session.user.id}`);
             const data = await res.json();
@@ -51,20 +55,62 @@ export default function HomePage() {
               setBabyProfile(data.profile, months);
             }
           } catch {}
+          // Fetch favorites
+          try {
+            const res = await fetch(`/api/favorites?user_id=${session.user.id}`);
+            const data = await res.json();
+            if (data.favorites) {
+              setFavoriteSpotIds(new Set(data.favorites.map((f: any) => f.spot_id)));
+            }
+          } catch {}
         } else {
           setUser(null);
         }
       }
     );
     return () => subscription.unsubscribe();
-  }, [supabase, setUser, setBabyProfile]);
+  }, [supabase, setUser, setBabyProfile, setFavoriteSpotIds]);
 
-  // Computed values
+  // Toggle favorite with API
+  const handleToggleFavorite = useCallback(async (spotId: number) => {
+    if (!user) {
+      setAuthOpen(true);
+      return;
+    }
+    const isFav = favoriteSpotIds.has(spotId);
+    toggleFavorite(spotId);
+
+    try {
+      if (isFav) {
+        await fetch(`/api/favorites?user_id=${user.id}&spot_id=${spotId}`, { method: "DELETE" });
+      } else {
+        await fetch("/api/favorites", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: user.id, spot_id: spotId }),
+        });
+      }
+    } catch {
+      toggleFavorite(spotId); // revert on error
+    }
+  }, [user, favoriteSpotIds, toggleFavorite, setAuthOpen]);
+
+  // Computed
   const ageRange = babyMonths !== null ? getAgeRange(babyMonths) : null;
   const ageKey = babyMonths !== null ? getAgeRangeKey(babyMonths) : null;
 
-  const filteredSpots = BABY_SPOTS.filter(
-    (s) => s.name.includes(searchFilter) || s.tags.some((t) => t.includes(searchFilter))
+  const regionFilteredSpots = BABY_SPOTS.filter(
+    (s) => selectedRegion === "すべて" || s.region === selectedRegion
+  );
+
+  const filteredSpots = regionFilteredSpots.filter(
+    (s) =>
+      (s.name.includes(searchFilter) || s.tags.some((t) => t.includes(searchFilter))) &&
+      (!showFavoritesOnly || favoriteSpotIds.has(s.id))
+  );
+
+  const regionFilteredToilets = TOILETS.filter(
+    (t) => selectedRegion === "すべて" || t.region === selectedRegion
   );
 
   const getAvgRating = (spotId: number): string | null => {
@@ -81,6 +127,21 @@ export default function HomePage() {
     await supabase.auth.signOut();
     setUser(null);
     setBabyProfile(null, null);
+    setFavoriteSpotIds(new Set());
+  };
+
+  // Favorite heart button component
+  const FavButton = ({ spotId, size = "sm" }: { spotId: number; size?: "sm" | "lg" }) => {
+    const isFav = favoriteSpotIds.has(spotId);
+    return (
+      <button
+        onClick={(e) => { e.stopPropagation(); handleToggleFavorite(spotId); }}
+        className={`transition-transform active:scale-125 ${size === "lg" ? "text-xl" : "text-base"}`}
+        title={isFav ? "お気に入り解除" : "お気に入り登録"}
+      >
+        {isFav ? "❤️" : "🤍"}
+      </button>
+    );
   };
 
   return (
@@ -102,36 +163,32 @@ export default function HomePage() {
             </div>
           )}
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition"
-            >
+            <button onClick={handleLogout}
+              className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
               ログアウト
             </button>
           ) : (
-            <button
-              onClick={() => setAuthOpen(true)}
-              className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition"
-            >
+            <button onClick={() => setAuthOpen(true)}
+              className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
               ログイン
             </button>
           )}
         </div>
       </header>
 
+      {/* ─── Ad Banner ─── */}
+      <AdBanner adSlot={adSlot} />
+
       {/* ─── Tab Navigation ─── */}
       <nav className="flex bg-white border-b border-gray-100 sticky top-0 z-[8]">
         {TABS.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
+          <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex-1 py-2.5 flex flex-col items-center gap-1 text-[10px] font-medium
               border-b-[3px] transition-colors
               ${activeTab === tab.key
                 ? "border-brand-500 text-brand-700 font-bold bg-brand-50/50"
                 : "border-transparent text-gray-400"
-              }`}
-          >
+              }`}>
             <span className="text-sm">{tab.icon}</span>
             {tab.label}
           </button>
@@ -141,12 +198,28 @@ export default function HomePage() {
       {/* ─── Content ─── */}
       <div className="flex-1 overflow-auto">
 
-        {/* MAP TAB */}
+        {/* ═══ MAP TAB ═══ */}
         {activeTab === "map" && (
           <div>
             <MapView />
 
-            {/* Age-based recommendation banner */}
+            {/* Region filter */}
+            <div className="px-4 pt-3">
+              <div className="flex gap-1.5 overflow-x-auto pb-1">
+                {REGIONS.map((region) => (
+                  <button key={region} onClick={() => setSelectedRegion(region)}
+                    className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition
+                      ${selectedRegion === region
+                        ? "bg-brand-500 text-white"
+                        : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
+                      }`}>
+                    {region}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Age-based recommendation */}
             {babyProfile && ageRange && ageKey && (
               <div className="px-4 pt-3">
                 <div className="bg-pink-50/60 rounded-2xl p-3 border border-pink-100/50">
@@ -157,16 +230,17 @@ export default function HomePage() {
                     </span>
                   </div>
                   <div className="flex gap-2 overflow-x-auto pb-1">
-                    {BABY_SPOTS
+                    {regionFilteredSpots
                       .filter((s) => babyMonths! >= s.age_min && babyMonths! <= s.age_max && s.age_tips?.[ageKey])
                       .slice(0, 4)
                       .map((s) => (
-                        <div
-                          key={s.id}
+                        <div key={s.id}
                           onClick={() => { setSelectedItemId(s.id); setDetailTab("info"); }}
-                          className="min-w-[140px] bg-white rounded-xl p-2.5 shadow cursor-pointer hover:shadow-md transition"
-                        >
-                          <div className="text-xs font-bold mb-1 truncate">{s.name}</div>
+                          className="min-w-[140px] bg-white rounded-xl p-2.5 shadow cursor-pointer hover:shadow-md transition">
+                          <div className="flex justify-between items-start">
+                            <div className="text-xs font-bold mb-1 truncate flex-1">{s.name}</div>
+                            <FavButton spotId={s.id} />
+                          </div>
                           <div className="text-[10px] text-gray-500 leading-snug">
                             💡 {(s.age_tips?.[ageKey] || "").slice(0, 20)}...
                           </div>
@@ -180,8 +254,8 @@ export default function HomePage() {
             {/* Quick stats */}
             <div className="flex gap-2 px-4 pt-3">
               {[
-                { n: BABY_SPOTS.length, l: "スポット", c: "text-brand-500", e: "🍼" },
-                { n: TOILETS.length, l: "トイレ", c: "text-toilet-500", e: "🚻" },
+                { n: regionFilteredSpots.length, l: "スポット", c: "text-brand-500", e: "🍼" },
+                { n: regionFilteredToilets.length, l: "トイレ", c: "text-toilet-500", e: "🚻" },
               ].map((s) => (
                 <div key={s.l} className="flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2">
                   <span className="text-xl">{s.e}</span>
@@ -191,31 +265,38 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
+              {user && (
+                <div className="flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2 cursor-pointer hover:shadow-md transition"
+                  onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(true); }}>
+                  <span className="text-xl">❤️</span>
+                  <div>
+                    <div className="text-lg font-black text-red-400">{favoriteSpotIds.size}</div>
+                    <div className="text-[9px] text-gray-400 font-medium">お気に入り</div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Top rated */}
             <div className="px-4 pt-3 pb-6">
               <h3 className="text-sm font-bold mb-2">⭐ 高評価スポット</h3>
               <div className="flex gap-2 overflow-x-auto pb-1">
-                {BABY_SPOTS
+                {regionFilteredSpots
                   .filter((s) => getAvgRating(s.id))
                   .sort((a, b) => Number(getAvgRating(b.id)) - Number(getAvgRating(a.id)))
                   .slice(0, 4)
                   .map((s) => (
-                    <div
-                      key={s.id}
+                    <div key={s.id}
                       onClick={() => { setSelectedItemId(s.id); setDetailTab("reviews"); }}
-                      className="min-w-[145px] bg-white rounded-xl p-2.5 shadow cursor-pointer hover:shadow-md transition"
-                    >
-                      <div className="text-xs font-bold mb-1">{s.name}</div>
+                      className="min-w-[145px] bg-white rounded-xl p-2.5 shadow cursor-pointer hover:shadow-md transition">
+                      <div className="flex justify-between items-start">
+                        <div className="text-xs font-bold mb-1 flex-1">{s.name}</div>
+                        <FavButton spotId={s.id} />
+                      </div>
                       <div className="flex items-center gap-1">
                         <Stars rating={Math.round(Number(getAvgRating(s.id)))} size={11} />
-                        <span className="text-[11px] font-bold text-amber-500">
-                          {getAvgRating(s.id)}
-                        </span>
-                        <span className="text-[10px] text-gray-400">
-                          ({(reviewsBySpot[s.id] || []).length})
-                        </span>
+                        <span className="text-[11px] font-bold text-amber-500">{getAvgRating(s.id)}</span>
+                        <span className="text-[10px] text-gray-400">({(reviewsBySpot[s.id] || []).length})</span>
                       </div>
                     </div>
                   ))}
@@ -224,59 +305,95 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* ROUTE TAB */}
+        {/* ═══ ROUTE TAB ═══ */}
         {activeTab === "route" && <RouteSearch />}
 
-        {/* BABY TAB */}
+        {/* ═══ BABY TAB ═══ */}
         {activeTab === "baby" && <BabyProfile />}
 
-        {/* SPOTS TAB */}
+        {/* ═══ SPOTS TAB ═══ */}
         {activeTab === "spots" && (
           <div className="p-4 space-y-3">
             {/* Search */}
             <div className="relative">
               <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
-              <input
-                value={searchFilter}
-                onChange={(e) => setSearchFilter(e.target.value)}
+              <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)}
                 placeholder="スポット名・タグで検索..."
                 className="w-full pl-9 pr-3 py-3 rounded-xl border border-gray-200 text-sm
-                  focus:border-brand-500 focus:outline-none bg-white"
-              />
+                  focus:border-brand-500 focus:outline-none bg-white" />
             </div>
 
-            {/* Tag filters */}
-            <div className="flex flex-wrap gap-1.5">
-              {["授乳室", "おむつ替え", "エレベーター", "ベビーカー貸出", "スロープ"].map((tag) => (
-                <TagPill
-                  key={tag}
-                  label={tag}
-                  active={searchFilter === tag}
-                  onClick={() => setSearchFilter(searchFilter === tag ? "" : tag)}
-                />
+            {/* Region filter */}
+            <div className="flex gap-1.5 overflow-x-auto pb-1">
+              {REGIONS.map((region) => (
+                <button key={region} onClick={() => setSelectedRegion(region)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition
+                    ${selectedRegion === region
+                      ? "bg-brand-500 text-white"
+                      : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
+                    }`}>
+                  {region}
+                </button>
               ))}
             </div>
 
+            {/* Tag filters + Favorites toggle */}
+            <div className="flex flex-wrap gap-1.5">
+              {user && (
+                <button onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition
+                    ${showFavoritesOnly
+                      ? "bg-red-400 text-white"
+                      : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
+                    }`}>
+                  ❤️ お気に入り
+                </button>
+              )}
+              {["授乳室", "おむつ替え", "エレベーター", "ベビーカー貸出", "スロープ"].map((tag) => (
+                <TagPill key={tag} label={tag} active={searchFilter === tag}
+                  onClick={() => setSearchFilter(searchFilter === tag ? "" : tag)} />
+              ))}
+            </div>
+
+            {/* Add spot button */}
+            <button onClick={() => user ? setShowSpotForm(true) : setAuthOpen(true)}
+              className="w-full py-3 rounded-xl border-2 border-dashed border-brand-400 bg-brand-50/30
+                text-brand-600 text-sm font-bold hover:bg-brand-50 transition flex items-center justify-center gap-2">
+              📍 新しいスポットを投稿する
+            </button>
+
             {/* Spot cards */}
+            {filteredSpots.length === 0 && (
+              <EmptyState emoji="🔍" title={showFavoritesOnly ? "お気に入りスポットがありません" : "該当するスポットがありません"}
+                sub={showFavoritesOnly ? "スポットのハートをタップしてお気に入り登録しましょう" : "検索条件を変えてみてください"} />
+            )}
             {filteredSpots.map((spot) => {
               const avg = getAvgRating(spot.id);
               const reviewCount = (reviewsBySpot[spot.id] || []).length;
               return (
-                <div
-                  key={spot.id}
+                <div key={spot.id}
                   onClick={() => { setSelectedItemId(spot.id); setDetailTab("info"); }}
-                  className="bg-white rounded-2xl p-4 shadow cursor-pointer hover:shadow-md transition"
-                >
+                  className="bg-white rounded-2xl p-4 shadow cursor-pointer hover:shadow-md transition">
                   <div className="flex justify-between items-start mb-1.5">
-                    <h4 className="text-sm font-bold">{spot.name}</h4>
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="text-sm font-bold truncate">{spot.name}</h4>
+                        {spot.region && (
+                          <span className="text-[9px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded font-medium shrink-0">
+                            {spot.region}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
                       {avg && (
-                        <>
+                        <div className="flex items-center gap-1">
                           <Stars rating={Math.round(Number(avg))} size={11} />
                           <span className="text-[11px] font-bold text-amber-500">{avg}</span>
-                        </>
+                          <span className="text-[10px] text-gray-400">({reviewCount})</span>
+                        </div>
                       )}
-                      <span className="text-[10px] text-gray-400">({reviewCount}件)</span>
+                      <FavButton spotId={spot.id} />
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 leading-relaxed mb-2">{spot.desc}</p>
@@ -286,9 +403,7 @@ export default function HomePage() {
                     </div>
                   )}
                   <div className="flex flex-wrap gap-1">
-                    {spot.tags.map((t) => (
-                      <TagPill key={t} label={t} />
-                    ))}
+                    {spot.tags.map((t) => <TagPill key={t} label={t} />)}
                   </div>
                 </div>
               );
@@ -296,7 +411,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* TOILET TAB */}
+        {/* ═══ TOILET TAB ═══ */}
         {activeTab === "toilet" && (
           <div className="p-4 space-y-3">
             <div className="bg-purple-50/50 rounded-2xl p-3.5 flex items-center gap-2.5">
@@ -306,20 +421,38 @@ export default function HomePage() {
                 <div className="text-[11px] text-gray-500">おむつ替え台・ベビーチェア付き</div>
               </div>
             </div>
-            {TOILETS.map((t) => (
-              <div
-                key={t.id}
+
+            {/* Region filter for toilets */}
+            <div className="flex gap-1.5 overflow-x-auto pb-1">
+              {REGIONS.map((region) => (
+                <button key={region} onClick={() => setSelectedRegion(region)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition
+                    ${selectedRegion === region
+                      ? "bg-toilet-500 text-white"
+                      : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
+                    }`}>
+                  {region}
+                </button>
+              ))}
+            </div>
+
+            {regionFilteredToilets.length === 0 && (
+              <EmptyState emoji="🚻" title="この地域のトイレ情報はまだありません" />
+            )}
+            {regionFilteredToilets.map((t) => (
+              <div key={t.id}
                 onClick={() => { setSelectedItemId(t.id); setDetailTab("info"); }}
                 className="bg-white rounded-2xl p-4 shadow flex items-center gap-3.5
-                  cursor-pointer hover:shadow-md transition"
-              >
-                <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center
-                  text-toilet-500 shrink-0">
+                  cursor-pointer hover:shadow-md transition">
+                <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center text-toilet-500 shrink-0">
                   🚻
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-bold truncate">{t.name}</h4>
-                  <p className="text-[11px] text-gray-500">{t.desc}</p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-[11px] text-gray-500">{t.desc}</p>
+                    {t.region && <span className="text-[9px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded font-medium">{t.region}</span>}
+                  </div>
                 </div>
                 <span className="text-teal-400 shrink-0">🧭</span>
               </div>
@@ -330,15 +463,11 @@ export default function HomePage() {
 
       {/* ─── Detail Modal ─── */}
       {selectedItem && (
-        <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-end justify-center"
-          onClick={() => { setSelectedItemId(null); setDetailTab("info"); }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-end justify-center"
+          onClick={() => { setSelectedItemId(null); setDetailTab("info"); }}>
+          <div onClick={(e) => e.stopPropagation()}
             className="w-full max-w-[480px] max-h-[85vh] bg-white rounded-t-3xl p-5 pb-8
-              overflow-y-auto shadow-2xl animate-[slideUp_0.3s_ease-out]"
-          >
+              overflow-y-auto shadow-2xl animate-[slideUp_0.3s_ease-out]">
             <style>{`@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
 
             {/* Header */}
@@ -349,17 +478,16 @@ export default function HomePage() {
                   {selectedItem.type === "spot" ? "🍼" : "🚻"}
                 </div>
                 <div>
-                  <h3 className="text-base font-black">{selectedItem.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-black">{selectedItem.name}</h3>
+                    {selectedItem.type === "spot" && <FavButton spotId={selectedItem.id} size="lg" />}
+                  </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     {getAvgRating(selectedItem.id) ? (
                       <>
                         <Stars rating={Math.round(Number(getAvgRating(selectedItem.id)))} size={13} />
-                        <span className="text-xs font-bold text-amber-500">
-                          {getAvgRating(selectedItem.id)}
-                        </span>
-                        <span className="text-[11px] text-gray-400">
-                          ({(reviewsBySpot[selectedItem.id] || []).length}件)
-                        </span>
+                        <span className="text-xs font-bold text-amber-500">{getAvgRating(selectedItem.id)}</span>
+                        <span className="text-[11px] text-gray-400">({(reviewsBySpot[selectedItem.id] || []).length}件)</span>
                       </>
                     ) : (
                       <span className="text-[11px] text-gray-400">まだ口コミなし</span>
@@ -367,27 +495,17 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => { setSelectedItemId(null); setDetailTab("info"); }}
-                className="text-gray-400 hover:text-gray-600 transition p-1"
-              >
-                ✕
-              </button>
+              <button onClick={() => { setSelectedItemId(null); setDetailTab("info"); }}
+                className="text-gray-400 hover:text-gray-600 transition p-1">✕</button>
             </div>
 
-            {/* Sub-tabs (spot only) */}
+            {/* Sub-tabs */}
             {selectedItem.type === "spot" && (
               <div className="flex gap-1 mb-4">
                 {(["info", "reviews"] as const).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setDetailTab(t)}
+                  <button key={t} onClick={() => setDetailTab(t)}
                     className={`flex-1 py-2 rounded-lg text-xs font-bold transition
-                      ${detailTab === t
-                        ? "bg-brand-500 text-white"
-                        : "bg-gray-100 text-gray-400"
-                      }`}
-                  >
+                      ${detailTab === t ? "bg-brand-500 text-white" : "bg-gray-100 text-gray-400"}`}>
                     {t === "info" ? "施設情報" : `口コミ (${(reviewsBySpot[selectedItem.id] || []).length})`}
                   </button>
                 ))}
@@ -403,8 +521,14 @@ export default function HomePage() {
                     {selectedItem.tags.map((t) => <TagPill key={t} label={t} />)}
                   </div>
                 )}
+                {"region" in selectedItem && selectedItem.region && (
+                  <div className="mb-3">
+                    <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-1 rounded font-medium">
+                      📍 {selectedItem.region}
+                    </span>
+                  </div>
+                )}
 
-                {/* Age tip */}
                 {"age_tips" in selectedItem && babyProfile && ageKey && selectedItem.age_tips?.[ageKey] && (
                   <div className="bg-pink-50/60 border border-pink-100/50 rounded-xl p-3.5 mb-4">
                     <div className="flex items-center gap-1.5 mb-1.5">
@@ -413,9 +537,7 @@ export default function HomePage() {
                         {babyProfile.name}ちゃん（{ageRange?.label}）へのおすすめ
                       </span>
                     </div>
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      💡 {selectedItem.age_tips[ageKey]}
-                    </p>
+                    <p className="text-sm text-gray-700 leading-relaxed">💡 {selectedItem.age_tips[ageKey]}</p>
                   </div>
                 )}
 
@@ -430,8 +552,7 @@ export default function HomePage() {
                       window.open(`https://www.google.com/maps/dir/?api=1&destination=${dest}&travelmode=walking`, "_blank");
                     }}
                     className="flex-[1.2] py-3 rounded-xl bg-gradient-to-r from-teal-400 to-teal-600
-                      text-white text-sm font-bold hover:opacity-90 transition flex items-center justify-center gap-1.5"
-                  >
+                      text-white text-sm font-bold hover:opacity-90 transition flex items-center justify-center gap-1.5">
                     🧭 ここへナビ
                   </button>
                 </div>
@@ -444,6 +565,14 @@ export default function HomePage() {
             )}
           </div>
         </div>
+      )}
+
+      {/* Spot Submit Form */}
+      {showSpotForm && (
+        <SpotSubmitForm
+          onClose={() => setShowSpotForm(false)}
+          onSubmitted={() => { /* TODO: refresh spots list */ }}
+        />
       )}
 
       {/* Auth Modal */}
