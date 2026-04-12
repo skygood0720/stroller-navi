@@ -139,7 +139,7 @@ export default function HomePage() {
 
   const filteredSpots = regionFilteredSpots.filter(
     (s) =>
-      (s.name.includes(searchFilter) || s.tags.some((t) => t.includes(searchFilter))) &&
+      (s.name.includes(searchFilter) || s.tags.some((t: string) => t.includes(searchFilter))) &&
       (!showFavoritesOnly || favoriteSpotIds.has(s.id))
   );
 
