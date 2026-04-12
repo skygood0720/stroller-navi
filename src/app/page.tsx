@@ -19,11 +19,11 @@ const WeatherRecommend = dynamic(() => import("@/components/WeatherRecommend"), 
 const TripPlan = dynamic(() => import("@/components/TripPlan"), { ssr: false });
 
 const TABS = [
-  { key: "map", label: "マッチE, icon: "📍" },
-  { key: "plan", label: "プラン", icon: "🗓�E�E },
-  { key: "route", label: "ルーチE, icon: "🧭" },
-  { key: "baby", label: "赤ちめE��", icon: "👶" },
-  { key: "spots", label: "スポッチE, icon: "🍼" },
+  { key: "map", label: "マップ", icon: "📍" },
+  { key: "plan", label: "プラン", icon: "🗓️" },
+  { key: "route", label: "ルート", icon: "🧭" },
+  { key: "baby", label: "赤ちゃん", icon: "👶" },
+  { key: "spots", label: "スポット", icon: "🍼" },
   { key: "toilet", label: "トイレ", icon: "🚻" },
 ];
 
@@ -125,7 +125,7 @@ export default function HomePage() {
     desc: s.desc,
     age_min: 0,
     age_max: 36,
-    age_tips: {} as Record<string, string>,
+    age_tips: {},
     region: undefined,
     is_user_submitted: true,
     _dbId: s.id,
@@ -173,7 +173,7 @@ export default function HomePage() {
         className={`transition-transform active:scale-125 ${size === "lg" ? "text-xl" : "text-base"}`}
         title={isFav ? "お気に入り解除" : "お気に入り登録"}
       >
-        {isFav ? "❤�E�E : "🤁E}
+        {isFav ? "❤️" : "🤍"}
       </button>
     );
   };
@@ -199,7 +199,8 @@ export default function HomePage() {
           {user ? (
             <button onClick={handleLogout}
               className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
-              ログアウチE            </button>
+              ログアウト
+            </button>
           ) : (
             <button onClick={() => setAuthOpen(true)}
               className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
@@ -231,7 +232,7 @@ export default function HomePage() {
       {/* ─── Content ─── */}
       <div className="flex-1 overflow-auto">
 
-        {/* ══╁EMAP TAB ══╁E*/}
+        {/* ═══ MAP TAB ═══ */}
         {activeTab === "map" && (
           <div>
             <MapView />
@@ -264,7 +265,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-1.5 mb-2">
                     <span className="text-base">{ageRange.emoji}</span>
                     <span className="text-xs font-bold text-baby-300">
-                      {babyProfile.name}ちめE���E�EageRange.label}�E�におすすめ
+                      {babyProfile.name}ちゃん（{ageRange.label}）におすすめ
                     </span>
                   </div>
                   <div className="flex gap-2 overflow-x-auto pb-1">
@@ -292,7 +293,7 @@ export default function HomePage() {
             {/* Quick stats */}
             <div className="flex gap-2 px-4 pt-3">
               {[
-                { n: regionFilteredSpots.length, l: "スポッチE, c: "text-brand-500", e: "🍼" },
+                { n: regionFilteredSpots.length, l: "スポット", c: "text-brand-500", e: "🍼" },
                 { n: regionFilteredToilets.length, l: "トイレ", c: "text-toilet-500", e: "🚻" },
               ].map((s) => (
                 <div key={s.l} className="flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2">
@@ -306,10 +307,10 @@ export default function HomePage() {
               {user && (
                 <div className="flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2 cursor-pointer hover:shadow-md transition"
                   onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(true); }}>
-                  <span className="text-xl">❤�E�E/span>
+                  <span className="text-xl">❤️</span>
                   <div>
                     <div className="text-lg font-black text-red-400">{favoriteSpotIds.size}</div>
-                    <div className="text-[9px] text-gray-400 font-medium">お気に入めE/div>
+                    <div className="text-[9px] text-gray-400 font-medium">お気に入り</div>
                   </div>
                 </div>
               )}
@@ -317,7 +318,7 @@ export default function HomePage() {
 
             {/* Top rated */}
             <div className="px-4 pt-3 pb-6">
-              <h3 className="text-sm font-bold mb-2">⭁E高評価スポッチE/h3>
+              <h3 className="text-sm font-bold mb-2">⭐ 高評価スポット</h3>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {regionFilteredSpots
                   .filter((s) => getAvgRating(s.id))
@@ -343,20 +344,20 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* ══╁EPLAN TAB ══╁E*/}
+        {/* ═══ PLAN TAB ═══ */}
         {activeTab === "plan" && (
           <div className="p-4">
             <TripPlan />
           </div>
         )}
 
-        {/* ══╁EROUTE TAB ══╁E*/}
+        {/* ═══ ROUTE TAB ═══ */}
         {activeTab === "route" && <RouteSearch />}
 
-        {/* ══╁EBABY TAB ══╁E*/}
+        {/* ═══ BABY TAB ═══ */}
         {activeTab === "baby" && <BabyProfile />}
 
-        {/* ══╁ESPOTS TAB ══╁E*/}
+        {/* ═══ SPOTS TAB ═══ */}
         {activeTab === "spots" && (
           <div className="p-4 space-y-3">
             {/* Search */}
@@ -391,9 +392,10 @@ export default function HomePage() {
                       ? "bg-red-400 text-white"
                       : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
                     }`}>
-                  ❤�E�Eお気に入めE                </button>
+                  ❤️ お気に入り
+                </button>
               )}
-              {["授乳室", "お�Eつ替ぁE, "エレベ�Eター", "ベビーカー貸出", "スローチE].map((tag) => (
+              {["授乳室", "おむつ替え", "エレベーター", "ベビーカー貸出", "スロープ"].map((tag) => (
                 <TagPill key={tag} label={tag} active={searchFilter === tag}
                   onClick={() => setSearchFilter(searchFilter === tag ? "" : tag)} />
               ))}
@@ -409,7 +411,7 @@ export default function HomePage() {
             {/* Spot cards */}
             {filteredSpots.length === 0 && (
               <EmptyState emoji="🔍" title={showFavoritesOnly ? "お気に入りスポットがありません" : "該当するスポットがありません"}
-                sub={showFavoritesOnly ? "スポット�Eハ�EトをタチE�Eしてお気に入り登録しましょぁE : "検索条件を変えてみてください"} />
+                sub={showFavoritesOnly ? "スポットのハートをタップしてお気に入り登録しましょう" : "検索条件を変えてみてください"} />
             )}
             {filteredSpots.map((spot) => {
               const avg = getAvgRating(spot.id);
@@ -460,14 +462,14 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* ══╁ETOILET TAB ══╁E*/}
+        {/* ═══ TOILET TAB ═══ */}
         {activeTab === "toilet" && (
           <div className="p-4 space-y-3">
             <div className="bg-purple-50/50 rounded-2xl p-3.5 flex items-center gap-2.5">
               <span className="text-2xl">🚻</span>
               <div>
                 <div className="text-sm font-bold text-toilet-500">バリアフリートイレ</div>
-                <div className="text-[11px] text-gray-500">お�Eつ替え台・ベビーチェア付き</div>
+                <div className="text-[11px] text-gray-500">おむつ替え台・ベビーチェア付き</div>
               </div>
             </div>
 
@@ -486,7 +488,7 @@ export default function HomePage() {
             </div>
 
             {regionFilteredToilets.length === 0 && (
-              <EmptyState emoji="🚻" title="こ�E地域�Eトイレ惁E��はまだありません" />
+              <EmptyState emoji="🚻" title="この地域のトイレ情報はまだありません" />
             )}
             {regionFilteredToilets.map((t) => (
               <div key={t.id}
@@ -539,13 +541,13 @@ export default function HomePage() {
                         <span className="text-[11px] text-gray-400">({(reviewsBySpot[selectedItem.id] || []).length}件)</span>
                       </>
                     ) : (
-                      <span className="text-[11px] text-gray-400">まだ口コミなぁE/span>
+                      <span className="text-[11px] text-gray-400">まだ口コミなし</span>
                     )}
                   </div>
                 </div>
               </div>
               <button onClick={() => { setSelectedItemId(null); setDetailTab("info"); }}
-                className="text-gray-400 hover:text-gray-600 transition p-1">✁E/button>
+                className="text-gray-400 hover:text-gray-600 transition p-1">✕</button>
             </div>
 
             {/* Sub-tabs */}
@@ -555,7 +557,7 @@ export default function HomePage() {
                   <button key={t} onClick={() => setDetailTab(t)}
                     className={`flex-1 py-2 rounded-lg text-xs font-bold transition
                       ${detailTab === t ? "bg-brand-500 text-white" : "bg-gray-100 text-gray-400"}`}>
-                    {t === "info" ? "施設惁E��" : `口コチE(${(reviewsBySpot[selectedItem.id] || []).length})`}
+                    {t === "info" ? "施設情報" : `口コミ (${(reviewsBySpot[selectedItem.id] || []).length})`}
                   </button>
                 ))}
               </div>
@@ -583,7 +585,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <span className="text-base">{ageRange?.emoji}</span>
                       <span className="text-xs font-bold text-baby-300">
-                        {babyProfile.name}ちめE���E�EageRange?.label}�E�へのおすすめ
+                        {babyProfile.name}ちゃん（{ageRange?.label}）へのおすすめ
                       </span>
                     </div>
                     <p className="text-sm text-gray-700 leading-relaxed">💡 {(selectedItem.age_tips as Record<string,string>)[ageKey as string]}</p>
@@ -629,4 +631,3 @@ export default function HomePage() {
     </div>
   );
 }
-
