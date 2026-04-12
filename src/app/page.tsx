@@ -270,7 +270,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex gap-2 overflow-x-auto pb-1">
                     {regionFilteredSpots
-                      .filter((s) => babyMonths! >= s.age_min && babyMonths! <= s.age_max && s.age_tips?.[ageKey])
+                      .filter((s) => babyMonths! >= s.age_min && babyMonths! <= s.age_max && s.age_tips?.[ageKey as string])
                       .slice(0, 4)
                       .map((s) => (
                         <div key={s.id}
@@ -281,7 +281,7 @@ export default function HomePage() {
                             <FavButton spotId={s.id} />
                           </div>
                           <div className="text-[10px] text-gray-500 leading-snug">
-                            💡 {(s.age_tips?.[ageKey] || "").slice(0, 20)}...
+                            💡 {(s.age_tips?.[ageKey as string] || "").slice(0, 20)}...
                           </div>
                         </div>
                       ))}
@@ -448,9 +448,9 @@ export default function HomePage() {
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 leading-relaxed mb-2">{spot.desc}</p>
-                  {babyProfile && ageKey && spot.age_tips?.[ageKey] && (
+                  {babyProfile && ageKey && spot.age_tips?.[ageKey as string] && (
                     <div className="bg-pink-50/50 rounded-lg px-2.5 py-1.5 mb-2 text-[11px] text-baby-300 font-medium">
-                      {ageRange?.emoji} {spot.age_tips[ageKey]}
+                      {ageRange?.emoji} {(spot.age_tips as Record<string,string>)[ageKey as string]}
                     </div>
                   )}
                   <div className="flex flex-wrap gap-1">
@@ -580,7 +580,7 @@ export default function HomePage() {
                   </div>
                 )}
 
-                {"age_tips" in selectedItem && babyProfile && ageKey && selectedItem.age_tips?.[ageKey] && (
+                {"age_tips" in selectedItem && babyProfile && ageKey && selectedItem.age_tips?.[ageKey as string] && (
                   <div className="bg-pink-50/60 border border-pink-100/50 rounded-xl p-3.5 mb-4">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <span className="text-base">{ageRange?.emoji}</span>
@@ -588,7 +588,7 @@ export default function HomePage() {
                         {babyProfile.name}ちゃん（{ageRange?.label}）へのおすすめ
                       </span>
                     </div>
-                    <p className="text-sm text-gray-700 leading-relaxed">💡 {selectedItem.age_tips[ageKey]}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed">💡 {(selectedItem.age_tips as Record<string,string>)[ageKey as string]}</p>
                   </div>
                 )}
 
