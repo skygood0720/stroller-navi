@@ -17,6 +17,7 @@ const ReviewSection = dynamic(() => import("@/components/ReviewSection"), { ssr:
 const SpotSubmitForm = dynamic(() => import("@/components/SpotSubmitForm"), { ssr: false });
 const WeatherRecommend = dynamic(() => import("@/components/WeatherRecommend"), { ssr: false });
 const TripPlan = dynamic(() => import("@/components/TripPlan"), { ssr: false });
+const NearbySpots = dynamic(() => import("@/components/NearbySpots"), { ssr: false });
 
 const TABS = [
   { key: "map", label: "マップ", icon: "📍" },
@@ -240,6 +241,11 @@ export default function HomePage() {
             {/* Weather-based recommendations */}
             <div className="px-4 pt-3">
               <WeatherRecommend />
+            </div>
+
+            {/* Nearby spots */}
+            <div className="px-4 pt-3">
+              <NearbySpots />
             </div>
 
             {/* Region filter */}

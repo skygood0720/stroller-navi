@@ -36,6 +36,7 @@ export interface Review {
   rating: number;
   text: string;
   baby_age: string | null;
+  photo_url: string | null;
   created_at: string;
 }
 

@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 // POST /api/reviews
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { spot_id, user_id, user_name, rating, text, baby_age } = body;
+  const { spot_id, user_id, user_name, rating, text, baby_age, photo_url } = body;
 
   if (!spot_id || !rating || !text) {
     return NextResponse.json(
@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       rating,
       text,
       baby_age: baby_age || null,
+      photo_url: photo_url || null,
     })
     .select()
     .single();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Stars, EmptyState, Spinner } from "@/components/ui";
 import { useAppStore } from "@/lib/store";
 import { formatBabyAge } from "@/lib/constants";
@@ -20,10 +20,12 @@ export default function ReviewSection({ spotId }: Props) {
   const [rating, setRating] = useState(0);
   const [userName, setUserName] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [expandedPhoto, setExpandedPhoto] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const reviews = reviewsBySpot[spotId] || [];
 
-  // Fetch reviews from API
   useEffect(() => {
     const fetchReviews = async () => {
       setLoading(true);
@@ -42,6 +44,18 @@ export default function ReviewSection({ spotId }: Props) {
     fetchReviews();
   }, [spotId, setReviewsForSpot]);
 
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("写真は2MB以下にしてください");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setPhotoPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = async () => {
     if (!text || rating === 0) return;
     setSubmitting(true);
@@ -59,6 +73,7 @@ export default function ReviewSection({ spotId }: Props) {
           rating,
           text,
           baby_age: babyAge,
+          photo_url: photoPreview,
         }),
       });
 
@@ -68,6 +83,7 @@ export default function ReviewSection({ spotId }: Props) {
         setText("");
         setRating(0);
         setUserName("");
+        setPhotoPreview(null);
         setShowForm(false);
       }
     } catch (err) {
@@ -119,15 +135,45 @@ export default function ReviewSection({ spotId }: Props) {
               focus:border-brand-500 focus:outline-none"
           />
 
+          {/* Photo upload */}
+          <div className="mt-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoSelect}
+              className="hidden"
+            />
+            {photoPreview ? (
+              <div className="relative inline-block">
+                <img src={photoPreview} alt="preview" className="w-20 h-20 object-cover rounded-lg border" />
+                <button
+                  onClick={() => { setPhotoPreview(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full text-[10px] flex items-center justify-center"
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300
+                  text-xs text-gray-500 hover:bg-gray-50 transition"
+              >
+                📷 写真を追加（2MBまで）
+              </button>
+            )}
+          </div>
+
           {babyProfile && babyMonths !== null && (
-            <p className="text-xs text-baby-300 mt-1 font-medium">
+            <p className="text-xs text-baby-300 mt-2 font-medium">
               👶 {babyProfile.name}ちゃん（{formatBabyAge(babyMonths)}）として投稿
             </p>
           )}
 
           <div className="flex gap-2 mt-3">
             <button
-              onClick={() => setShowForm(false)}
+              onClick={() => { setShowForm(false); setPhotoPreview(null); }}
               className="flex-1 py-2.5 rounded-lg border border-gray-200 text-xs font-semibold
                 text-gray-500 hover:bg-gray-50 transition"
             >
@@ -178,8 +224,37 @@ export default function ReviewSection({ spotId }: Props) {
             </div>
           </div>
           <p className="text-xs leading-relaxed text-gray-700">{r.text}</p>
+
+          {/* Review photo */}
+          {r.photo_url && (
+            <div className="mt-2">
+              <img
+                src={r.photo_url}
+                alt="口コミ写真"
+                onClick={() => setExpandedPhoto(r.photo_url)}
+                className="w-24 h-24 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition"
+              />
+            </div>
+          )}
         </div>
       ))}
+
+      {/* Fullscreen photo viewer */}
+      {expandedPhoto && (
+        <div
+          className="fixed inset-0 bg-black/80 z-[200] flex items-center justify-center p-4"
+          onClick={() => setExpandedPhoto(null)}
+        >
+          <img src={expandedPhoto} alt="拡大写真" className="max-w-full max-h-full rounded-lg" />
+          <button
+            onClick={() => setExpandedPhoto(null)}
+            className="absolute top-4 right-4 w-10 h-10 bg-white/20 rounded-full text-white text-lg
+              flex items-center justify-center backdrop-blur"
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 }
