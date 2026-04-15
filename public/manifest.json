@@ -1,0 +1,24 @@
+{
+  "name": "ベビーカーナビ",
+  "short_name": "ベビーカーナビ",
+  "description": "ベビーカーで安心して外出するためのバリアフリールート検索アプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#FF8A65",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
