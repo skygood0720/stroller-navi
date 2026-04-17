@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "ベビーカーナビ",
     description: "ベビーカーで安心して外出！バリアフリールート検索アプリ",
+  },
   verification: {
     google: "yEGzkafnTcanZP_K9veaL_401hLNLo46zklyQc4qFpM",
   },
