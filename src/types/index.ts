@@ -13,6 +13,9 @@ export interface BabySpot {
   age_tips: Record<string, string>;
   region?: string;
   category?: "indoor" | "outdoor" | "both";
+  website?: string;
+  address?: string;
+  hours?: string;
   is_user_submitted?: boolean;
 }
 

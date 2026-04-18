@@ -70,6 +70,37 @@ export default function SpotPage({ params }: { params: { id: string } }) {
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <h2 className="text-base font-bold mb-2">施設情報</h2>
             <p className="text-sm text-gray-700 leading-relaxed">{spot.desc}</p>
+
+            {/* Basic info list */}
+            {(spot.address || spot.hours || spot.website) && (
+              <div className="mt-4 space-y-2 border-t border-gray-100 pt-3">
+                {spot.address && (
+                  <div className="flex gap-2 text-xs">
+                    <span className="text-gray-400 shrink-0">📍 住所</span>
+                    <span className="text-gray-700">{spot.address}</span>
+                  </div>
+                )}
+                {spot.hours && (
+                  <div className="flex gap-2 text-xs">
+                    <span className="text-gray-400 shrink-0">🕒 営業時間</span>
+                    <span className="text-gray-700">{spot.hours}</span>
+                  </div>
+                )}
+                {spot.website && (
+                  <div className="flex gap-2 text-xs">
+                    <span className="text-gray-400 shrink-0">🔗 公式HP</span>
+                    <a
+                      href={spot.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-brand-500 hover:underline break-all"
+                    >
+                      {spot.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
           </section>
 
           {/* Tags */}

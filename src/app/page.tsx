@@ -586,6 +586,37 @@ export default function HomePage() {
                   </div>
                 )}
 
+                {/* Basic info (address, hours, website) */}
+                {"address" in selectedItem && (selectedItem.address || selectedItem.hours || selectedItem.website) && (
+                  <div className="bg-gray-50 rounded-xl p-3 mb-4 space-y-1.5">
+                    {selectedItem.address && (
+                      <div className="flex gap-2 text-[11px]">
+                        <span className="text-gray-400 shrink-0 w-14">📍 住所</span>
+                        <span className="text-gray-700">{selectedItem.address}</span>
+                      </div>
+                    )}
+                    {selectedItem.hours && (
+                      <div className="flex gap-2 text-[11px]">
+                        <span className="text-gray-400 shrink-0 w-14">🕒 営業</span>
+                        <span className="text-gray-700">{selectedItem.hours}</span>
+                      </div>
+                    )}
+                    {selectedItem.website && (
+                      <div className="flex gap-2 text-[11px]">
+                        <span className="text-gray-400 shrink-0 w-14">🔗 HP</span>
+                        <a
+                          href={selectedItem.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-brand-500 hover:underline break-all"
+                        >
+                          公式サイトを開く →
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {"age_tips" in selectedItem && babyProfile && ageKey && selectedItem.age_tips?.[ageKey as string] && (
                   <div className="bg-pink-50/60 border border-pink-100/50 rounded-xl p-3.5 mb-4">
                     <div className="flex items-center gap-1.5 mb-1.5">
