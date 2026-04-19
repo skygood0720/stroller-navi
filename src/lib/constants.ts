@@ -11,7 +11,7 @@ export const AGE_RANGES: AgeRange[] = [
 ];
 
 export const REGIONS = [
-  "すべて", "北海道", "東北", "関東", "中部", "近畿", "中国", "四国", "九州・沖縄",
+  "すべて", "東京", "北海道", "東北", "関東", "中部", "近畿", "中国", "四国", "九州・沖縄",
 ] as const;
 export type Region = typeof REGIONS[number];
 
