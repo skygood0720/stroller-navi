@@ -630,8 +630,21 @@ export default function HomePage() {
                 )}
 
                 <div className="flex gap-2.5">
-                  <button className="flex-1 py-3 rounded-xl border-[1.5px] border-brand-500
-                    text-brand-500 text-sm font-bold hover:bg-brand-50 transition">
+                  <button
+                    onClick={() => {
+                      // Close modal, switch to map tab, and open Google Maps for the location
+                      setActiveTab("map");
+                      setSelectedItemId(null);
+                      setDetailTab("info");
+                      // Also open Google Maps with just the location
+                      const query = encodeURIComponent(selectedItem.name);
+                      window.open(
+                        `https://www.google.com/maps/search/?api=1&query=${query}`,
+                        "_blank"
+                      );
+                    }}
+                    className="flex-1 py-3 rounded-xl border-[1.5px] border-brand-500
+                      text-brand-500 text-sm font-bold hover:bg-brand-50 transition">
                     📍 マップで見る
                   </button>
                   <button

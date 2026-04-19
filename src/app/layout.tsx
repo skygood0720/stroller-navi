@@ -48,6 +48,21 @@ export default function RootLayout({
     <html lang="ja">
       <head>
         <link rel="apple-touch-icon" href="/icon-192.svg" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "ベビーカーナビ",
+            "alternateName": "Stroller Navi",
+            "description": "ベビーカーで安心して外出するためのバリアフリールート検索アプリ。全国250以上のスポット情報、天気連動おすすめ、おでかけプラン機能。",
+            "url": "https://stroller-navi.vercel.app",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "Web",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+            "inLanguage": "ja",
+          }) }}
+        />
         {adsenseId && (
           <>
             <meta name="google-adsense-account" content={adsenseId} />

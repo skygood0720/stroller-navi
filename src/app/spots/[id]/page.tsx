@@ -44,14 +44,59 @@ export default function SpotPage({ params }: { params: { id: string } }) {
     .filter((s) => s.id !== spot.id && s.region === spot.region)
     .slice(0, 6);
 
+  // JSON-LD structured data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "name": spot.name,
+    "description": spot.desc,
+    "url": `https://stroller-navi.vercel.app/spots/${spot.id}`,
+    ...(spot.address && { "address": { "@type": "PostalAddress", "addressLocality": spot.address, "addressCountry": "JP" } }),
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": spot.lat,
+      "longitude": spot.lng,
+    },
+    ...(spot.website && { "sameAs": [spot.website] }),
+    ...(spot.hours && { "openingHours": spot.hours }),
+    "amenityFeature": spot.tags.map((t) => ({
+      "@type": "LocationFeatureSpecification",
+      "name": t,
+      "value": true,
+    })),
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "トップ", "item": "https://stroller-navi.vercel.app/" },
+      { "@type": "ListItem", "position": 2, "name": "スポット一覧", "item": "https://stroller-navi.vercel.app/spots" },
+      ...(spot.region ? [{ "@type": "ListItem", "position": 3, "name": spot.region, "item": `https://stroller-navi.vercel.app/spots/region/${encodeURIComponent(spot.region)}` }] : []),
+      { "@type": "ListItem", "position": spot.region ? 4 : 3, "name": spot.name, "item": `https://stroller-navi.vercel.app/spots/${spot.id}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="max-w-[640px] mx-auto">
         {/* Header */}
         <header className="px-5 pt-5 pb-4 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white">
-          <Link href="/" className="text-xs text-white/70 hover:text-white mb-2 inline-block">
-            ← ベビーカーナビ トップへ
-          </Link>
+          <nav className="text-xs text-white/70 mb-2">
+            <Link href="/" className="hover:text-white">トップ</Link>
+            <span className="mx-1.5">›</span>
+            <Link href="/spots" className="hover:text-white">スポット一覧</Link>
+            {spot.region && (
+              <>
+                <span className="mx-1.5">›</span>
+                <Link href={`/spots/region/${encodeURIComponent(spot.region)}`} className="hover:text-white">
+                  {spot.region}
+                </Link>
+              </>
+            )}
+          </nav>
           <h1 className="text-xl font-black">{spot.name}</h1>
           <div className="flex items-center gap-2 mt-1">
             {spot.region && (
