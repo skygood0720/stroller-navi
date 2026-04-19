@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
-import { BABY_SPOTS, TOILETS, REGIONS, getMonthsOld, getAgeRange, getAgeRangeKey } from "@/lib/constants";
+import { BABY_SPOTS, TOILETS, RESTAURANTS, REGIONS, getMonthsOld, getAgeRange, getAgeRangeKey } from "@/lib/constants";
 import { Stars, TagPill, EmptyState } from "@/components/ui";
 import AuthModal from "@/components/AuthModal";
 import AdBanner from "@/components/AdBanner";
@@ -25,6 +25,7 @@ const TABS = [
   { key: "route", label: "ルート", icon: "🧭" },
   { key: "baby", label: "赤ちゃん", icon: "👶" },
   { key: "spots", label: "スポット", icon: "🍼" },
+  { key: "restaurant", label: "レストラン", icon: "🍽️" },
   { key: "toilet", label: "トイレ", icon: "🚻" },
 ];
 
@@ -146,6 +147,10 @@ export default function HomePage() {
 
   const regionFilteredToilets = TOILETS.filter(
     (t) => selectedRegion === "すべて" || t.region === selectedRegion
+  );
+
+  const regionFilteredRestaurants = RESTAURANTS.filter(
+    (r) => selectedRegion === "すべて" || r.region === selectedRegion
   );
 
   const getAvgRating = (spotId: number): string | null => {
@@ -296,29 +301,53 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Quick stats */}
-            <div className="flex gap-2 px-4 pt-3">
-              {[
-                { n: regionFilteredSpots.length, l: "スポット", c: "text-brand-500", e: "🍼" },
-                { n: regionFilteredToilets.length, l: "トイレ", c: "text-toilet-500", e: "🚻" },
-              ].map((s) => (
-                <div key={s.l} className="flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2">
-                  <span className="text-xl">{s.e}</span>
-                  <div>
-                    <div className={`text-lg font-black ${s.c}`}>{s.n}</div>
-                    <div className="text-[9px] text-gray-400 font-medium">{s.l}</div>
-                  </div>
+            {/* Quick stats - clickable buttons */}
+            <div className="flex gap-2 px-4 pt-3 overflow-x-auto">
+              <button
+                onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(false); }}
+                className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
+                  hover:shadow-md active:scale-95 transition"
+              >
+                <span className="text-xl">🍼</span>
+                <div className="text-left">
+                  <div className="text-lg font-black text-brand-500">{regionFilteredSpots.length}</div>
+                  <div className="text-[9px] text-gray-400 font-medium">スポット →</div>
                 </div>
-              ))}
+              </button>
+              <button
+                onClick={() => setActiveTab("restaurant")}
+                className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
+                  hover:shadow-md active:scale-95 transition"
+              >
+                <span className="text-xl">🍽️</span>
+                <div className="text-left">
+                  <div className="text-lg font-black text-orange-500">{regionFilteredRestaurants.length}</div>
+                  <div className="text-[9px] text-gray-400 font-medium">レストラン →</div>
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab("toilet")}
+                className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
+                  hover:shadow-md active:scale-95 transition"
+              >
+                <span className="text-xl">🚻</span>
+                <div className="text-left">
+                  <div className="text-lg font-black text-toilet-500">{regionFilteredToilets.length}</div>
+                  <div className="text-[9px] text-gray-400 font-medium">トイレ →</div>
+                </div>
+              </button>
               {user && (
-                <div className="flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2 cursor-pointer hover:shadow-md transition"
-                  onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(true); }}>
+                <button
+                  onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(true); }}
+                  className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
+                    hover:shadow-md active:scale-95 transition"
+                >
                   <span className="text-xl">❤️</span>
-                  <div>
+                  <div className="text-left">
                     <div className="text-lg font-black text-red-400">{favoriteSpotIds.size}</div>
-                    <div className="text-[9px] text-gray-400 font-medium">お気に入り</div>
+                    <div className="text-[9px] text-gray-400 font-medium">お気に入り →</div>
                   </div>
-                </div>
+                </button>
               )}
             </div>
 
@@ -465,6 +494,69 @@ export default function HomePage() {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* ═══ RESTAURANT TAB ═══ */}
+        {activeTab === "restaurant" && (
+          <div className="p-4 space-y-3">
+            <div className="bg-orange-50/50 rounded-2xl p-3.5 flex items-center gap-2.5">
+              <span className="text-2xl">🍽️</span>
+              <div>
+                <div className="text-sm font-bold text-orange-500">ベビーカーOKなレストラン</div>
+                <div className="text-[11px] text-gray-500">キッズメニュー・ベビーチェア情報付き</div>
+              </div>
+            </div>
+
+            {/* Region filter */}
+            <div className="flex gap-1.5 overflow-x-auto pb-1">
+              {REGIONS.map((region) => (
+                <button key={region} onClick={() => setSelectedRegion(region)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition
+                    ${selectedRegion === region
+                      ? "bg-orange-500 text-white"
+                      : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
+                    }`}>
+                  {region}
+                </button>
+              ))}
+            </div>
+
+            {regionFilteredRestaurants.length === 0 && (
+              <EmptyState emoji="🍽️" title="この地域のレストラン情報はまだありません" />
+            )}
+            {regionFilteredRestaurants.map((r) => (
+              <div key={r.id}
+                onClick={() => { setSelectedItemId(r.id); setDetailTab("info"); }}
+                className="bg-white rounded-2xl p-3.5 shadow cursor-pointer hover:shadow-md transition">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-sm font-bold">{r.name}</h3>
+                      <span className="text-[9px] bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded font-bold">
+                        {r.cuisine}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-500">{r.desc}</p>
+                  </div>
+                  {r.price_range && (
+                    <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">
+                      💰 {r.price_range}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {r.tags.slice(0, 4).map((t) => (
+                    <span key={t} className="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                {r.address && (
+                  <p className="text-[10px] text-gray-400 mt-1.5">📍 {r.address}</p>
+                )}
+              </div>
+            ))}
           </div>
         )}
 

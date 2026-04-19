@@ -29,7 +29,23 @@ export interface BarrierFreeToilet {
   region?: string;
 }
 
-export type MapItem = BabySpot | BarrierFreeToilet;
+export interface BabyFriendlyRestaurant {
+  id: number;
+  name: string;
+  lat: number;
+  lng: number;
+  type: "restaurant";
+  cuisine: string;
+  tags: string[];
+  desc: string;
+  region?: string;
+  address?: string;
+  website?: string;
+  hours?: string;
+  price_range?: string;
+}
+
+export type MapItem = BabySpot | BarrierFreeToilet | BabyFriendlyRestaurant;
 
 export interface Review {
   id: string;

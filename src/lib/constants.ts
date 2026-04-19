@@ -1,5 +1,5 @@
 import type { AgeRange } from "@/types";
-import { ALL_SPOTS, ALL_TOILETS } from "@/lib/spots-data";
+import { ALL_SPOTS, ALL_TOILETS, ALL_RESTAURANTS } from "@/lib/spots-data";
 export type { SpotCategory, SpotWithCategory } from "@/lib/spots-data";
 
 export const AGE_RANGES: AgeRange[] = [
@@ -18,6 +18,7 @@ export type Region = typeof REGIONS[number];
 // Re-export spot data
 export const BABY_SPOTS = ALL_SPOTS;
 export const TOILETS = ALL_TOILETS;
+export const RESTAURANTS = ALL_RESTAURANTS;
 
 export function getMonthsOld(birthDate: string): number {
   const now = new Date();
