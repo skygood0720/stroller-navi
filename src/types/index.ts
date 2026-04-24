@@ -41,6 +41,7 @@ export interface BabyFriendlyRestaurant {
   region?: string;
   address?: string;
   website?: string;
+  tabelog_url?: string;
   hours?: string;
   price_range?: string;
 }

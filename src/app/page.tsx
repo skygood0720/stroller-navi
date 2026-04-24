@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
@@ -504,67 +504,14 @@ export default function HomePage() {
         )}
 
         {/* ═══ RESTAURANT TAB ═══ */}
-        {activeTab === "restaurant" && (
-          <div className="p-4 space-y-3">
-            <div className="bg-orange-50/50 rounded-2xl p-3.5 flex items-center gap-2.5">
-              <span className="text-2xl">🍽️</span>
-              <div>
-                <div className="text-sm font-bold text-orange-500">ベビーカーOKなレストラン</div>
-                <div className="text-[11px] text-gray-500">キッズメニュー・ベビーチェア情報付き</div>
-              </div>
-            </div>
-
-            {/* Region filter */}
-            <div className="flex gap-1.5 overflow-x-auto pb-1">
-              {REGIONS.map((region) => (
-                <button key={region} onClick={() => setSelectedRegion(region)}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition
-                    ${selectedRegion === region
-                      ? "bg-orange-500 text-white"
-                      : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
-                    }`}>
-                  {region}
-                </button>
-              ))}
-            </div>
-
-            {regionFilteredRestaurants.length === 0 && (
-              <EmptyState emoji="🍽️" title="この地域のレストラン情報はまだありません" />
-            )}
-            {regionFilteredRestaurants.map((r) => (
-              <div key={r.id}
-                onClick={() => { setSelectedItemId(r.id); setDetailTab("info"); }}
-                className="bg-white rounded-2xl p-3.5 shadow cursor-pointer hover:shadow-md transition">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm font-bold">{r.name}</h3>
-                      <span className="text-[9px] bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded font-bold">
-                        {r.cuisine}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-gray-500">{r.desc}</p>
-                  </div>
-                  {r.price_range && (
-                    <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">
-                      💰 {r.price_range}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {r.tags.slice(0, 4).map((t) => (
-                    <span key={t} className="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                {r.address && (
-                  <p className="text-[10px] text-gray-400 mt-1.5">📍 {r.address}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+        {activeTab === "restaurant" && <RestaurantTab
+          restaurants={regionFilteredRestaurants}
+          regions={REGIONS}
+          selectedRegion={selectedRegion}
+          setSelectedRegion={setSelectedRegion}
+          setSelectedItemId={setSelectedItemId}
+          setDetailTab={setDetailTab}
+        />}
 
         {/* ═══ TOILET TAB ═══ */}
         {activeTab === "toilet" && (
@@ -883,3 +830,135 @@ function FeedbackModal({ onClose, userEmail }: { onClose: () => void; userEmail?
     </div>
   );
 }
+
+// ─── Restaurant Tab with distance sort ───
+function getDistanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function fmtDist(km: number) { return km < 1 ? `${Math.round(km * 1000)}m` : `${km.toFixed(1)}km`; }
+
+function RestaurantTab({ restaurants, regions, selectedRegion, setSelectedRegion, setSelectedItemId, setDetailTab }: any) {
+  const [userLoc, setUserLoc] = useState<{ lat: number; lng: number } | null>(null);
+  const [sortBy, setSortBy] = useState<"distance" | "name">("distance");
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (p) => setUserLoc({ lat: p.coords.latitude, lng: p.coords.longitude }),
+        () => setSortBy("name")
+      );
+    } else { setSortBy("name"); }
+  }, []);
+
+  const sorted = useMemo(() => {
+    if (sortBy === "distance" && userLoc) {
+      return [...restaurants]
+        .map((r: any) => ({ ...r, _dist: getDistanceKm(userLoc.lat, userLoc.lng, r.lat, r.lng) }))
+        .sort((a: any, b: any) => a._dist - b._dist);
+    }
+    return restaurants;
+  }, [restaurants, sortBy, userLoc]);
+
+  return (
+    <div className="p-4 space-y-3">
+      <div className="bg-orange-50/50 rounded-2xl p-3.5 flex items-center gap-2.5">
+        <span className="text-2xl">🍽️</span>
+        <div>
+          <div className="text-sm font-bold text-orange-500">ベビーカーOKなレストラン</div>
+          <div className="text-[11px] text-gray-500">キッズメニュー・ベビーチェア情報付き</div>
+        </div>
+      </div>
+
+      {/* Sort toggle */}
+      <div className="flex gap-2">
+        <button onClick={() => setSortBy("distance")}
+          className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition
+            ${sortBy === "distance" ? "bg-orange-500 text-white" : "bg-white text-gray-500 border border-gray-200"}`}>
+          📍 近い順
+        </button>
+        <button onClick={() => setSortBy("name")}
+          className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition
+            ${sortBy === "name" ? "bg-orange-500 text-white" : "bg-white text-gray-500 border border-gray-200"}`}>
+          あ行順
+        </button>
+      </div>
+
+      {/* Region filter */}
+      <div className="flex gap-1.5 overflow-x-auto pb-1">
+        {regions.map((region: string) => (
+          <button key={region} onClick={() => setSelectedRegion(region)}
+            className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition
+              ${selectedRegion === region
+                ? "bg-orange-500 text-white"
+                : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
+              }`}>
+            {region}
+          </button>
+        ))}
+      </div>
+
+      {sorted.length === 0 && (
+        <div className="text-center py-12 text-gray-400">
+          <div className="text-3xl mb-2">🍽️</div>
+          <p className="text-sm font-bold">この地域のレストラン情報はまだありません</p>
+        </div>
+      )}
+      {sorted.map((r: any) => (
+        <div key={r.id}
+          className="bg-white rounded-2xl p-3.5 shadow cursor-pointer hover:shadow-md transition"
+          onClick={() => { setSelectedItemId(r.id); setDetailTab("info"); }}>
+          <div className="flex items-start justify-between mb-2">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-sm font-bold">{r.name}</h3>
+                <span className="text-[9px] bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded font-bold">
+                  {r.cuisine}
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-500">{r.desc}</p>
+            </div>
+            <div className="flex flex-col items-end gap-1 ml-2 shrink-0">
+              {r._dist != null && (
+                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
+                  {fmtDist(r._dist)}
+                </span>
+              )}
+              {r.price_range && (
+                <span className="text-[10px] text-gray-400">💰 {r.price_range}</span>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-1 mb-1.5">
+            {r.tags.slice(0, 4).map((t: string) => (
+              <span key={t} className="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium">
+                {t}
+              </span>
+            ))}
+          </div>
+          {r.address && <p className="text-[10px] text-gray-400">📍 {r.address}</p>}
+          <div className="flex gap-3 mt-1">
+            {r.tabelog_url && (
+              <a href={r.tabelog_url} target="_blank" rel="noopener noreferrer"
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                className="text-[10px] text-orange-500 hover:underline inline-block">
+                📝 食べログで見る →
+              </a>
+            )}
+            {r.website && (
+              <a href={r.website} target="_blank" rel="noopener noreferrer"
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                className="text-[10px] text-brand-500 hover:underline inline-block">
+                🔗 公式サイト →
+              </a>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
