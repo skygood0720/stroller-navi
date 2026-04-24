@@ -945,7 +945,7 @@ function RestaurantTab({ restaurants, regions, selectedRegion, setSelectedRegion
               <a href={r.tabelog_url} target="_blank" rel="noopener noreferrer"
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
                 className="text-[10px] text-orange-500 hover:underline inline-block">
-                📝 食べログで見る →
+                📝 {r.tabelog_url.includes('/rstLst/') ? '食べログで検索 →' : '食べログで見る →'}
               </a>
             )}
             {r.website && (
