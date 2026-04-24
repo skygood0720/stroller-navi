@@ -74,6 +74,7 @@ export default function SpotSubmitForm({ onClose, onSubmitted }: { onClose: () =
 
       const data = await res.json();
       if (data.spot) {
+        alert("✅ スポットの投稿を受け付けました！\n管理者の承認後にアプリに反映されます。");
         onSubmitted();
         onClose();
       } else {

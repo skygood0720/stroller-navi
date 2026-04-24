@@ -43,6 +43,7 @@ export default function HomePage() {
   const [showSpotForm, setShowSpotForm] = useState(false);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [userSpots, setUserSpots] = useState<any[]>([]);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const supabase = createClient();
   const adSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_HEADER || "";
@@ -202,6 +203,11 @@ export default function HomePage() {
               {ageRange.emoji} {babyProfile.name}
             </div>
           )}
+          <button onClick={() => setShowFeedback(true)}
+            className="bg-white/20 rounded-full w-8 h-8 flex items-center justify-center text-sm hover:bg-white/30 transition"
+            title="ご要望・ご意見">
+            💬
+          </button>
           {user ? (
             <button onClick={handleLogout}
               className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
@@ -770,6 +776,110 @@ export default function HomePage() {
 
       {/* Auth Modal */}
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
+
+      {/* Feedback Modal */}
+      {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} userEmail={user?.email} />}
+    </div>
+  );
+}
+
+// ─── Feedback Modal Component ───
+function FeedbackModal({ onClose, userEmail }: { onClose: () => void; userEmail?: string }) {
+  const [category, setCategory] = useState("機能リクエスト");
+  const [text, setText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const categories = ["機能リクエスト", "スポット追加希望", "バグ報告", "レストラン追加希望", "その他"];
+
+  const handleSubmit = async () => {
+    if (!text) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, text, user_email: userEmail || null }),
+      });
+      const data = await res.json();
+      if (data.feedback) {
+        setSubmitted(true);
+      } else {
+        alert("送信に失敗しました。もう一度お試しください。");
+      }
+    } catch {
+      alert("エラーが発生しました");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-end justify-center"
+      onClick={onClose}>
+      <div onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        className="w-full max-w-[480px] max-h-[85vh] bg-white rounded-t-3xl p-5 pb-8 overflow-y-auto shadow-2xl"
+        style={{ animation: "slideUp 0.3s ease-out" }}>
+        <style>{`@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-base font-black flex items-center gap-2">💬 ご要望・ご意見</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-1">✕</button>
+        </div>
+
+        {submitted ? (
+          <div className="text-center py-8">
+            <div className="text-4xl mb-3">🎉</div>
+            <h4 className="text-base font-bold mb-2">ありがとうございます！</h4>
+            <p className="text-sm text-gray-500 mb-4">
+              ご要望を受け付けました。<br />
+              より良いアプリ作りの参考にさせていただきます。
+            </p>
+            <button onClick={onClose}
+              className="px-6 py-2.5 rounded-xl bg-brand-500 text-white text-sm font-bold hover:opacity-90 transition">
+              閉じる
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs font-bold text-gray-700 block mb-1.5">カテゴリ</label>
+              <div className="flex flex-wrap gap-1.5">
+                {categories.map((c) => (
+                  <button key={c} onClick={() => setCategory(c)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition
+                      ${category === c ? "bg-brand-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-gray-700 block mb-1">ご要望・ご意見 *</label>
+              <textarea
+                value={text}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
+                placeholder="「こんな機能がほしい」「ここが使いにくい」「このスポットを追加してほしい」など、なんでもお聞かせください！"
+                rows={4}
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-brand-500 focus:outline-none bg-gray-50 resize-y"
+              />
+            </div>
+
+            <p className="text-[11px] text-gray-400">
+              ※ お返事はできかねますが、すべて目を通しアプリの改善に活用いたします。
+            </p>
+
+            <button onClick={handleSubmit} disabled={!text || submitting}
+              className={`w-full py-3.5 rounded-xl text-white text-sm font-bold transition
+                ${text && !submitting
+                  ? "bg-gradient-to-r from-brand-500 to-brand-700 hover:opacity-90"
+                  : "bg-gray-300 cursor-not-allowed"}`}>
+              {submitting ? "送信中..." : "送信する"}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
