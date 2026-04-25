@@ -702,6 +702,22 @@ export default function HomePage() {
                     🧭 ここへナビ
                   </button>
                 </div>
+
+                {/* Share to X button */}
+                <button
+                  onClick={() => {
+                    const tags = "tags" in selectedItem ? (selectedItem.tags as string[]).slice(0, 3).join(" ") : "";
+                    const text = encodeURIComponent(
+                      `🚼 ${selectedItem.name}\n${selectedItem.desc}\n${tags ? `\n設備: ${tags}` : ""}\n\n#ベビーカーナビ #子連れおでかけ #${selectedItem.name.replace(/\s/g, "")}`
+                    );
+                    const url = encodeURIComponent(`https://stroller-navi.vercel.app/spots/${"type" in selectedItem && selectedItem.type === "spot" ? selectedItem.id : ""}`);
+                    window.open(`https://x.com/intent/post?text=${text}&url=${url}`, "_blank", "width=550,height=420");
+                  }}
+                  className="w-full py-2.5 rounded-xl border border-gray-200 text-xs font-bold
+                    text-gray-500 hover:bg-gray-50 transition flex items-center justify-center gap-1.5 mt-2"
+                >
+                  𝕏 でシェアする
+                </button>
               </>
             )}
 

@@ -7,8 +7,11 @@ export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [pendingSpots, setPendingSpots] = useState<any[]>([]);
   const [feedbackList, setFeedbackList] = useState<any[]>([]);
-  const [tab, setTab] = useState<"spots" | "feedback">("spots");
+  const [tab, setTab] = useState<"spots" | "feedback" | "xpost">("spots");
   const [loading, setLoading] = useState(false);
+  const [xPostText, setXPostText] = useState("");
+  const [xPosting, setXPosting] = useState(false);
+  const [xResult, setXResult] = useState<string | null>(null);
 
   // Simple password check (set ADMIN_PASSWORD in env)
   const ADMIN_PASS = "babynavi2026";
@@ -95,7 +98,12 @@ export default function AdminPage() {
           <button onClick={() => setTab("feedback")}
             className={`flex-1 py-3 text-sm font-bold transition border-b-2
               ${tab === "feedback" ? "border-brand-500 text-brand-700" : "border-transparent text-gray-400"}`}>
-            💬 要望・意見 ({feedbackList.length})
+            💬 要望 ({feedbackList.length})
+          </button>
+          <button onClick={() => setTab("xpost")}
+            className={`flex-1 py-3 text-sm font-bold transition border-b-2
+              ${tab === "xpost" ? "border-brand-500 text-brand-700" : "border-transparent text-gray-400"}`}>
+            𝕏 投稿
           </button>
         </div>
 
@@ -164,6 +172,111 @@ export default function AdminPage() {
                   )}
                 </div>
               ))}
+            </>
+          )}
+
+          {/* X Auto Post */}
+          {tab === "xpost" && (
+            <>
+              <div className="bg-white rounded-2xl p-4 shadow">
+                <h3 className="text-sm font-bold mb-3">𝕏 に投稿する</h3>
+
+                {/* Quick templates */}
+                <div className="mb-3">
+                  <label className="text-xs font-bold text-gray-500 block mb-1.5">テンプレート</label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { label: "🍼 スポット紹介", text: "🚼 ベビーカーで行ける全国のおすすめスポットをご紹介！\n\n授乳室・おむつ替え・エレベーター情報付きで安心♪\n天気に合わせたおすすめ機能も✨\n\n👇アプリを使ってみてね\nhttps://stroller-navi.vercel.app\n\n#ベビーカーナビ #子連れおでかけ #授乳室 #育児" },
+                      { label: "🍽️ レストラン", text: "🍽️ ベビーカーOKなレストランを東京都内で70件以上掲載中！\n\nキッズメニュー・ベビーチェア・個室情報もチェックできます🍼\n\n👇現在地から近い順で探せます\nhttps://stroller-navi.vercel.app\n\n#ベビーカーナビ #子連れランチ #東京ランチ #育児" },
+                      { label: "☀️ 天気連動", text: "☁️ 今日の天気に合わせて、おでかけ先を自動おすすめ！\n\n雨の日→室内スポット🏠\n晴れの日→屋外スポット🌳\n\n赤ちゃんとの外出がもっと楽しくなる✨\n\n👇ベビーカーナビ\nhttps://stroller-navi.vercel.app\n\n#ベビーカーナビ #子連れおでかけ #育児" },
+                      { label: "📍 東京特集", text: "📍 東京のベビーカーおすすめスポット116件掲載中！\n\n新宿・渋谷・池袋・お台場・吉祥寺...エリア別に探せます🗺️\n\n公園・水族館・ショッピングモール・科学館など🍼\n\nhttps://stroller-navi.vercel.app/spots/region/東京\n\n#ベビーカーナビ #東京子連れ #育児" },
+                    ].map((t) => (
+                      <button key={t.label} onClick={() => setXPostText(t.text)}
+                        className="px-2.5 py-1.5 bg-gray-100 hover:bg-brand-50 rounded-lg text-[11px] font-semibold transition">
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <textarea
+                  value={xPostText}
+                  onChange={(e) => setXPostText(e.target.value)}
+                  placeholder="Xに投稿する内容を入力..."
+                  rows={6}
+                  className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-brand-500 focus:outline-none bg-gray-50 resize-y mb-2"
+                />
+                <div className="flex justify-between items-center mb-3">
+                  <span className={`text-[11px] ${xPostText.length > 280 ? "text-red-500 font-bold" : "text-gray-400"}`}>
+                    {xPostText.length}/280文字
+                  </span>
+                  {xResult && (
+                    <span className={`text-[11px] font-bold ${xResult.startsWith("✅") ? "text-green-600" : "text-red-500"}`}>
+                      {xResult}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      // Open X Web Intent (no API needed)
+                      const encoded = encodeURIComponent(xPostText);
+                      window.open(`https://x.com/intent/post?text=${encoded}`, "_blank", "width=550,height=420");
+                    }}
+                    disabled={!xPostText}
+                    className={`flex-1 py-3 rounded-xl text-sm font-bold transition
+                      ${xPostText ? "bg-gray-800 text-white hover:opacity-90" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}>
+                    𝕏 で投稿画面を開く
+                  </button>
+                  <button
+                    onClick={async () => {
+                      if (!xPostText) return;
+                      setXPosting(true);
+                      setXResult(null);
+                      try {
+                        const res = await fetch("/api/x-post", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ text: xPostText }),
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setXResult("✅ 投稿完了！");
+                          setXPostText("");
+                        } else {
+                          setXResult(`❌ ${data.error}`);
+                        }
+                      } catch {
+                        setXResult("❌ エラーが発生しました");
+                      } finally {
+                        setXPosting(false);
+                      }
+                    }}
+                    disabled={!xPostText || xPosting || xPostText.length > 280}
+                    className={`flex-1 py-3 rounded-xl text-sm font-bold transition
+                      ${xPostText && !xPosting && xPostText.length <= 280
+                        ? "bg-blue-500 text-white hover:opacity-90"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}>
+                    {xPosting ? "投稿中..." : "🤖 API で自動投稿"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 rounded-2xl p-4 border border-amber-100">
+                <h4 className="text-xs font-bold text-amber-700 mb-2">💡 X API 設定方法</h4>
+                <p className="text-[11px] text-gray-600 leading-relaxed">
+                  「𝕏 で投稿画面を開く」はAPI不要でそのまま使えます。<br /><br />
+                  「API で自動投稿」を使うには .env.local に以下を設定：<br />
+                  <code className="text-[10px] bg-white px-1.5 py-0.5 rounded mt-1 inline-block">
+                    X_API_KEY=xxx<br />
+                    X_API_SECRET=xxx<br />
+                    X_ACCESS_TOKEN=xxx<br />
+                    X_ACCESS_TOKEN_SECRET=xxx
+                  </code><br /><br />
+                  developer.x.com でアプリ作成後、Pay-Per-Use（最低$5）で利用可能です。
+                </p>
+              </div>
             </>
           )}
 
