@@ -222,9 +222,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* ─── Ad Banner ─── */}
-      <AdBanner adSlot={adSlot} />
-
       {/* ─── Tab Navigation ─── */}
       <nav className="flex bg-white border-b border-gray-100 sticky top-0 z-[8] overflow-x-auto">
         {TABS.map((tab) => (
