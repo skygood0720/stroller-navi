@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ALL_SPOTS } from "@/lib/spots-data";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import SpotPhotosClient from "./SpotPhotosClient";
 
 // Generate static pages for all spots at build time
 export function generateStaticParams() {
@@ -112,6 +113,11 @@ export default function SpotPage({ params }: { params: { id: string } }) {
         </header>
 
         <main className="p-5 space-y-5">
+          {/* Spot Photos */}
+          <section>
+            <SpotPhotosClient spotName={spot.name} lat={spot.lat} lng={spot.lng} />
+          </section>
+
           {/* Description */}
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <h2 className="text-base font-bold mb-2">施設情報</h2>

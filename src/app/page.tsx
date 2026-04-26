@@ -19,6 +19,7 @@ const SpotSubmitForm = dynamic(() => import("@/components/SpotSubmitForm"), { ss
 const WeatherRecommend = dynamic(() => import("@/components/WeatherRecommend"), { ssr: false });
 const TripPlan = dynamic(() => import("@/components/TripPlan"), { ssr: false });
 const NearbySpots = dynamic(() => import("@/components/NearbySpots"), { ssr: false });
+const SpotPhotos = dynamic(() => import("@/components/SpotPhotos"), { ssr: false });
 
 const TABS = [
   { key: "map", label: "マップ", icon: "📍" },
@@ -615,6 +616,9 @@ export default function HomePage() {
             {/* Info tab */}
             {detailTab === "info" && (
               <>
+                {/* Spot photos from Google Places */}
+                <SpotPhotos spotName={selectedItem.name} lat={selectedItem.lat} lng={selectedItem.lng} />
+
                 <p className="text-sm text-gray-700 leading-relaxed mb-3">{selectedItem.desc}</p>
                 {"tags" in selectedItem && (
                   <div className="flex flex-wrap gap-1 mb-3">
