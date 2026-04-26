@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ALL_SPOTS } from "@/lib/spots-data";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 
 // Generate static pages for all spots at build time
 export function generateStaticParams() {
@@ -235,15 +236,7 @@ export default function SpotPage({ params }: { params: { id: string } }) {
         </main>
 
         {/* Footer for SEO */}
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">
-            © 2026 ベビーカーナビ - バリアフリールート検索アプリ
-          </p>
-          <div className="flex justify-center gap-4 mt-2">
-            <Link href="/" className="text-[11px] text-brand-500 hover:underline">トップページ</Link>
-            <Link href="/spots" className="text-[11px] text-brand-500 hover:underline">スポット一覧</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

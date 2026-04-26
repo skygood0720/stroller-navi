@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "一級建築士が教える！ベビーカーでのおでかけ完全ガイド | ベビーカーナビ",
-  description: "ベビーカーでの外出を快適にするための準備・ルート選び・施設選びのポイントを建築の専門家が解説。エレベーター、スロープ、通路幅など建築的視点からのアドバイス。",
+  title: "ベビーカーでのおでかけ完全ガイド | ベビーカーナビ",
+  description: "ベビーカーでの外出を快適にするための準備・ルート選び・施設選びのポイントを詳しく解説。エレベーター、スロープ、通路幅など建築的視点からのアドバイス。",
 };
 
 export default function StrollerGuidePage() {
@@ -16,7 +17,7 @@ export default function StrollerGuidePage() {
             <span className="mx-1.5">›</span>
             <Link href="/articles" className="hover:text-white">お役立ち記事</Link>
           </nav>
-          <h1 className="text-lg font-black leading-tight">一級建築士が教える！<br />ベビーカーでのおでかけ完全ガイド</h1>
+          <h1 className="text-lg font-black leading-tight">ベビーカーでのおでかけ完全ガイド</h1>
           <p className="text-[11px] opacity-80 mt-2">2026年4月15日 / 読了時間：約8分</p>
         </header>
 
@@ -25,7 +26,7 @@ export default function StrollerGuidePage() {
             <section>
               <h2 className="text-base font-bold border-b border-gray-100 pb-2 mb-3">はじめに</h2>
               <p className="text-sm text-gray-700 leading-relaxed">
-                赤ちゃんが生まれて初めてのおでかけ。嬉しさと不安が入り混じる瞬間ですよね。私は一級建築士として数多くの商業施設や公共建築を見てきましたが、「ベビーカーでの動線」を意識して設計されている施設とそうでない施設には、驚くほどの差があります。この記事では、建築の専門知識を活かして、ベビーカーでの外出を快適にするためのポイントを詳しく解説します。
+                赤ちゃんが生まれて初めてのおでかけ。嬉しさと不安が入り混じる瞬間ですよね。実際にベビーカーで多くの施設を訪れてみると、「ベビーカーでの動線」を意識して設計されている施設とそうでない施設には、驚くほどの差があることに気づきます。この記事では、実体験をもとに、ベビーカーでの外出を快適にするためのポイントを詳しく解説します。
               </p>
             </section>
 
@@ -137,15 +138,7 @@ export default function StrollerGuidePage() {
           </div>
         </main>
 
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">© 2026 ベビーカーナビ</p>
-          <div className="flex justify-center gap-4 mt-2 flex-wrap">
-            <Link href="/articles" className="text-[11px] text-brand-500 hover:underline">記事一覧</Link>
-            <Link href="/spots" className="text-[11px] text-brand-500 hover:underline">スポット一覧</Link>
-            <Link href="/privacy" className="text-[11px] text-brand-500 hover:underline">プライバシーポリシー</Link>
-            <Link href="/about" className="text-[11px] text-brand-500 hover:underline">運営者情報</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { BABY_SPOTS, TOILETS, RESTAURANTS, REGIONS, getMonthsOld, getAgeRange, g
 import { Stars, TagPill, EmptyState } from "@/components/ui";
 import AuthModal from "@/components/AuthModal";
 import AdBanner from "@/components/AdBanner";
+import SiteFooter from "@/components/SiteFooter";
 import type { MapItem } from "@/types";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
@@ -739,6 +740,9 @@ export default function HomePage() {
 
       {/* Feedback Modal */}
       {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} userEmail={user?.email} />}
+
+      {/* Site Footer */}
+      <SiteFooter />
     </div>
   );
 }

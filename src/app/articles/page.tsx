@@ -1,16 +1,17 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "お役立ち記事 | ベビーカーナビ",
-  description: "赤ちゃんとのおでかけに役立つ情報を一級建築士の視点でお届け。ベビーカー選び、授乳室の使い方、雨の日のおでかけ先など。",
+  description: "赤ちゃんとのおでかけに役立つ情報を子育て経験者の視点でお届け。ベビーカー選び、授乳室の使い方、雨の日のおでかけ先など。",
 };
 
 const ARTICLES = [
   {
     slug: "stroller-guide",
-    title: "一級建築士が教える！ベビーカーでのおでかけ完全ガイド",
-    description: "ベビーカーでの外出を快適にするための準備・ルート選び・施設選びのポイントを建築の専門家が解説します。",
+    title: "ベビーカーでのおでかけ完全ガイド",
+    description: "ベビーカーでの外出を快適にするための準備・ルート選び・施設選びのポイントを詳しく解説します。",
     date: "2026年4月15日",
     tags: ["ベビーカー", "おでかけ準備", "バリアフリー"],
     emoji: "🚼",
@@ -56,7 +57,7 @@ export default function ArticlesPage() {
         <header className="px-5 pt-5 pb-4 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white">
           <Link href="/" className="text-xs text-white/70 hover:text-white mb-2 inline-block">← ベビーカーナビ トップへ</Link>
           <h1 className="text-xl font-black">お役立ち記事</h1>
-          <p className="text-[11px] opacity-80 mt-1">一級建築士の視点で、赤ちゃんとのおでかけに役立つ情報をお届け</p>
+          <p className="text-[11px] opacity-80 mt-1">子育て経験者の視点で、赤ちゃんとのおでかけに役立つ情報をお届け</p>
         </header>
         <main className="p-5 space-y-3">
           {ARTICLES.map((a) => (
@@ -78,15 +79,7 @@ export default function ArticlesPage() {
             </Link>
           ))}
         </main>
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">© 2026 ベビーカーナビ</p>
-          <div className="flex justify-center gap-4 mt-2">
-            <Link href="/" className="text-[11px] text-brand-500 hover:underline">トップ</Link>
-            <Link href="/spots" className="text-[11px] text-brand-500 hover:underline">スポット一覧</Link>
-            <Link href="/about" className="text-[11px] text-brand-500 hover:underline">運営者情報</Link>
-            <Link href="/privacy" className="text-[11px] text-brand-500 hover:underline">プライバシーポリシー</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

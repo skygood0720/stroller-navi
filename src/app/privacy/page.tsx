@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー | ベビーカーナビ",
@@ -85,14 +86,7 @@ export default function PrivacyPage() {
           </article>
         </main>
 
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">© 2026 ベビーカーナビ</p>
-          <div className="flex justify-center gap-4 mt-2">
-            <Link href="/" className="text-[11px] text-brand-500 hover:underline">トップ</Link>
-            <Link href="/about" className="text-[11px] text-brand-500 hover:underline">運営者情報</Link>
-            <Link href="/spots" className="text-[11px] text-brand-500 hover:underline">スポット一覧</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

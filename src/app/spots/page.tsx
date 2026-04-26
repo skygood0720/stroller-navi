@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 import { ALL_SPOTS } from "@/lib/spots-data";
 
 export const metadata: Metadata = {
@@ -136,9 +137,7 @@ export default function SpotsIndexPage() {
           </section>
         </main>
 
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">© 2026 ベビーカーナビ - バリアフリールート検索アプリ</p>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

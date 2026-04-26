@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "運営者情報・ベビーカーナビについて | ベビーカーナビ",
-  description: "ベビーカーナビの運営者情報、サービスの目的、機能紹介。一級建築士が監修するバリアフリー情報アプリです。",
+  description: "ベビーカーナビの運営者情報、サービスの目的、機能紹介。バリアフリー情報をまとめたおでかけ支援アプリです。",
 };
 
 export default function AboutPage() {
@@ -21,7 +22,7 @@ export default function AboutPage() {
           <article className="bg-white rounded-2xl p-6 shadow-sm">
             <h2 className="text-base font-bold mb-3">🚼 ベビーカーナビとは</h2>
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
-              ベビーカーナビは、赤ちゃん連れのパパ・ママが安心しておでかけできるよう、全国のバリアフリー情報をまとめたWebアプリケーションです。一級建築士の視点から、建物の動線設計やバリアフリー設備の質にも着目し、本当に「ベビーカーで行きやすい」スポットを厳選して掲載しています。
+              ベビーカーナビは、赤ちゃん連れのパパ・ママが安心しておでかけできるよう、全国のバリアフリー情報をまとめたWebアプリケーションです。実際に子連れで訪れた経験をもとに、建物の動線やバリアフリー設備の使いやすさに着目し、本当に「ベビーカーで行きやすい」スポットを厳選して掲載しています。
             </p>
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
               2026年現在、全国298以上のスポットと70以上のベビーカーOKレストランを掲載。授乳室・おむつ替え台・エレベーター・スロープ・ベビーカー貸出などの設備情報に加え、赤ちゃんの月齢に合わせたおすすめポイントも提供しています。
@@ -73,7 +74,7 @@ export default function AboutPage() {
           <article className="bg-white rounded-2xl p-6 shadow-sm">
             <h2 className="text-base font-bold mb-3">👤 運営者について</h2>
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
-              ベビーカーナビは、一級建築士の資格を持つ運営者が開発・運営しています。建築の専門知識を活かし、施設のバリアフリー設計の質や動線の使いやすさにも着目した情報を提供しています。
+              ベビーカーナビは、子育て中の運営者が実体験をもとに開発・運営しています。施設のバリアフリー設計の質や動線の使いやすさに着目した情報を提供しています。
             </p>
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
               「赤ちゃんとのおでかけをもっと楽しく、もっと安心に」をモットーに、実際の利用者の声を反映しながらサービスを日々改善しています。
@@ -99,15 +100,7 @@ export default function AboutPage() {
           </div>
         </main>
 
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">© 2026 ベビーカーナビ</p>
-          <div className="flex justify-center gap-4 mt-2">
-            <Link href="/" className="text-[11px] text-brand-500 hover:underline">トップ</Link>
-            <Link href="/privacy" className="text-[11px] text-brand-500 hover:underline">プライバシーポリシー</Link>
-            <Link href="/spots" className="text-[11px] text-brand-500 hover:underline">スポット一覧</Link>
-            <Link href="/articles" className="text-[11px] text-brand-500 hover:underline">お役立ち記事</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

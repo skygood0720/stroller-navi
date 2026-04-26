@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 import { notFound } from "next/navigation";
 import { ALL_SPOTS } from "@/lib/spots-data";
 
@@ -183,13 +184,7 @@ export default function RegionPage({ params }: { params: { region: string } }) {
           </section>
         </main>
 
-        <footer className="px-5 py-6 text-center border-t border-gray-100">
-          <p className="text-[11px] text-gray-400">© 2026 ベビーカーナビ - バリアフリールート検索アプリ</p>
-          <div className="flex justify-center gap-4 mt-2 flex-wrap">
-            <Link href="/" className="text-[11px] text-brand-500 hover:underline">トップ</Link>
-            <Link href="/spots" className="text-[11px] text-brand-500 hover:underline">全スポット</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );
