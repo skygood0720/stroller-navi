@@ -130,7 +130,7 @@ export default function HomePage() {
     desc: s.desc,
     age_min: 0,
     age_max: 36,
-    age_tips: {},
+    age_tips: {} as Record<string, string>,
     region: undefined,
     is_user_submitted: true,
     _dbId: s.id,
@@ -575,8 +575,8 @@ export default function HomePage() {
             <div className="flex justify-between items-start mb-3">
               <div className="flex items-center gap-2.5">
                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl
-                  ${selectedItem.type === "spot" ? "bg-orange-50" : "bg-purple-50"}`}>
-                  {selectedItem.type === "spot" ? "🍼" : "🚻"}
+                  ${selectedItem.type === "spot" ? "bg-orange-50" : selectedItem.type === "restaurant" ? "bg-amber-50" : "bg-purple-50"}`}>
+                  {selectedItem.type === "spot" ? "🍼" : selectedItem.type === "restaurant" ? "🍽️" : "🚻"}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -584,7 +584,11 @@ export default function HomePage() {
                     {selectedItem.type === "spot" && <FavButton spotId={selectedItem.id} size="lg" />}
                   </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    {getAvgRating(selectedItem.id) ? (
+                    {selectedItem.type === "restaurant" && "cuisine" in selectedItem ? (
+                      <span className="text-[10px] bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded font-bold">
+                        {(selectedItem as any).cuisine}
+                      </span>
+                    ) : getAvgRating(selectedItem.id) ? (
                       <>
                         <Stars rating={Math.round(Number(getAvgRating(selectedItem.id)))} size={13} />
                         <span className="text-xs font-bold text-amber-500">{getAvgRating(selectedItem.id)}</span>
@@ -600,7 +604,7 @@ export default function HomePage() {
                 className="text-gray-400 hover:text-gray-600 transition p-1">✕</button>
             </div>
 
-            {/* Sub-tabs */}
+            {/* Sub-tabs (spot only) */}
             {selectedItem.type === "spot" && (
               <div className="flex gap-1 mb-4">
                 {(["info", "reviews"] as const).map((t) => (
@@ -633,8 +637,8 @@ export default function HomePage() {
                   </div>
                 )}
 
-                {/* Basic info (address, hours, website) */}
-                {"address" in selectedItem && (selectedItem.address || selectedItem.hours || selectedItem.website) && (
+                {/* Basic info (address, hours, website, price, tabelog) */}
+                {(("address" in selectedItem && selectedItem.address) || ("hours" in selectedItem && selectedItem.hours) || ("website" in selectedItem && selectedItem.website) || ("price_range" in selectedItem) || ("tabelog_url" in selectedItem)) && (
                   <div className="bg-gray-50 rounded-xl p-3 mb-4 space-y-1.5">
                     {selectedItem.address && (
                       <div className="flex gap-2 text-[11px]">
@@ -648,6 +652,12 @@ export default function HomePage() {
                         <span className="text-gray-700">{selectedItem.hours}</span>
                       </div>
                     )}
+                    {"price_range" in selectedItem && selectedItem.price_range && (
+                      <div className="flex gap-2 text-[11px]">
+                        <span className="text-gray-400 shrink-0 w-14">💰 予算</span>
+                        <span className="text-gray-700">{(selectedItem as any).price_range}</span>
+                      </div>
+                    )}
                     {selectedItem.website && (
                       <div className="flex gap-2 text-[11px]">
                         <span className="text-gray-400 shrink-0 w-14">🔗 HP</span>
@@ -658,6 +668,19 @@ export default function HomePage() {
                           className="text-brand-500 hover:underline break-all"
                         >
                           公式サイトを開く →
+                        </a>
+                      </div>
+                    )}
+                    {"tabelog_url" in selectedItem && (selectedItem as any).tabelog_url && (
+                      <div className="flex gap-2 text-[11px]">
+                        <span className="text-gray-400 shrink-0 w-14">📝 食べログ</span>
+                        <a
+                          href={(selectedItem as any).tabelog_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-orange-500 hover:underline"
+                        >
+                          {(selectedItem as any).tabelog_url.includes('/rstLst/') ? '食べログで検索 →' : '食べログで見る →'}
                         </a>
                       </div>
                     )}
