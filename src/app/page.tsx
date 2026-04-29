@@ -163,7 +163,7 @@ export default function HomePage() {
   };
 
   const selectedItem: MapItem | null = selectedItemId
-    ? ([...allSpots, ...TOILETS] as MapItem[]).find((i) => i.id === selectedItemId) || null
+    ? ([...allSpots, ...TOILETS, ...RESTAURANTS] as MapItem[]).find((i) => i.id === selectedItemId) || null
     : null;
 
   const handleLogout = async () => {
