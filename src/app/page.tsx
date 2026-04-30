@@ -618,76 +618,75 @@ export default function HomePage() {
             )}
 
             {/* Info tab */}
-            {detailTab === "info" && (
+            {detailTab === "info" && (() => {
+              const item = selectedItem as any;
+              return (
               <>
                 {/* Spot photos from Google Places */}
-                <SpotPhotos spotName={selectedItem.name} lat={selectedItem.lat} lng={selectedItem.lng} />
+                <SpotPhotos spotName={item.name} lat={item.lat} lng={item.lng} />
 
-                <p className="text-sm text-gray-700 leading-relaxed mb-3">{selectedItem.desc}</p>
-                {"tags" in selectedItem && (
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">{item.desc}</p>
+                {item.tags && item.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {selectedItem.tags.map((t) => <TagPill key={t} label={t} />)}
+                    {item.tags.map((t: string) => <TagPill key={t} label={t} />)}
                   </div>
                 )}
-                {"region" in selectedItem && selectedItem.region && (
+                {item.region && (
                   <div className="mb-3">
                     <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-1 rounded font-medium">
-                      📍 {selectedItem.region}
+                      📍 {item.region}
                     </span>
+                    {item.cuisine && (
+                      <span className="text-[10px] text-orange-600 bg-orange-50 px-2 py-1 rounded font-medium ml-1.5">
+                        🍽️ {item.cuisine}
+                      </span>
+                    )}
                   </div>
                 )}
 
                 {/* Basic info (address, hours, website, price, tabelog) */}
-                {(("address" in selectedItem && selectedItem.address) || ("hours" in selectedItem && selectedItem.hours) || ("website" in selectedItem && selectedItem.website) || ("price_range" in selectedItem) || ("tabelog_url" in selectedItem)) && (
+                {(item.address || item.hours || item.website || item.price_range || item.tabelog_url) && (
                   <div className="bg-gray-50 rounded-xl p-3 mb-4 space-y-1.5">
-                    {selectedItem.address && (
+                    {item.address && (
                       <div className="flex gap-2 text-[11px]">
                         <span className="text-gray-400 shrink-0 w-14">📍 住所</span>
-                        <span className="text-gray-700">{selectedItem.address}</span>
+                        <span className="text-gray-700">{item.address}</span>
                       </div>
                     )}
-                    {selectedItem.hours && (
+                    {item.hours && (
                       <div className="flex gap-2 text-[11px]">
                         <span className="text-gray-400 shrink-0 w-14">🕒 営業</span>
-                        <span className="text-gray-700">{selectedItem.hours}</span>
+                        <span className="text-gray-700">{item.hours}</span>
                       </div>
                     )}
-                    {"price_range" in selectedItem && selectedItem.price_range && (
+                    {item.price_range && (
                       <div className="flex gap-2 text-[11px]">
                         <span className="text-gray-400 shrink-0 w-14">💰 予算</span>
-                        <span className="text-gray-700">{(selectedItem as any).price_range}</span>
+                        <span className="text-gray-700">{item.price_range}</span>
                       </div>
                     )}
-                    {selectedItem.website && (
+                    {item.website && (
                       <div className="flex gap-2 text-[11px]">
                         <span className="text-gray-400 shrink-0 w-14">🔗 HP</span>
-                        <a
-                          href={selectedItem.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-brand-500 hover:underline break-all"
-                        >
+                        <a href={item.website} target="_blank" rel="noopener noreferrer"
+                          className="text-brand-500 hover:underline break-all">
                           公式サイトを開く →
                         </a>
                       </div>
                     )}
-                    {"tabelog_url" in selectedItem && (selectedItem as any).tabelog_url && (
+                    {item.tabelog_url && (
                       <div className="flex gap-2 text-[11px]">
                         <span className="text-gray-400 shrink-0 w-14">📝 食べログ</span>
-                        <a
-                          href={(selectedItem as any).tabelog_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-orange-500 hover:underline"
-                        >
-                          {(selectedItem as any).tabelog_url.includes('/rstLst/') ? '食べログで検索 →' : '食べログで見る →'}
+                        <a href={item.tabelog_url} target="_blank" rel="noopener noreferrer"
+                          className="text-orange-500 hover:underline">
+                          {item.tabelog_url.includes('/rstLst/') ? '食べログで検索 →' : '食べログで見る →'}
                         </a>
                       </div>
                     )}
                   </div>
                 )}
 
-                {"age_tips" in selectedItem && babyProfile && ageKey && selectedItem.age_tips?.[ageKey as string] && (
+                {item.age_tips && babyProfile && ageKey && item.age_tips[ageKey] && (
                   <div className="bg-pink-50/60 border border-pink-100/50 rounded-xl p-3.5 mb-4">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <span className="text-base">{ageRange?.emoji}</span>
@@ -695,7 +694,7 @@ export default function HomePage() {
                         {babyProfile.name}ちゃん（{ageRange?.label}）へのおすすめ
                       </span>
                     </div>
-                    <p className="text-sm text-gray-700 leading-relaxed">💡 {(selectedItem.age_tips as Record<string,string>)[ageKey as string]}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed">💡 {item.age_tips[ageKey]}</p>
                   </div>
                 )}
 
