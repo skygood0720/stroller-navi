@@ -9,6 +9,14 @@ export const metadata: Metadata = {
 
 const ARTICLES = [
   {
+    slug: "shinjuku-guide",
+    title: "【2026年】新宿エリア 子連れおでかけ完全ガイド｜授乳室・ランチ・遊び場まとめ",
+    description: "新宿駅周辺の授乳室5選、子連れランチ7選、無料の遊び場、百貨店ベビー設備ランキング、モデルコースを完全網羅。",
+    date: "2026年4月20日",
+    tags: ["新宿", "授乳室", "子連れランチ"],
+    emoji: "🗼",
+  },
+  {
     slug: "stroller-guide",
     title: "ベビーカーでのおでかけ完全ガイド",
     description: "ベビーカーでの外出を快適にするための準備・ルート選び・施設選びのポイントを詳しく解説します。",
