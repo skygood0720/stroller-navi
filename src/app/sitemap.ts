@@ -50,6 +50,12 @@ export default function sitemap() {
       priority: 0.85,
     },
     {
+      url: `${BASE_URL}/articles/shibuya-guide`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
+    {
       url: `${BASE_URL}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
