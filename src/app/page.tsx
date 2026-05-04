@@ -29,6 +29,7 @@ const TABS = [
   { key: "spots", label: "スポット", icon: "🍼" },
   { key: "restaurant", label: "レストラン", icon: "🍽️" },
   { key: "toilet", label: "トイレ", icon: "🚻" },
+  { key: "articles", label: "記事", icon: "📚" },
 ];
 
 export default function HomePage() {
@@ -558,6 +559,120 @@ export default function HomePage() {
                 <span className="text-teal-400 shrink-0">🧭</span>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* ═══ ARTICLES TAB ═══ */}
+        {activeTab === "articles" && (
+          <div className="p-4 space-y-3">
+            <div className="bg-emerald-50/50 rounded-2xl p-3.5 flex items-center gap-2.5">
+              <span className="text-2xl">📚</span>
+              <div>
+                <div className="text-sm font-bold text-emerald-600">お役立ち記事</div>
+                <div className="text-[11px] text-gray-500">子連れおでかけに役立つ情報まとめ</div>
+              </div>
+            </div>
+
+            {/* エリアガイド */}
+            <h3 className="text-xs font-bold text-gray-500 mt-2 px-1">📍 エリア別ガイド</h3>
+            <a href="/articles/shinjuku-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🗼</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】新宿エリア 子連れおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">授乳室5選・子連れランチ7選・無料遊び場・百貨店ランキング・モデルコース</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">新宿</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">授乳室</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">子連れランチ</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/shibuya-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🌿</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】渋谷エリア 子連れおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">無料遊び場5選・穴場の屋上庭園4選・ランチ6選・授乳室MAP・3モデルコース</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">渋谷</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">代官山</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">恵比寿</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            {/* おでかけノウハウ */}
+            <h3 className="text-xs font-bold text-gray-500 mt-4 px-1">💡 おでかけノウハウ</h3>
+            <a href="/articles/stroller-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🚼</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">ベビーカーでのおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">準備チェックリスト・施設の見分け方・電車移動のコツ・おすすめスポットタイプ別ガイド</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">ベビーカー</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">バリアフリー</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/nursing-room-tips"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🍼</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">授乳室の見つけ方と上手な使い方</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed">新米ママのための完全マニュアル。探し方、持ち物、マナーを解説。</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/rainy-day-spots"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">☔</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">雨の日でも大丈夫！室内スポット特集</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed">天候に左右されない室内おでかけスポットを厳選。</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/baby-first-outing"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">👶</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">赤ちゃんの初めてのおでかけガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed">月齢別おすすめスポットと注意点。持ち物チェックリスト付き。</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/restaurant-tips"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🍽️</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">ベビーカーで入れるレストランの見分け方</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed">子連れランチ攻略法。入店前チェックポイント、予約のコツ。</p>
+                </div>
+              </div>
+            </a>
+
+            {/* 全記事リンク */}
+            <a href="/articles"
+              className="block text-center py-3 rounded-xl border border-brand-200 text-brand-500 text-xs font-bold hover:bg-brand-50 transition mt-2">
+              すべての記事を見る →
+            </a>
           </div>
         )}
       </div>
