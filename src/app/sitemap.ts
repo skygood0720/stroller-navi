@@ -56,6 +56,42 @@ export default function sitemap() {
       priority: 0.85,
     },
     {
+      url: `${BASE_URL}/articles/ikebukuro-guide`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/articles/odaiba-guide`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/articles/nursing-room-tips`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/articles/rainy-day-spots`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/articles/baby-first-outing`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/articles/restaurant-tips`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

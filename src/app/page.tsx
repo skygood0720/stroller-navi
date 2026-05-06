@@ -585,7 +585,6 @@ export default function HomePage() {
                   <div className="flex gap-1">
                     <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">新宿</span>
                     <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">授乳室</span>
-                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">子連れランチ</span>
                   </div>
                 </div>
               </div>
@@ -597,11 +596,40 @@ export default function HomePage() {
                 <span className="text-3xl">🌿</span>
                 <div className="flex-1">
                   <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】渋谷エリア 子連れおでかけ完全ガイド</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">無料遊び場5選・穴場の屋上庭園4選・ランチ6選・授乳室MAP・3モデルコース</p>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">無料遊び場5選・屋上庭園4選・ランチ6選・授乳室MAP</p>
                   <div className="flex gap-1">
                     <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">渋谷</span>
                     <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">代官山</span>
-                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">恵比寿</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/ikebukuro-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🐧</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】池袋エリア 子連れおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">サンシャイン水族館・プラネタリウム・無料遊び場・ランチ</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">池袋</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">サンシャイン</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/odaiba-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🎡</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】お台場・豊洲 子連れおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">レゴランド・リトルプラネット・科学館・ランチ・授乳室MAP</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">お台場</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">豊洲</span>
                   </div>
                 </div>
               </div>
