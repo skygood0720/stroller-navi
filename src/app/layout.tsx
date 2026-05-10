@@ -55,7 +55,7 @@ export default function RootLayout({
             "@type": "WebApplication",
             "name": "ベビーカーナビ",
             "alternateName": "Stroller Navi",
-            "description": "ベビーカーで安心して外出するためのバリアフリールート検索アプリ。全国250以上のスポット情報、天気連動おすすめ、おでかけプラン機能。",
+            "description": "ベビーカーで安心して外出するためのバリアフリールート検索アプリ。全国370以上のスポット、90以上のレストラン、100以上の授乳室・トイレ情報を掲載。",
             "url": "https://stroller-navi.vercel.app",
             "applicationCategory": "LifestyleApplication",
             "operatingSystem": "Web",
@@ -63,15 +63,9 @@ export default function RootLayout({
             "inLanguage": "ja",
           }) }}
         />
+        {/* AdSense verification meta tag only - script loaded on content pages only */}
         {adsenseId && (
-          <>
-            <meta name="google-adsense-account" content={adsenseId} />
-            <script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
-              crossOrigin="anonymous"
-            />
-          </>
+          <meta name="google-adsense-account" content={adsenseId} />
         )}
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {

@@ -79,10 +79,21 @@ export default function SpotPage({ params }: { params: { id: string } }) {
     ],
   };
 
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": `${spot.name}にベビーカーで行けますか？`, "acceptedAnswer": { "@type": "Answer", "text": `はい、${spot.name}はベビーカーでのアクセスが可能です。設備: ${spot.tags.join("、")}` } },
+      { "@type": "Question", "name": `${spot.name}に授乳室はありますか？`, "acceptedAnswer": { "@type": "Answer", "text": spot.tags.includes("授乳室") ? `${spot.name}には授乳室が設置されています。` : `最新情報は公式サイトでご確認ください。近隣の授乳室はベビーカーナビで検索できます。` } },
+      { "@type": "Question", "name": `${spot.name}は何歳から楽しめますか？`, "acceptedAnswer": { "@type": "Answer", "text": `${spot.age_min === 0 ? "0歳（ねんね期）" : `${spot.age_min}ヶ月頃`}から楽しめます。` } },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <div className="max-w-[640px] mx-auto">
         {/* Header */}
         <header className="px-5 pt-5 pb-4 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white">
@@ -223,6 +234,38 @@ export default function SpotPage({ params }: { params: { id: string } }) {
               </div>
             </section>
           )}
+
+          {/* FAQ section for SEO */}
+          <section className="bg-white rounded-2xl p-5 shadow-sm">
+            <h2 className="text-base font-bold mb-3">❓ よくある質問</h2>
+            <div className="space-y-3">
+              <div>
+                <h3 className="text-xs font-bold text-gray-800">{spot.name}にベビーカーで行けますか？</h3>
+                <p className="text-[11px] text-gray-600 leading-relaxed mt-1">
+                  はい、{spot.name}はベビーカーでのアクセスが可能です。
+                  {spot.tags.includes("エレベーター") && "エレベーターが設置されています。"}
+                  {spot.tags.includes("スロープ") && "スロープも整備されています。"}
+                  {spot.tags.includes("ベビーカー貸出") && "ベビーカーの貸出サービスもあります。"}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-gray-800">{spot.name}に授乳室はありますか？</h3>
+                <p className="text-[11px] text-gray-600 leading-relaxed mt-1">
+                  {spot.tags.includes("授乳室")
+                    ? `${spot.name}には授乳室が設置されています。おむつ替え台も利用可能です。`
+                    : `${spot.name}の施設内の授乳室情報は最新の公式サイトでご確認ください。近隣の授乳室はベビーカーナビのトイレタブで検索できます。`
+                  }
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-gray-800">{spot.name}は何歳から楽しめますか？</h3>
+                <p className="text-[11px] text-gray-600 leading-relaxed mt-1">
+                  {spot.name}は{spot.age_min === 0 ? "0歳（ねんね期）" : `${spot.age_min}ヶ月頃`}から楽しめます。
+                  {ageTipsEntries.length > 0 && `月齢に合わせた楽しみ方があります。`}
+                </p>
+              </div>
+            </div>
+          </section>
 
           {/* CTA */}
           <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center">

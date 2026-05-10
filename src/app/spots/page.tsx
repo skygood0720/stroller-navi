@@ -44,6 +44,13 @@ export default function SpotsIndexPage() {
         </header>
 
         <main className="p-5 space-y-6">
+          {/* SEO intro */}
+          <section className="bg-white rounded-2xl p-5 shadow-sm">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              ベビーカーナビでは、全国{ALL_SPOTS.length}以上のベビーカー・子連れ向けおすすめスポットを掲載しています。各スポットには授乳室・おむつ替え台・エレベーター・スロープ・ベビーカー貸出などの設備情報に加え、0歳から3歳まで月齢に合わせたおすすめポイントを記載。実際にベビーカーで訪れた経験をもとに、「本当に行きやすい」スポットを厳選しています。
+            </p>
+          </section>
+
           {/* Region navigation */}
           <section className="bg-white rounded-2xl p-4 shadow-sm">
             <h2 className="text-sm font-bold mb-3">📍 地域から探す</h2>

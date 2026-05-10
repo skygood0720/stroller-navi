@@ -7,7 +7,6 @@ import { useAppStore } from "@/lib/store";
 import { BABY_SPOTS, TOILETS, RESTAURANTS, REGIONS, getMonthsOld, getAgeRange, getAgeRangeKey } from "@/lib/constants";
 import { Stars, TagPill, EmptyState } from "@/components/ui";
 import AuthModal from "@/components/AuthModal";
-import AdBanner from "@/components/AdBanner";
 import SiteFooter from "@/components/SiteFooter";
 import type { MapItem } from "@/types";
 
@@ -49,7 +48,6 @@ export default function HomePage() {
   const [showFeedback, setShowFeedback] = useState(false);
 
   const supabase = createClient();
-  const adSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_HEADER || "";
 
   // Fetch user-submitted spots
   const fetchUserSpots = useCallback(async () => {
@@ -908,6 +906,36 @@ export default function HomePage() {
 
       {/* Feedback Modal */}
       {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} userEmail={user?.email} />}
+
+      {/* SEO Content - visible to search engines */}
+      <section className="px-4 py-6 bg-white border-t border-gray-100">
+        <div className="max-w-lg mx-auto space-y-4">
+          <h2 className="text-base font-bold text-gray-800">ベビーカーナビとは</h2>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            ベビーカーナビは、赤ちゃん連れのパパ・ママが安心しておでかけできるよう、全国のバリアフリー情報をまとめた無料のWebアプリケーションです。東京都内を中心に、全国370以上のおすすめスポット、90以上のベビーカーOKレストラン、100以上の授乳室・多目的トイレ情報を掲載しています。
+          </p>
+          <h3 className="text-sm font-bold text-gray-700">主な機能</h3>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            天気に合わせたおすすめスポットの自動提案、現在地から近い順のスポット・レストラン検索、赤ちゃんの月齢に合わせたおすすめポイント表示、おでかけプラン自動生成、Google マップ連携のルート検索、口コミ・写真投稿など、子連れのおでかけを便利にする機能が満載です。
+          </p>
+          <h3 className="text-sm font-bold text-gray-700">掲載エリア</h3>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            東京（186スポット）、神奈川・埼玉・千葉（関東）、北海道、東北、中部、近畿、中国、四国、九州・沖縄の全国をカバー。特に東京都内は授乳室84件、レストラン83件と充実しています。
+          </p>
+          <h3 className="text-sm font-bold text-gray-700">お役立ち記事</h3>
+          <div className="space-y-1.5">
+            <a href="/articles/shinjuku-guide" className="block text-xs text-brand-500 hover:underline">→ 新宿エリア 子連れおでかけ完全ガイド</a>
+            <a href="/articles/shibuya-guide" className="block text-xs text-brand-500 hover:underline">→ 渋谷エリア 子連れおでかけ完全ガイド</a>
+            <a href="/articles/ikebukuro-guide" className="block text-xs text-brand-500 hover:underline">→ 池袋エリア 子連れおでかけ完全ガイド</a>
+            <a href="/articles/odaiba-guide" className="block text-xs text-brand-500 hover:underline">→ お台場・豊洲エリア 子連れおでかけ完全ガイド</a>
+            <a href="/articles/stroller-guide" className="block text-xs text-brand-500 hover:underline">→ ベビーカーでのおでかけ完全ガイド</a>
+            <a href="/articles/nursing-room-tips" className="block text-xs text-brand-500 hover:underline">→ 授乳室の見つけ方と上手な使い方</a>
+            <a href="/articles/rainy-day-spots" className="block text-xs text-brand-500 hover:underline">→ 雨の日でも大丈夫！室内スポット特集</a>
+            <a href="/articles/baby-first-outing" className="block text-xs text-brand-500 hover:underline">→ 赤ちゃんの初めてのおでかけガイド</a>
+            <a href="/articles/restaurant-tips" className="block text-xs text-brand-500 hover:underline">→ ベビーカーで入れるレストランの見分け方</a>
+          </div>
+        </div>
+      </section>
 
       {/* Site Footer */}
       <SiteFooter />
