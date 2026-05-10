@@ -413,6 +413,21 @@ export const ALL_SPOTS: SpotWithCategory[] = [
   { id: 3399, name: "等々力渓谷", lat: 35.6094, lng: 139.6478, type: "spot", region: "東京", category: "outdoor", tags: ["おむつ替え"], desc: "23区唯一の渓谷。一部区間はベビーカーでも川沿いの涼しさを楽しめる", age_min: 7, age_max: 36, age_tips: {"7-12":"自然の中をお散歩","13-24":"小さな滝を見られる","25-36":"都会の秘境体験"}, address: "東京都世田谷区等々力1-22" },
   { id: 3400, name: "迎賓館赤坂離宮", lat: 35.6803, lng: 139.7289, type: "spot", region: "東京", category: "outdoor", tags: ["おむつ替え"], desc: "前庭は舗装路を通ってベビーカーでも見学可能。豪華な建築", age_min: 4, age_max: 36, age_tips: {"4-6":"噴水に興味津々","7-12":"宮殿のような建物","25-36":"建築鑑賞"}, website: "https://www.geihinkan.go.jp/akasaka/", address: "東京都港区元赤坂2-1-1" },
   { id: 3401, name: "BumB 東京スポーツ文化館", lat: 35.6489, lng: 139.8347, type: "spot", region: "東京", category: "indoor", tags: ["授乳室", "おむつ替え", "キッズスペース"], desc: "夢の島にあるスポーツ文化施設。2025年リニューアルのキッズルーム", age_min: 0, age_max: 36, age_tips: {"0-3":"キッズルームで遊べる","7-12":"体を動かせる"}, website: "https://www.ys-tokyobay.co.jp/", address: "東京都江東区夢の島2-1-3" },
+
+  // ── 関東エリア（神奈川・埼玉・千葉）スポット拡充 ──
+  { id: 3402, name: "横浜みなとみらい21", lat: 35.4557, lng: 139.6328, type: "spot", region: "関東", category: "both", tags: ["授乳室", "おむつ替え", "エレベーター", "スロープ"], desc: "ベビーカーで快適な海沿いの散歩コース。赤レンガ倉庫まで舗装されたフラットな歩道", age_min: 0, age_max: 36, age_tips: {"0-3":"海風を感じてお散歩","7-12":"コスモワールドの観覧車","13-24":"赤レンガ倉庫で食べ歩き"}, address: "神奈川県横浜市西区みなとみらい" },
+  { id: 3403, name: "カップヌードルミュージアム 横浜", lat: 35.4566, lng: 139.6369, type: "spot", region: "関東", category: "indoor", tags: ["授乳室", "おむつ替え", "エレベーター"], desc: "オリジナルカップヌードル作り体験。ベビーカーでの館内移動も快適", age_min: 7, age_max: 36, age_tips: {"7-12":"展示を楽しめる","13-24":"チキンラーメンファクトリー","25-36":"マイカップヌードル作り"}, website: "https://www.cupnoodles-museum.jp/", address: "神奈川県横浜市中区新港2-3-4", hours: "10:00-18:00（火曜休館）" },
+  { id: 3404, name: "こどもの国（横浜市）", lat: 35.5533, lng: 139.4753, type: "spot", region: "関東", category: "outdoor", tags: ["授乳室", "おむつ替え", "ベビーカー貸出"], desc: "広大な敷地に動物園・プール・遊具。牧場でソフトクリームも", age_min: 4, age_max: 36, age_tips: {"4-6":"動物ふれあい","7-12":"ローラーすべり台","13-24":"牧場体験","25-36":"サイクリング"}, website: "https://www.kodomonokuni.org/", address: "神奈川県横浜市青葉区奈良町700", hours: "9:30-16:30" },
+  { id: 3405, name: "新江ノ島水族館", lat: 35.3090, lng: 139.4834, type: "spot", region: "関東", category: "indoor", tags: ["授乳室", "おむつ替え", "ベビーカー貸出", "エレベーター"], desc: "クラゲ展示が世界的に有名。相模湾大水槽は赤ちゃんも見入る迫力", age_min: 0, age_max: 36, age_tips: {"0-3":"クラゲの光に癒される","7-12":"イルカショー","13-24":"タッチプールで生き物に触れる"}, website: "https://www.enosui.com/", address: "神奈川県藤沢市片瀬海岸2-19-1", hours: "9:00-17:00" },
+  { id: 3406, name: "鉄道博物館（さいたま市）", lat: 35.9214, lng: 139.6178, type: "spot", region: "関東", category: "indoor", tags: ["授乳室", "おむつ替え", "ベビーカー貸出", "エレベーター"], desc: "日本最大級の鉄道博物館。実物車両36両を展示。ミニ運転列車も", age_min: 4, age_max: 36, age_tips: {"4-6":"本物の電車に大興奮","7-12":"シミュレーター体験","13-24":"ミニ運転列車","25-36":"ジオラマが圧巻"}, website: "https://www.railway-museum.jp/", address: "埼玉県さいたま市大宮区大成町3-47", hours: "10:00-17:00（火曜休館）" },
+  { id: 3407, name: "むさしの村（埼玉県）", lat: 36.0767, lng: 139.5406, type: "spot", region: "関東", category: "outdoor", tags: ["授乳室", "おむつ替え", "ベビーカー貸出"], desc: "0歳から乗れるアトラクション多数。農業体験もできるファミリー遊園地", age_min: 0, age_max: 36, age_tips: {"0-3":"芝生広場でのんびり","7-12":"観覧車","13-24":"いちご狩り","25-36":"農業体験"}, website: "https://www.musashinomura.co.jp/", address: "埼玉県加須市志多見1700-1", hours: "9:30-16:30" },
+  { id: 3408, name: "千葉市動物公園", lat: 35.6369, lng: 140.1208, type: "spot", region: "関東", category: "outdoor", tags: ["授乳室", "おむつ替え", "ベビーカー貸出"], desc: "レッサーパンダ風太くんで有名。広い園内をベビーカーで回れる", age_min: 4, age_max: 36, age_tips: {"4-6":"動物を間近で見られる","7-12":"ふれあい動物の里","13-24":"モノレールで移動も"}, website: "https://www.city.chiba.jp/zoo/", address: "千葉県千葉市若葉区源町280", hours: "9:30-16:30（水曜休園）" },
+  { id: 3409, name: "アンデルセン公園（千葉県）", lat: 35.7767, lng: 140.0458, type: "spot", region: "関東", category: "outdoor", tags: ["授乳室", "おむつ替え", "ベビーカー貸出", "スロープ"], desc: "トリップアドバイザーで日本3位に選ばれた公園。水遊び・動物・大型遊具", age_min: 0, age_max: 36, age_tips: {"0-3":"芝生広場","7-12":"アスレチック","13-24":"水遊び場（夏）","25-36":"アトリエで工作体験"}, website: "https://www.park-funabashi.or.jp/and/", address: "千葉県船橋市金堀町525", hours: "9:30-16:00" },
+  { id: 3410, name: "横浜・八景島シーパラダイス", lat: 35.3383, lng: 139.6444, type: "spot", region: "関東", category: "both", tags: ["授乳室", "おむつ替え", "ベビーカー貸出", "エレベーター"], desc: "水族館4施設＋遊園地。島全体がベビーカーで移動可能", age_min: 0, age_max: 36, age_tips: {"0-3":"ふれあいラグーンで海の生き物","7-12":"イルカショー","13-24":"うみファームで魚釣り","25-36":"ジェットコースター"}, website: "https://www.seaparadise.co.jp/", address: "神奈川県横浜市金沢区八景島", hours: "10:00-20:00" },
+  { id: 3411, name: "よこはまコスモワールド", lat: 35.4535, lng: 139.6382, type: "spot", region: "関東", category: "outdoor", tags: ["おむつ替え"], desc: "入場無料の遊園地。大観覧車「コスモクロック21」が名物", age_min: 7, age_max: 36, age_tips: {"7-12":"メリーゴーランド","13-24":"観覧車で景色を楽しむ"}, website: "https://cosmoworld.jp/", address: "神奈川県横浜市中区新港2-8-1" },
+  { id: 3412, name: "藤子・F・不二雄ミュージアム", lat: 35.6111, lng: 139.5647, type: "spot", region: "関東", category: "indoor", tags: ["授乳室", "おむつ替え", "エレベーター"], desc: "ドラえもんの世界。予約制で混雑なし。ベビーカーは1Fに預けて館内見学", age_min: 7, age_max: 36, age_tips: {"7-12":"ドラえもんに会える","13-24":"原画展示","25-36":"きこりの泉（屋外）"}, website: "https://fujiko-museum.com/", address: "神奈川県川崎市多摩区長尾2-8-1", hours: "10:00-18:00（火曜休館）" },
+  { id: 3413, name: "さいたまスーパーアリーナ けやきひろば", lat: 35.8950, lng: 139.6319, type: "spot", region: "関東", category: "both", tags: ["授乳室", "おむつ替え", "エレベーター", "スロープ"], desc: "さいたま新都心駅直結。けやきひろばはフラットでベビーカー散歩に最適", age_min: 0, age_max: 36, age_tips: {"0-3":"広場でお散歩","7-12":"イベント時は楽しい"}, address: "埼玉県さいたま市中央区新都心8" },
+  { id: 3414, name: "ムーミンバレーパーク", lat: 35.8564, lng: 139.3283, type: "spot", region: "関東", category: "both", tags: ["授乳室", "おむつ替え", "ベビーカー貸出"], desc: "飯能市。ムーミンの世界観。湖畔の散歩がベビーカーでも楽しめる", age_min: 4, age_max: 36, age_tips: {"4-6":"ムーミンに会える","7-12":"えんぴつの家","13-24":"湖畔でボート","25-36":"展示施設KOKEMUS"}, website: "https://metsa-hanno.com/", address: "埼玉県飯能市宮沢327-6", hours: "10:00-17:00" },
   // ============================================
   // 中部（100スポット）
   // ============================================
@@ -578,6 +593,19 @@ export const ALL_TOILETS: BarrierFreeToilet[] = [
   { id: 9281, name: "スタジオアリス 各店 授乳室", lat: 35.6900, lng: 139.7000, type: "toilet", desc: "写真スタジオですが授乳室を一般開放。調乳用お湯・ベビー綿棒あり。都内多数", region: "東京" },
 ];
 
+
+  // ── 関東エリア トイレ・授乳室追加 ──
+  { id: 9282, name: "横浜駅 ジョイナス授乳室", lat: 35.4660, lng: 139.6228, type: "toilet", desc: "ジョイナスB2F。授乳室・おむつ替え台・ミルク用お湯完備", region: "関東" },
+  { id: 9283, name: "ランドマークプラザ 授乳室", lat: 35.4557, lng: 139.6328, type: "toilet", desc: "3F。授乳室・おむつ替え台・ミルク用お湯・体重計", region: "関東" },
+  { id: 9284, name: "ラゾーナ川崎 授乳室", lat: 35.5308, lng: 139.6958, type: "toilet", desc: "各フロアに授乳室完備。ミルク用お湯・電子レンジ", region: "関東" },
+  { id: 9285, name: "大宮駅 ルミネ大宮 授乳室", lat: 35.9050, lng: 139.6240, type: "toilet", desc: "4F。授乳室・おむつ替え台・ベビーチェア", region: "関東" },
+  { id: 9286, name: "ららぽーとTOKYO-BAY 授乳室", lat: 35.6803, lng: 139.9831, type: "toilet", desc: "各フロアに完備。ミルク用お湯・電子レンジ・身長体重計", region: "関東" },
+  { id: 9287, name: "イオンモール幕張新都心 授乳室", lat: 35.6478, lng: 140.0322, type: "toilet", desc: "グランドモール各フロア。授乳室・おむつ替え台・ミルク用お湯", region: "関東" },
+  { id: 9288, name: "コクーンシティ（さいたま） 授乳室", lat: 35.8950, lng: 139.6268, type: "toilet", desc: "コクーン2 3F。授乳室・おむつ替え台・体重計", region: "関東" },
+  { id: 9289, name: "横浜中華街 mamaro", lat: 35.4435, lng: 139.6454, type: "toilet", desc: "中華街内の設置型授乳室。スマホ予約可", region: "関東" },
+  { id: 9290, name: "鉄道博物館 授乳室", lat: 35.9214, lng: 139.6178, type: "toilet", desc: "2F。授乳室・おむつ替え台・ミルク用お湯完備", region: "関東" },
+  { id: 9291, name: "新江ノ島水族館 授乳室", lat: 35.3090, lng: 139.4834, type: "toilet", desc: "2F。授乳室・おむつ替え台。ベビーカー置き場あり", region: "関東" },
+
 // ================================================================
 // ベビーカーで入れるレストラン
 // ================================================================
@@ -697,5 +725,14 @@ export const ALL_RESTAURANTS: BabyFriendlyRestaurant[] = [
   { id: 7248, name: "夢庵 八王子店", lat: 35.6563, lng: 139.3392, type: "restaurant", cuisine: "和食", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "座敷あり"], desc: "和食ファミレス。座敷席があり赤ちゃん連れに◎", region: "東京", address: "東京都八王子市明神町4-7-3", hours: "11:00-22:00", price_range: "1000-2000円" },
   { id: 7249, name: "ブロンコビリー 町田店", lat: 35.5420, lng: 139.4457, type: "restaurant", cuisine: "ステーキ", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "サラダバー"], desc: "炭焼きハンバーグ＆ステーキ。サラダバー付き", region: "東京", address: "東京都町田市森野1-33-8", hours: "11:00-23:00", price_range: "1500-3000円", website: "https://www.bronco.co.jp/" },
   { id: 7250, name: "しゃぶ葉 中野坂上店", lat: 35.6969, lng: 139.6806, type: "restaurant", cuisine: "しゃぶしゃぶ", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "食べ放題"], desc: "しゃぶしゃぶ食べ放題。3歳以下無料", region: "東京", address: "東京都中野区本町2-47-3", hours: "11:00-23:00", price_range: "1500-2500円" },
-];
 
+  // ── 関東エリア レストラン追加 ──
+  { id: 7260, name: "100本のスプーン あざみ野ガーデンズ", lat: 35.5633, lng: 139.5539, type: "restaurant", cuisine: "洋食", tags: ["ベビーカーOK", "キッズメニュー", "離乳食無料", "ベビーチェア"], desc: "離乳食無料提供。横浜エリアの子連れレストラン", region: "関東", address: "神奈川県横浜市青葉区あざみ野南2-11-2", hours: "11:00-22:00", price_range: "1500-2500円" },
+  { id: 7261, name: "ロイヤルホスト 横浜駅前店", lat: 35.4660, lng: 139.6228, type: "restaurant", cuisine: "ファミレス", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "離乳食温め可"], desc: "横浜駅近く。離乳食温めサービスあり", region: "関東", address: "神奈川県横浜市西区南幸2-15-1", hours: "7:00-23:00", price_range: "1000-2500円", website: "https://www.royalhost.jp/" },
+  { id: 7262, name: "サイゼリヤ ららぽーとTOKYO-BAY", lat: 35.6803, lng: 139.9831, type: "restaurant", cuisine: "イタリアン", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "リーズナブル"], desc: "ららぽーと内で子連れに便利。授乳室も近い", region: "関東", address: "千葉県船橋市浜町2-1-1", hours: "10:00-22:00", price_range: "500-1200円" },
+  { id: 7263, name: "くら寿司 大宮店", lat: 35.9030, lng: 139.6330, type: "restaurant", cuisine: "回転寿司", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア"], desc: "ビッくらポンで子どもも大喜び。大宮エリアの子連れ回転寿司", region: "関東", address: "埼玉県さいたま市大宮区桜木町2-1-1", hours: "11:00-23:00", price_range: "1000-2000円" },
+  { id: 7264, name: "木曽路 横浜店", lat: 35.4660, lng: 139.6228, type: "restaurant", cuisine: "しゃぶしゃぶ", tags: ["ベビーカーOK", "キッズメニュー", "個室あり", "座敷あり"], desc: "個室座敷で赤ちゃん連れも安心。お食い初めにも", region: "関東", address: "神奈川県横浜市西区北幸1-1-8", hours: "11:30-22:00", price_range: "3000-6000円", website: "https://www.kisoji.co.jp/" },
+  { id: 7265, name: "ガスト 川崎駅前店", lat: 35.5308, lng: 139.6958, type: "restaurant", cuisine: "ファミレス", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "ドリンクバー"], desc: "川崎駅近く。広い席でベビーカーOK", region: "関東", address: "神奈川県川崎市川崎区駅前本町26-1", hours: "7:00-24:00", price_range: "800-1500円" },
+  { id: 7266, name: "焼肉きんぐ 船橋店", lat: 35.6803, lng: 139.9831, type: "restaurant", cuisine: "焼肉", tags: ["ベビーカーOK", "キッズメニュー", "ベビーチェア", "食べ放題"], desc: "小学生未満無料の食べ放題。ファミリーに大人気", region: "関東", address: "千葉県船橋市本町7-7-1", hours: "17:00-24:00", price_range: "2500-4000円" },
+  { id: 7267, name: "bills 横浜赤レンガ倉庫", lat: 35.4531, lng: 139.6433, type: "restaurant", cuisine: "カフェ", tags: ["ベビーカーOK", "キッズメニュー", "テラス席", "ベビーチェア"], desc: "リコッタパンケーキが有名。海を見ながらブランチ", region: "関東", address: "神奈川県横浜市中区新港1-1-2", hours: "9:00-23:00", price_range: "2000-3500円", website: "https://billsjapan.com/" },
+];

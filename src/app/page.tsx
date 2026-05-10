@@ -633,6 +633,36 @@ export default function HomePage() {
               </div>
             </a>
 
+            <a href="/articles/kichijoji-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🌳</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】吉祥寺エリア 子連れおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">井の頭公園・ジブリ美術館・カフェランチ・授乳室</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">吉祥寺</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">井の頭公園</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href="/articles/ueno-guide"
+              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+              <div className="flex gap-3">
+                <span className="text-3xl">🐼</span>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold leading-snug mb-1">【2026年最新】上野エリア 子連れおでかけ完全ガイド</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">動物園・国立科学博物館・子ども図書館・ランチ・授乳室</p>
+                  <div className="flex gap-1">
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">上野</span>
+                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">パンダ</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
             {/* おでかけノウハウ */}
             <h3 className="text-xs font-bold text-gray-500 mt-4 px-1">💡 おでかけノウハウ</h3>
             <a href="/articles/stroller-guide"
