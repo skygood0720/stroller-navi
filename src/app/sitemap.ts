@@ -1,121 +1,60 @@
+import { MetadataRoute } from "next";
 import { ALL_SPOTS } from "@/lib/spots-data";
 
 const BASE_URL = "https://stroller-navi.vercel.app";
+
 const REGIONS = ["東京", "北海道", "東北", "関東", "中部", "近畿", "中国", "四国", "九州・沖縄"];
 
-export default function sitemap() {
-  const spotPages = ALL_SPOTS.map((spot) => ({
-    url: `${BASE_URL}/spots/${spot.id}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+const ARTICLE_SLUGS = [
+  "shinjuku-guide",
+  "shibuya-guide",
+  "ikebukuro-guide",
+  "odaiba-guide",
+  "kichijoji-guide",
+  "ueno-guide",
+  "osaka-guide",
+  "kyoto-guide",
+  "yokohama-guide",
+  "stroller-guide",
+  "nursing-room-tips",
+  "rainy-day-spots",
+  "restaurant-tips",
+  "baby-first-outing",
+  "train-stroller-manner",
+  "zero-age-outing",
+];
 
-  const regionPages = REGIONS.map((region) => ({
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date().toISOString();
+
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: BASE_URL, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${BASE_URL}/spots`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE_URL}/articles`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
+  ];
+
+  const regionPages: MetadataRoute.Sitemap = REGIONS.map((region) => ({
     url: `${BASE_URL}/spots/region/${encodeURIComponent(region)}`,
-    lastModified: new Date(),
-    changeFrequency: "daily" as const,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
     priority: 0.85,
   }));
 
-  return [
-    {
-      url: BASE_URL,
-      lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: 1,
-    },
-    {
-      url: `${BASE_URL}/spots`,
-      lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/articles`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/articles/stroller-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/articles/shinjuku-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/articles/shibuya-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/articles/ikebukuro-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/articles/odaiba-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/articles/nursing-room-tips`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/articles/rainy-day-spots`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/articles/baby-first-outing`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/articles/restaurant-tips`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/articles/kichijoji-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/articles/ueno-guide`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    ...regionPages,
-    ...spotPages,
-  ];
+  const spotPages: MetadataRoute.Sitemap = ALL_SPOTS.map((spot) => ({
+    url: `${BASE_URL}/spots/${spot.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  const articlePages: MetadataRoute.Sitemap = ARTICLE_SLUGS.map((slug) => ({
+    url: `${BASE_URL}/articles/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+
+  return [...staticPages, ...regionPages, ...spotPages, ...articlePages];
 }

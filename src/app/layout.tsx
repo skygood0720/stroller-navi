@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "ベビーカーナビ | バリアフリールート検索",
-    description: "ベビーカーで安心して外出！全国250以上のスポット情報、天気連動おすすめ、おでかけプラン機能。",
+    description: "ベビーカーで安心して外出！全国470以上のスポット情報、天気連動おすすめ、おでかけプラン機能。",
     url: "https://stroller-navi.vercel.app",
     siteName: "ベビーカーナビ",
     locale: "ja_JP",
