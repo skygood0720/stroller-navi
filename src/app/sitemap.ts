@@ -22,6 +22,9 @@ const ARTICLE_SLUGS = [
   "baby-first-outing",
   "train-stroller-manner",
   "zero-age-outing",
+  "fukuoka-guide",
+  "sapporo-guide",
+  "nagoya-guide",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
