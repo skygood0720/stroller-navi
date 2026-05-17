@@ -19,15 +19,16 @@ const WeatherRecommend = dynamic(() => import("@/components/WeatherRecommend"), 
 const TripPlan = dynamic(() => import("@/components/TripPlan"), { ssr: false });
 const NearbySpots = dynamic(() => import("@/components/NearbySpots"), { ssr: false });
 const SpotPhotos = dynamic(() => import("@/components/SpotPhotos"), { ssr: false });
+const OnboardingScreen = dynamic(() => import("@/components/OnboardingScreen"), { ssr: false });
 
 const TABS = [
   { key: "map", label: "マップ", icon: "📍" },
-  { key: "plan", label: "プラン", icon: "🗓️" },
+  { key: "spots", label: "スポット", icon: "🍼" },
   { key: "route", label: "ルート", icon: "🧭" },
   { key: "baby", label: "赤ちゃん", icon: "👶" },
-  { key: "spots", label: "スポット", icon: "🍼" },
-  { key: "restaurant", label: "レストラン", icon: "🍽️" },
+  { key: "restaurant", label: "グルメ", icon: "🍽️" },
   { key: "toilet", label: "トイレ", icon: "🚻" },
+  { key: "plan", label: "プラン", icon: "🗓️" },
   { key: "articles", label: "記事", icon: "📚" },
 ];
 
@@ -46,8 +47,18 @@ export default function HomePage() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [userSpots, setUserSpots] = useState<any[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [hintDismissed, setHintDismissed] = useState(false);
 
   const supabase = createClient();
+
+  // Check first visit for onboarding
+  useEffect(() => {
+    const onboarded = localStorage.getItem("stroller-navi-onboarded");
+    if (!onboarded) setShowOnboarding(true);
+    const hintDone = localStorage.getItem("stroller-navi-hint-dismissed");
+    if (hintDone) setHintDismissed(true);
+  }, []);
 
   // Fetch user-submitted spots
   const fetchUserSpots = useCallback(async () => {
@@ -186,8 +197,21 @@ export default function HomePage() {
     );
   };
 
+  const handleOnboardingFinish = (gotoTab?: string) => {
+    setShowOnboarding(false);
+    if (gotoTab) setActiveTab(gotoTab);
+  };
+
+  const handleHintDismiss = () => {
+    setHintDismissed(true);
+    localStorage.setItem("stroller-navi-hint-dismissed", "1");
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF7F2] flex flex-col max-w-[480px] mx-auto relative">
+
+      {/* ─── Onboarding (first visit only) ─── */}
+      {showOnboarding && <OnboardingScreen onFinish={handleOnboardingFinish} />}
 
       {/* ─── Header ─── */}
       <header className="px-5 pt-[18px] pb-3 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white relative z-10">
@@ -245,6 +269,34 @@ export default function HomePage() {
         {/* ═══ MAP TAB ═══ */}
         {activeTab === "map" && (
           <div>
+            {/* Baby profile hint banner */}
+            {!babyProfile && !hintDismissed && (
+              <div className="mx-4 mt-3 bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl px-4 py-3 flex items-center gap-3">
+                <span className="text-2xl shrink-0">👶</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-rose-600 leading-snug">
+                    赤ちゃんを登録するとおすすめが届く！
+                  </p>
+                  <p className="text-[10px] text-gray-500 mt-0.5">月齢ぴったりのスポットやアドバイスが表示されます</p>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    onClick={() => setActiveTab("baby")}
+                    className="bg-rose-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-full whitespace-nowrap hover:bg-rose-600 transition"
+                  >
+                    登録する →
+                  </button>
+                  <button
+                    onClick={handleHintDismiss}
+                    className="text-gray-400 hover:text-gray-600 transition p-0.5"
+                    aria-label="閉じる"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )}
+
             <MapView />
 
             {/* Weather-based recommendations */}
