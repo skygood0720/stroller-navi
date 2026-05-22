@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 export const metadata: Metadata = { title: "授乳室の見つけ方と上手な使い方｜新米ママ完全マニュアル | ベビーカーナビ", description: "外出先での授乳室の探し方、便利な持ち物、マナー、設置型授乳室mamaroの使い方、東京都内の穴場授乳室TOP5まで完全解説。" };
 export default function Page() {
   return (
@@ -46,7 +47,8 @@ export default function Page() {
         </S>
         <S t="まとめ"><p className="text-sm text-gray-700 leading-relaxed">授乳室は「事前に場所を把握しておく」ことが最大のポイントです。ベビーカーナビのトイレタブで近くの授乳室を検索できるので、おでかけ前にチェックしておくと安心。授乳ケープも常に持ち歩いておけば、万が一授乳室が見つからなくても対応できます。</p></S>
         <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center"><Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition">アプリで授乳室を探す</Link></section>
-      </article></main>
+      </article>          <ArticleAreaNav currentSlug="nursing-room-tips" />
+        </main>
       <SiteFooter />
     </div></div>
   );

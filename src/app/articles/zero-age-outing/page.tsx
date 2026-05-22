@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "0歳の赤ちゃんはいつから外出できる？初めてのおでかけ完全ガイド | ベビーカーナビ",
@@ -269,6 +270,7 @@ export default function ZeroAgeOutingPage() {
               🗺️ 授乳室があるスポットを探す
             </Link>
           </div>
+                  <ArticleAreaNav currentSlug="zero-age-outing" />
         </main>
         <SiteFooter />
       </div>

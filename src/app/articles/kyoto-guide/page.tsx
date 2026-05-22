@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "【2026年】京都 子連れおでかけ完全ガイド｜授乳室・ベビーカー・観光スポットまとめ | ベビーカーナビ",
@@ -242,6 +243,7 @@ export default function KyotoGuidePage() {
               🗺️ 京都のスポットを地図で見る
             </Link>
           </div>
+                  <ArticleAreaNav currentSlug="kyoto-guide" />
         </main>
         <SiteFooter />
       </div>

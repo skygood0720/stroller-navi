@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "ベビーカーでのおでかけ完全ガイド | ベビーカーナビ",
@@ -136,6 +137,7 @@ export default function StrollerGuidePage() {
               アプリを開く
             </Link>
           </div>
+                  <ArticleAreaNav currentSlug="stroller-guide" />
         </main>
 
         <SiteFooter />

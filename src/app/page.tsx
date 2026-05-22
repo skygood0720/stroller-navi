@@ -715,71 +715,60 @@ export default function HomePage() {
               </div>
             </a>
 
-            {/* おでかけノウハウ */}
-            <h3 className="text-xs font-bold text-gray-500 mt-4 px-1">💡 おでかけノウハウ</h3>
-            <a href="/articles/stroller-guide"
-              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
-              <div className="flex gap-3">
-                <span className="text-3xl">🚼</span>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold leading-snug mb-1">ベビーカーでのおでかけ完全ガイド</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">準備チェックリスト・施設の見分け方・電車移動のコツ・おすすめスポットタイプ別ガイド</p>
-                  <div className="flex gap-1">
-                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">ベビーカー</span>
-                    <span className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">バリアフリー</span>
+            {/* 全国エリアガイド */}
+            <h3 className="text-xs font-bold text-gray-500 mt-4 px-1">🗾 全国エリアガイド</h3>
+            {[
+              { href: "/articles/osaka-guide", emoji: "🏯", title: "大阪 子連れおでかけ完全ガイド", desc: "USJ・海遊館・キッズプラザ・授乳室まとめ", tags: ["大阪", "USJ"] },
+              { href: "/articles/kyoto-guide", emoji: "⛩️", title: "京都 子連れおでかけ完全ガイド", desc: "ベビーカーOK・NG観光地を正直解説", tags: ["京都", "嵐山"] },
+              { href: "/articles/yokohama-guide", emoji: "🎡", title: "横浜 子連れおでかけ完全ガイド", desc: "みなとみらい・八景島・ズーラシア", tags: ["横浜", "みなとみらい"] },
+              { href: "/articles/fukuoka-guide", emoji: "🎏", title: "福岡 子連れおでかけ完全ガイド", desc: "キャナルシティ・マリンワールド・アンパンマンミュージアム", tags: ["福岡", "博多"] },
+              { href: "/articles/sapporo-guide", emoji: "🦅", title: "札幌 子連れおでかけ完全ガイド", desc: "円山動物園・冬の室内スポット情報付き", tags: ["札幌", "北海道"] },
+              { href: "/articles/nagoya-guide", emoji: "🏯", title: "名古屋 子連れおでかけ完全ガイド", desc: "レゴランド・東山動植物園・名古屋港水族館", tags: ["名古屋", "レゴランド"] },
+            ].map((a) => (
+              <a key={a.href} href={a.href}
+                className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+                <div className="flex gap-3">
+                  <span className="text-3xl">{a.emoji}</span>
+                  <div className="flex-1">
+                    <h4 className="text-sm font-bold leading-snug mb-1">{a.title}</h4>
+                    <p className="text-[11px] text-gray-500 leading-relaxed mb-1.5">{a.desc}</p>
+                    <div className="flex gap-1">
+                      {a.tags.map((t) => (
+                        <span key={t} className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">{t}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
+              </a>
+            ))}
 
-            <a href="/articles/nursing-room-tips"
-              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
-              <div className="flex gap-3">
-                <span className="text-3xl">🍼</span>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold leading-snug mb-1">授乳室の見つけ方と上手な使い方</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">新米ママのための完全マニュアル。探し方、持ち物、マナーを解説。</p>
+            {/* おでかけノウハウ */}
+            <h3 className="text-xs font-bold text-gray-500 mt-4 px-1">💡 おでかけノウハウ</h3>
+            {[
+              { href: "/articles/train-stroller-manner", emoji: "🚃", title: "ベビーカーで電車に乗るときのマナー", desc: "たたむ必要はある？優先スペース・エレベーターの使い方" },
+              { href: "/articles/zero-age-outing", emoji: "🌱", title: "0歳の赤ちゃんはいつから外出できる？", desc: "月齢別おでかけ完全ガイド・持ち物チェックリスト" },
+              { href: "/articles/stroller-guide", emoji: "🚼", title: "ベビーカーでのおでかけ完全ガイド", desc: "準備チェックリスト・施設の見分け方・電車移動のコツ" },
+              { href: "/articles/nursing-room-tips", emoji: "🍼", title: "授乳室の見つけ方と上手な使い方", desc: "新米ママのための完全マニュアル。探し方、持ち物、マナー" },
+              { href: "/articles/rainy-day-spots", emoji: "☔", title: "雨の日でも大丈夫！室内スポット特集", desc: "天候に左右されない室内おでかけスポットを厳選" },
+              { href: "/articles/baby-first-outing", emoji: "👶", title: "赤ちゃんの初めてのおでかけガイド", desc: "月齢別おすすめスポットと注意点・持ち物チェックリスト" },
+              { href: "/articles/restaurant-tips", emoji: "🍽️", title: "ベビーカーで入れるレストランの見分け方", desc: "子連れランチ攻略法。入店前チェックポイント、予約のコツ" },
+            ].map((a) => (
+              <a key={a.href} href={a.href}
+                className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
+                <div className="flex gap-3">
+                  <span className="text-3xl">{a.emoji}</span>
+                  <div className="flex-1">
+                    <h4 className="text-sm font-bold leading-snug mb-1">{a.title}</h4>
+                    <p className="text-[11px] text-gray-500 leading-relaxed">{a.desc}</p>
+                  </div>
                 </div>
-              </div>
-            </a>
-
-            <a href="/articles/rainy-day-spots"
-              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
-              <div className="flex gap-3">
-                <span className="text-3xl">☔</span>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold leading-snug mb-1">雨の日でも大丈夫！室内スポット特集</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">天候に左右されない室内おでかけスポットを厳選。</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="/articles/baby-first-outing"
-              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
-              <div className="flex gap-3">
-                <span className="text-3xl">👶</span>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold leading-snug mb-1">赤ちゃんの初めてのおでかけガイド</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">月齢別おすすめスポットと注意点。持ち物チェックリスト付き。</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="/articles/restaurant-tips"
-              className="block bg-white rounded-2xl p-4 shadow hover:shadow-md transition">
-              <div className="flex gap-3">
-                <span className="text-3xl">🍽️</span>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold leading-snug mb-1">ベビーカーで入れるレストランの見分け方</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">子連れランチ攻略法。入店前チェックポイント、予約のコツ。</p>
-                </div>
-              </div>
-            </a>
+              </a>
+            ))}
 
             {/* 全記事リンク */}
             <a href="/articles"
               className="block text-center py-3 rounded-xl border border-brand-200 text-brand-500 text-xs font-bold hover:bg-brand-50 transition mt-2">
-              すべての記事を見る →
+              すべての記事を見る（19本）→
             </a>
           </div>
         )}

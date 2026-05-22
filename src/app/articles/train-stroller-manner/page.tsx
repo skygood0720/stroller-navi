@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "ベビーカーで電車に乗るときのマナーと注意点｜たたむ必要はある？ | ベビーカーナビ",
@@ -230,6 +231,7 @@ export default function TrainStrollerMannerPage() {
               🗺️ 近くのスポットを探す
             </Link>
           </div>
+                  <ArticleAreaNav currentSlug="train-stroller-manner" />
         </main>
         <SiteFooter />
       </div>

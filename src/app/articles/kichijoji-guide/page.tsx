@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 export const metadata: Metadata = { title: "【2026年】吉祥寺エリア 子連れおでかけ完全ガイド｜井の頭公園・ランチ・授乳室 | ベビーカーナビ", description: "吉祥寺の井の頭公園・ジブリ美術館・ハモニカ横丁周辺の子連れスポット、ベビーカーOKランチ、授乳室を完全網羅。" };
 export default function Page() {
   return (
@@ -50,7 +51,8 @@ export default function Page() {
 
         <S t="まとめ"><p className="text-sm text-gray-700 leading-relaxed">吉祥寺は自然とカフェが融合した、赤ちゃんとのお散歩に最適な街です。井の頭公園を拠点にすれば、動物園・ランチ・お散歩がすべて歩ける範囲で完結します。授乳室はコピス吉祥寺5Fが最も充実しているので、困ったらまずコピスへ。</p></S>
         <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center"><Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition">アプリを開く</Link></section>
-      </article></main>
+      </article>          <ArticleAreaNav currentSlug="kichijoji-guide" />
+        </main>
       <SiteFooter />
     </div></div>
   );

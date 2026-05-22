@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 export const metadata: Metadata = { title: "赤ちゃんの初めてのおでかけ｜月齢別おすすめスポットと注意点 | ベビーカーナビ", description: "0〜3ヶ月の初外出から3歳までの月齢別おすすめスポット、持ち物チェックリスト、よくある不安への回答を完全ガイド。" };
 export default function Page() {
   return (
@@ -68,7 +69,8 @@ export default function Page() {
 
         <S t="まとめ"><p className="text-sm text-gray-700 leading-relaxed">赤ちゃんとの初外出は不安がつきものですが、月齢に合ったスポットを選び、持ち物をしっかり準備すれば、きっと楽しい思い出になります。ベビーカーナビでは赤ちゃんの月齢を登録すると、年齢に合ったおすすめポイントが表示されるので、ぜひ活用してみてください。</p></S>
         <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center"><Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition">月齢に合ったスポットを探す</Link></section>
-      </article></main>
+      </article>          <ArticleAreaNav currentSlug="baby-first-outing" />
+        </main>
       <SiteFooter />
     </div></div>
   );

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "【2026年】福岡 子連れおでかけ完全ガイド｜授乳室・キャナルシティ・マリンワールド | ベビーカーナビ",
@@ -348,6 +349,7 @@ export default function FukuokaGuidePage() {
               🗺️ 福岡の近くのスポットを探す
             </Link>
           </div>
+                  <ArticleAreaNav currentSlug="fukuoka-guide" />
         </main>
         <SiteFooter />
       </div>

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 export const metadata: Metadata = { title: "ベビーカーで入れるレストランの見分け方｜子連れランチ攻略法 | ベビーカーナビ", description: "入店前にチェックすべきポイント、予約のコツ、持ち物リスト、月齢別のメニュー選び、東京都内のおすすめ子連れレストランチェーンまで完全解説。" };
 export default function Page() {
   return (
@@ -60,7 +61,8 @@ export default function Page() {
 
         <S t="まとめ"><p className="text-sm text-gray-700 leading-relaxed">子連れ外食は事前のお店選びが8割です。ベビーカーナビのレストランタブでは、ベビーカーOK・キッズメニューあり・個室ありなどの条件で絞り込めるので、おでかけ前にチェックしてみてください。現在地から近い順にも表示できるので、急なランチにも対応できます。</p></S>
         <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center"><Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition">子連れレストランを探す</Link></section>
-      </article></main>
+      </article>          <ArticleAreaNav currentSlug="restaurant-tips" />
+        </main>
       <SiteFooter />
     </div></div>
   );

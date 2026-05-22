@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "【2026年】お台場・豊洲エリア 子連れおでかけ完全ガイド｜室内遊び場・水族館・ランチまとめ | ベビーカーナビ",
@@ -92,7 +93,8 @@ export default function OdaibaGuidePage() {
             <p className="text-sm font-bold text-brand-700 mb-2">🚼 ベビーカーナビでお台場のスポットを探す</p>
             <Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition mt-2">アプリを開く</Link>
           </section>
-        </article></main>
+        </article>          <ArticleAreaNav currentSlug="odaiba-guide" />
+        </main>
         <SiteFooter />
       </div>
     </div>

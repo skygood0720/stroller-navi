@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "【2026年】渋谷エリア 子連れおでかけ完全ガイド｜授乳室・ランチ・無料遊び場まとめ | ベビーカーナビ",
@@ -368,6 +369,7 @@ export default function ShibuyaGuidePage() {
               </div>
             </section>
           </article>
+                  <ArticleAreaNav currentSlug="shibuya-guide" />
         </main>
 
         <SiteFooter />

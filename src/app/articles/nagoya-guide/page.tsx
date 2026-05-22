@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "【2026年】名古屋 子連れおでかけ完全ガイド｜授乳室・レゴランド・東山動植物園 | ベビーカーナビ",
@@ -348,6 +349,7 @@ export default function NagoyaGuidePage() {
               🗺️ 名古屋の近くのスポットを探す
             </Link>
           </div>
+                  <ArticleAreaNav currentSlug="nagoya-guide" />
         </main>
         <SiteFooter />
       </div>

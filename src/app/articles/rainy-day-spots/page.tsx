@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 export const metadata: Metadata = { title: "雨の日でも大丈夫！赤ちゃんと楽しめる室内スポット特集｜東京 | ベビーカーナビ", description: "雨の日・猛暑日・寒い日でも安心。東京都内のベビーカーで行ける室内おでかけスポットを厳選。ショッピングモール、水族館、科学館、無料の遊び場まで。" };
 export default function Page() {
   return (
@@ -51,7 +52,8 @@ export default function Page() {
 
         <S t="まとめ"><p className="text-sm text-gray-700 leading-relaxed">雨の日こそ「どこに行こう？」のチャンスです。東京は無料の室内施設が充実しているので、お金をかけずに赤ちゃんと楽しい時間を過ごせます。ベビーカーナビの天気連動おすすめ機能を使えば、現在の天気に合わせて自動的に室内スポットをおすすめしてくれるので、ぜひ活用してみてください。</p></S>
         <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center"><Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition">天気連動おすすめを見る</Link></section>
-      </article></main>
+      </article>          <ArticleAreaNav currentSlug="rainy-day-spots" />
+        </main>
       <SiteFooter />
     </div></div>
   );

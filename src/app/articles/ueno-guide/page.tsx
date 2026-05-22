@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 export const metadata: Metadata = { title: "【2026年】上野エリア 子連れおでかけ完全ガイド｜動物園・博物館・ランチまとめ | ベビーカーナビ", description: "上野動物園・国立科学博物館・アメ横周辺の子連れスポット、ベビーカーOKランチ、授乳室を完全網羅。パンダに会えるモデルコースも。" };
 export default function Page() {
   return (
@@ -70,7 +71,8 @@ export default function Page() {
 
         <S t="まとめ"><p className="text-sm text-gray-700 leading-relaxed">上野エリアは「パンダ＋博物館＋公園」という最強の組み合わせが徒歩圏内に揃っています。上野駅の公園口から出れば階段なしでアクセス可能。動物園→ランチ→科学博物館の黄金コースは、0歳から3歳まで幅広い月齢で楽しめます。授乳室は動物園内とアトレ上野が充実しているので、困ったときはこの2か所を覚えておけば安心です。</p></S>
         <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center"><Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white text-sm font-bold hover:opacity-90 transition">アプリを開く</Link></section>
-      </article></main>
+      </article>          <ArticleAreaNav currentSlug="ueno-guide" />
+        </main>
       <SiteFooter />
     </div></div>
   );

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleAreaNav from "@/components/ArticleAreaNav";
 
 export const metadata: Metadata = {
   title: "【2026年】池袋エリア 子連れおでかけ完全ガイド｜サンシャイン・授乳室・ランチまとめ | ベビーカーナビ",
@@ -90,7 +91,8 @@ export default function IkebukuroGuidePage() {
               <Link href="/articles/odaiba-guide" className="block text-xs text-brand-500 hover:underline">→ お台場・豊洲エリア 子連れガイド</Link>
             </div>
           </section>
-        </article></main>
+        </article>          <ArticleAreaNav currentSlug="ikebukuro-guide" />
+        </main>
         <SiteFooter />
       </div>
     </div>
