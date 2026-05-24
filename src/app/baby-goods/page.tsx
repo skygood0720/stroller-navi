@@ -360,6 +360,19 @@ export default function BabyGoodsPage() {
             </div>
           </nav>
 
+          {/* 絵本特集バナー */}
+          <Link
+            href="/baby-goods/ehon"
+            className="flex items-center gap-4 bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 rounded-2xl p-4 hover:border-violet-400 transition"
+          >
+            <span className="text-4xl">📚</span>
+            <div className="flex-1">
+              <p className="text-sm font-black text-violet-800">月齢別おすすめ絵本 50冊</p>
+              <p className="text-[11px] text-violet-600 mt-0.5">0ヶ月〜3歳まで月齢ごとに厳選！読み聞かせで語彙・感性を育てよう</p>
+              <p className="text-[10px] text-violet-400 mt-1">0〜3ヶ月 / 4〜6ヶ月 / 7〜12ヶ月 / 1〜2歳 / 2〜3歳 →</p>
+            </div>
+          </Link>
+
           {/* 各カテゴリ */}
           {CATEGORIES.map((cat) => (
             <section key={cat.id} id={cat.id} className="scroll-mt-4">
