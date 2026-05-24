@@ -2,7 +2,7 @@
 // Amazon アソシエイト設定
 // アソシエイトIDをここだけ変更すれば全ページに反映されます
 // ============================================================
-export const AMAZON_ASSOCIATE_ID = "YOUR-ASSOCIATE-ID-22";
+export const AMAZON_ASSOCIATE_ID = "babynabi-22";
 
 /** ASIN から Amazon商品ページのアフィリエイトURLを生成 */
 export function amazonUrl(asin: string): string {
