@@ -765,6 +765,17 @@ export default function HomePage() {
               </a>
             ))}
 
+            {/* おすすめ商品バナー */}
+            <a href="/baby-goods"
+              className="flex items-center gap-3 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-2xl p-4 hover:border-orange-400 transition mt-2">
+              <span className="text-3xl">🛒</span>
+              <div>
+                <div className="text-xs font-bold text-orange-800">おすすめベビーグッズ一覧</div>
+                <div className="text-[10px] text-orange-600">ベビーカー・抱っこ紐・知育おもちゃをまとめてチェック</div>
+              </div>
+              <span className="ml-auto text-orange-500 text-xs font-bold">→</span>
+            </a>
+
             {/* 全記事リンク */}
             <a href="/articles"
               className="block text-center py-3 rounded-xl border border-brand-200 text-brand-500 text-xs font-bold hover:bg-brand-50 transition mt-2">

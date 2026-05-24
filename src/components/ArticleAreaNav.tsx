@@ -90,6 +90,18 @@ export default function ArticleAreaNav({ currentSlug }: Props) {
         </div>
       </section>
 
+      {/* おすすめ商品バナー */}
+      <Link
+        href="/baby-goods"
+        className="flex items-center gap-3 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-2xl p-4 hover:border-orange-400 transition"
+      >
+        <span className="text-3xl">🛒</span>
+        <div>
+          <p className="text-xs font-bold text-orange-800">おすすめベビーグッズ一覧</p>
+          <p className="text-[10px] text-orange-600">ベビーカー・抱っこ紐・知育おもちゃをまとめてチェック →</p>
+        </div>
+      </Link>
+
       {/* スポット検索CTA */}
       <div className="text-center">
         <Link
