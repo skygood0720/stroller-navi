@@ -51,7 +51,7 @@ export default function PrivacyPage() {
                     <Link href="/contact" className="text-brand-600 hover:underline">
                       お問い合わせページ
                     </Link>
-                    （または info@stroller-navi.com）
+                    （または stroller.navi@gmail.com）
                   </dd>
                 </div>
               </dl>

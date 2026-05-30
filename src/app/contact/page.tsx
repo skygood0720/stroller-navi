@@ -55,10 +55,10 @@ export default function ContactPage() {
             <div className="bg-brand-50 rounded-xl p-4 text-center">
               <p className="text-xs text-gray-500 mb-1">メールアドレス</p>
               <a
-                href="mailto:info@stroller-navi.com"
+                href="mailto:stroller.navi@gmail.com"
                 className="text-base font-bold text-brand-600 hover:text-brand-700 hover:underline"
               >
-                info@stroller-navi.com
+                stroller.navi@gmail.com
               </a>
             </div>
             <p className="text-[11px] text-gray-400 mt-3 text-center">
@@ -110,7 +110,7 @@ export default function ContactPage() {
               </div>
               <div className="flex gap-3">
                 <dt className="font-bold w-20 shrink-0">連絡先</dt>
-                <dd>info@stroller-navi.com</dd>
+                <dd>stroller.navi@gmail.com</dd>
               </div>
               <div className="flex gap-3">
                 <dt className="font-bold w-20 shrink-0">対応言語</dt>
