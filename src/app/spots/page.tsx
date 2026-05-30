@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { ALL_SPOTS } from "@/lib/spots-data";
+import SpotFilterClient from "@/components/SpotFilterClient";
 
 export const metadata: Metadata = {
   title: "全国のベビーカーおすすめスポット一覧 | ベビーカーナビ",
@@ -98,59 +99,8 @@ export default function SpotsIndexPage() {
             </div>
           </Link>
 
-          {REGIONS.map((region) => {
-            const spots = ALL_SPOTS.filter((s) => s.region === region);
-            if (spots.length === 0) return null;
-
-            return (
-              <section key={region}>
-                <h2 className="text-base font-bold mb-3 flex items-center justify-between gap-2">
-                  <span className="flex items-center gap-2">
-                    📍 {region}
-                    <span className="text-xs text-gray-400 font-normal">({spots.length}件)</span>
-                  </span>
-                  <Link
-                    href={`/spots/region/${encodeURIComponent(region)}`}
-                    className="text-[11px] text-brand-500 hover:underline font-normal"
-                  >
-                    もっと見る →
-                  </Link>
-                </h2>
-                <div className="space-y-2">
-                  {spots.slice(0, 5).map((spot) => (
-                    <Link
-                      key={spot.id}
-                      href={`/spots/${spot.id}`}
-                      className="block bg-white rounded-xl p-3.5 shadow-sm hover:shadow-md transition"
-                    >
-                      <div className="flex justify-between items-start mb-1">
-                        <h3 className="text-sm font-bold">{spot.name}</h3>
-                        <span className="text-[10px] text-gray-400 shrink-0 ml-2">
-                          {spot.category === "indoor" ? "🏠 室内" : spot.category === "outdoor" ? "🌳 屋外" : "🏠🌳"}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500 mb-2">{spot.desc}</p>
-                      <div className="flex flex-wrap gap-1">
-                        {spot.tags.map((t) => (
-                          <span key={t} className="text-[9px] bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded font-medium">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </Link>
-                  ))}
-                  {spots.length > 5 && (
-                    <Link
-                      href={`/spots/region/${encodeURIComponent(region)}`}
-                      className="block text-center py-2 text-xs text-brand-500 hover:underline font-bold"
-                    >
-                      {region}の残り{spots.length - 5}件を見る →
-                    </Link>
-                  )}
-                </div>
-              </section>
-            );
-          })}
+          {/* 検索・絞り込み（全スポット対象） */}
+          <SpotFilterClient spots={ALL_SPOTS} />
 
           {/* CTA */}
           <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center">

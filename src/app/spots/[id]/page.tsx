@@ -6,6 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SpotPhotosClient from "./SpotPhotosClient";
 import StrollerScoreCard from "@/components/StrollerScoreCard";
 import ShareButtons from "@/components/ShareButtons";
+import FavoriteButton from "@/components/FavoriteButton";
 
 // Generate static pages for all spots at build time
 export function generateStaticParams() {
@@ -200,8 +201,13 @@ export default function SpotPage({ params }: { params: { id: string } }) {
             </section>
           )}
 
-          {/* Share */}
-          <ShareButtons title={spot.name} url={`/spots/${spot.id}`} />
+          {/* Favorite + Share */}
+          <div className="flex gap-3">
+            <FavoriteButton spotId={spot.id} />
+            <div className="flex-1">
+              <ShareButtons title={spot.name} url={`/spots/${spot.id}`} compact />
+            </div>
+          </div>
 
           {/* Google Maps link */}
           <section className="bg-white rounded-2xl p-5 shadow-sm">
