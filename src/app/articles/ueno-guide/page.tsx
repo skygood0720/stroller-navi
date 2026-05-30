@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 export const metadata: Metadata = { title: "【2026年】上野エリア 子連れおでかけ完全ガイド｜動物園・博物館・ランチまとめ | ベビーカーナビ", description: "上野動物園・国立科学博物館・アメ横周辺の子連れスポット、ベビーカーOKランチ、授乳室を完全網羅。パンダに会えるモデルコースも。" };
 export default function Page() {
   return (
@@ -11,7 +12,8 @@ export default function Page() {
         <h1 className="text-lg font-black leading-tight">【2026年最新】上野エリア<br />子連れおでかけ完全ガイド</h1>
         <p className="text-[11px] opacity-80 mt-2">動物園・博物館・公園を完全攻略 / 読了時間：約8分</p>
       </header>
-      <main className="p-5"><article className="space-y-6">
+      <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
         <S t="はじめに"><p className="text-sm text-gray-700 leading-relaxed">上野エリアは「文化のデパート」。上野動物園、国立科学博物館、東京都美術館、国立西洋美術館、東京国立博物館…日本を代表する文化施設が徒歩圏内に集中しています。しかも上野恩賜公園は広くてフラットで、ベビーカーでの移動がスムーズ。パンダに会って、恐竜の骨格標本を見て、噴水広場でのんびり。赤ちゃんの知的好奇心を育てる最高のエリアです。</p></S>
 
         <S t="1. おすすめスポット">

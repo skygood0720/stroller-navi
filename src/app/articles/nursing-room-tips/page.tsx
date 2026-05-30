@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 export const metadata: Metadata = { title: "授乳室の見つけ方と上手な使い方｜新米ママ完全マニュアル | ベビーカーナビ", description: "外出先での授乳室の探し方、便利な持ち物、マナー、設置型授乳室mamaroの使い方、東京都内の穴場授乳室TOP5まで完全解説。" };
 export default function Page() {
   return (
@@ -11,7 +12,8 @@ export default function Page() {
         <h1 className="text-lg font-black leading-tight">授乳室の見つけ方と上手な使い方<br />新米ママ完全マニュアル</h1>
         <p className="text-[11px] opacity-80 mt-2">読了時間：約7分</p>
       </header>
-      <main className="p-5"><article className="space-y-6">
+      <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
         <S t="はじめに"><p className="text-sm text-gray-700 leading-relaxed">初めての外出で最も不安なのが「外で授乳できるか」ではないでしょうか。実は東京都内には「赤ちゃん・ふらっと」認定の授乳スペースが1,600か所以上あります。この記事では、授乳室を素早く見つける方法、持っておくと安心なグッズ、知っておきたいマナーを詳しく解説します。</p></S>
         <S t="1. 授乳室を見つける5つの方法">
           <div className="space-y-4">

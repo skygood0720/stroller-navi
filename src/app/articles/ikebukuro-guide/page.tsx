@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "【2026年】池袋エリア 子連れおでかけ完全ガイド｜サンシャイン・授乳室・ランチまとめ | ベビーカーナビ",
@@ -20,7 +21,8 @@ export default function IkebukuroGuidePage() {
           <h1 className="text-lg font-black leading-tight">【2026年最新】池袋エリア<br />子連れおでかけ完全ガイド</h1>
           <p className="text-[11px] opacity-80 mt-2">サンシャインシティ完全攻略 / 読了時間：約8分</p>
         </header>
-        <main className="p-5"><article className="space-y-6">
+        <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <h2 className="text-base font-bold border-b border-gray-100 pb-2 mb-3">はじめに</h2>
             <p className="text-sm text-gray-700 leading-relaxed">池袋は新宿・渋谷と並ぶ東京の三大副都心ですが、実は子連れにとって最も過ごしやすいエリアかもしれません。その理由は、サンシャインシティという巨大複合施設に水族館・プラネタリウム・ナンジャタウン・レストランが集約されており、天候に関係なく1日中楽しめるから。さらに無料の子育て支援施設「パパママ☆すぽっと」や、芝生が美しい南池袋公園もあり、バリエーション豊富です。この記事では、池袋駅を拠点にしたベビーカーでの回り方を完全ガイドします。</p>

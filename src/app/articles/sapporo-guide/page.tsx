@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "【2026年】札幌 子連れおでかけ完全ガイド｜授乳室・円山動物園・冬のおでかけ | ベビーカーナビ",
@@ -184,6 +185,7 @@ export default function SapporoGuidePage() {
         </header>
 
         <main className="p-5 space-y-6">
+          <ArticleAuthor date="2026年5月" readTime="約7分" />
           {/* イントロ */}
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <p className="text-sm text-gray-700 leading-relaxed">

@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "【2026年】京都 子連れおでかけ完全ガイド｜授乳室・ベビーカー・観光スポットまとめ | ベビーカーナビ",
@@ -74,6 +75,7 @@ export default function KyotoGuidePage() {
         </header>
 
         <main className="p-5 space-y-6">
+          <ArticleAuthor date="2026年5月" readTime="約7分" />
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <p className="text-sm text-gray-700 leading-relaxed">
               古都・京都は石畳や坂道が多く、ベビーカーでの観光には事前準備が必要です。

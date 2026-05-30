@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "【2026年】大阪 子連れおでかけ完全ガイド｜授乳室・ベビーカー・ランチまとめ | ベビーカーナビ",
@@ -79,6 +80,7 @@ export default function OsakaGuidePage() {
         </header>
 
         <main className="p-5 space-y-6">
+          <ArticleAuthor date="2026年5月" readTime="約7分" />
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <p className="text-sm text-gray-700 leading-relaxed">
               大阪は子連れに優しい施設が充実した、関西随一のファミリーおでかけ都市です。

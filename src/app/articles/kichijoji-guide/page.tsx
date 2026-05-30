@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 export const metadata: Metadata = { title: "【2026年】吉祥寺エリア 子連れおでかけ完全ガイド｜井の頭公園・ランチ・授乳室 | ベビーカーナビ", description: "吉祥寺の井の頭公園・ジブリ美術館・ハモニカ横丁周辺の子連れスポット、ベビーカーOKランチ、授乳室を完全網羅。" };
 export default function Page() {
   return (
@@ -11,7 +12,8 @@ export default function Page() {
         <h1 className="text-lg font-black leading-tight">【2026年最新】吉祥寺エリア<br />子連れおでかけ完全ガイド</h1>
         <p className="text-[11px] opacity-80 mt-2">井の頭公園・カフェ・授乳室 / 読了時間：約7分</p>
       </header>
-      <main className="p-5"><article className="space-y-6">
+      <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
         <S t="はじめに"><p className="text-sm text-gray-700 leading-relaxed">吉祥寺は「住みたい街ランキング」の常連であると同時に、実は赤ちゃん連れにとっても居心地のいい街です。井の頭恩賜公園の広大な緑、駅直結の商業施設、おしゃれなカフェ、そして少し足を伸ばせばジブリ美術館。自然と都市が程よく融合した吉祥寺ならではの子連れコースをご紹介します。</p></S>
 
         <S t="1. 公園・自然スポット">

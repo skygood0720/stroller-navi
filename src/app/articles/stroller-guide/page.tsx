@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "ベビーカーでのおでかけ完全ガイド | ベビーカーナビ",
@@ -23,6 +24,7 @@ export default function StrollerGuidePage() {
         </header>
 
         <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" />
           <article className="bg-white rounded-2xl p-6 shadow-sm space-y-6">
             <section>
               <h2 className="text-base font-bold border-b border-gray-100 pb-2 mb-3">はじめに</h2>

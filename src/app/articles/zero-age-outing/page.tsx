@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "0歳の赤ちゃんはいつから外出できる？初めてのおでかけ完全ガイド | ベビーカーナビ",
@@ -74,6 +75,7 @@ export default function ZeroAgeOutingPage() {
         </header>
 
         <main className="p-5 space-y-6">
+          <ArticleAuthor date="2026年5月" readTime="約7分" />
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <p className="text-sm text-gray-700 leading-relaxed">
               「赤ちゃんとの初めての外出、いつからOK？」「何を準備すればいい？」

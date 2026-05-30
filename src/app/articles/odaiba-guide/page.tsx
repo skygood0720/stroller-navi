@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "【2026年】お台場・豊洲エリア 子連れおでかけ完全ガイド｜室内遊び場・水族館・ランチまとめ | ベビーカーナビ",
@@ -20,7 +21,8 @@ export default function OdaibaGuidePage() {
           <h1 className="text-lg font-black leading-tight">【2026年最新】お台場・豊洲エリア<br />子連れおでかけ完全ガイド</h1>
           <p className="text-[11px] opacity-80 mt-2">室内遊び場が充実！雨の日にも最適 / 読了時間：約8分</p>
         </header>
-        <main className="p-5"><article className="space-y-6">
+        <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
           <section className="bg-white rounded-2xl p-5 shadow-sm">
             <h2 className="text-base font-bold border-b border-gray-100 pb-2 mb-3">はじめに</h2>
             <p className="text-sm text-gray-700 leading-relaxed">お台場・豊洲・有明エリアは、赤ちゃん連れにとって「最強のおでかけエリア」です。理由は3つ。まず、大型商業施設が多く全館バリアフリーで授乳室も完備。次に、室内遊び場が豊富で天候に左右されない。そして、レインボーブリッジを望む海辺の景観がリフレッシュに最適。ゆりかもめはベビーカーでの乗降がスムーズで、各駅にエレベーターがあります。この記事では、お台場・豊洲・有明を網羅した子連れガイドをお届けします。</p>

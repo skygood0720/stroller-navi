@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 export const metadata: Metadata = { title: "ベビーカーで入れるレストランの見分け方｜子連れランチ攻略法 | ベビーカーナビ", description: "入店前にチェックすべきポイント、予約のコツ、持ち物リスト、月齢別のメニュー選び、東京都内のおすすめ子連れレストランチェーンまで完全解説。" };
 export default function Page() {
   return (
@@ -11,7 +12,8 @@ export default function Page() {
         <h1 className="text-lg font-black leading-tight">ベビーカーで入れるレストランの見分け方<br />子連れランチ攻略法</h1>
         <p className="text-[11px] opacity-80 mt-2">読了時間：約7分</p>
       </header>
-      <main className="p-5"><article className="space-y-6">
+      <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
         <S t="はじめに"><p className="text-sm text-gray-700 leading-relaxed">赤ちゃんと一緒の外食は「入れるかな…」「迷惑にならないかな…」と不安になりがち。でも、ポイントを押さえてお店を選べば、パパもママもリラックスして食事を楽しめます。この記事では、ベビーカーで入れるレストランの見分け方と、子連れ外食を成功させるテクニックを詳しく解説します。</p></S>
 
         <S t="1. 入店前にチェックすべき5つのポイント">

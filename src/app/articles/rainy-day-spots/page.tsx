@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 export const metadata: Metadata = { title: "雨の日でも大丈夫！赤ちゃんと楽しめる室内スポット特集｜東京 | ベビーカーナビ", description: "雨の日・猛暑日・寒い日でも安心。東京都内のベビーカーで行ける室内おでかけスポットを厳選。ショッピングモール、水族館、科学館、無料の遊び場まで。" };
 export default function Page() {
   return (
@@ -11,7 +12,8 @@ export default function Page() {
         <h1 className="text-lg font-black leading-tight">雨の日でも大丈夫！<br />赤ちゃんと楽しめる室内スポット特集</h1>
         <p className="text-[11px] opacity-80 mt-2">東京都内の室内おでかけ先を厳選 / 読了時間：約7分</p>
       </header>
-      <main className="p-5"><article className="space-y-6">
+      <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
         <S t="はじめに"><p className="text-sm text-gray-700 leading-relaxed">梅雨、猛暑、真冬…赤ちゃんとの外出が難しい天候の日でも、「家の中だけでは赤ちゃんもパパママもストレスが溜まる！」という方は多いはず。東京都内には、天候に関係なく快適に過ごせる室内スポットが実はたくさんあります。しかも無料の施設も多い！この記事では、ベビーカーで行きやすい室内スポットを目的別に厳選しました。ベビーカーナビの天気連動おすすめ機能も活用してみてください。</p></S>
 
         <S t="1. 無料で遊べる室内施設">

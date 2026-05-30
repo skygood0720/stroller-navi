@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
+import ArticleAuthor from "@/components/ArticleAuthor";
 export const metadata: Metadata = { title: "赤ちゃんの初めてのおでかけ｜月齢別おすすめスポットと注意点 | ベビーカーナビ", description: "0〜3ヶ月の初外出から3歳までの月齢別おすすめスポット、持ち物チェックリスト、よくある不安への回答を完全ガイド。" };
 export default function Page() {
   return (
@@ -11,7 +12,8 @@ export default function Page() {
         <h1 className="text-lg font-black leading-tight">赤ちゃんの初めてのおでかけ<br />月齢別ガイド</h1>
         <p className="text-[11px] opacity-80 mt-2">0ヶ月〜3歳まで完全対応 / 読了時間：約8分</p>
       </header>
-      <main className="p-5"><article className="space-y-6">
+      <main className="p-5">
+          <ArticleAuthor date="2026年5月" readTime="約7分" /><article className="space-y-6">
         <S t="はじめに"><p className="text-sm text-gray-700 leading-relaxed">赤ちゃんが生まれてからの初外出は、嬉しさと不安が入り混じる特別な瞬間です。「いつから外出していいの？」「何を持っていけばいいの？」「どこなら安心？」この記事では、月齢ごとのおすすめスポットと注意点、持ち物チェックリストを完全ガイドします。</p></S>
 
         <S t="1. 月齢別おすすめスポット">
