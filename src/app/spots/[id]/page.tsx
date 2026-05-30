@@ -5,6 +5,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SpotPhotosClient from "./SpotPhotosClient";
 import StrollerScoreCard from "@/components/StrollerScoreCard";
+import ShareButtons from "@/components/ShareButtons";
 
 // Generate static pages for all spots at build time
 export function generateStaticParams() {
@@ -198,6 +199,9 @@ export default function SpotPage({ params }: { params: { id: string } }) {
               </div>
             </section>
           )}
+
+          {/* Share */}
+          <ShareButtons title={spot.name} url={`/spots/${spot.id}`} />
 
           {/* Google Maps link */}
           <section className="bg-white rounded-2xl p-5 shadow-sm">

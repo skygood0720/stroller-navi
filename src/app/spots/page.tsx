@@ -86,6 +86,18 @@ export default function SpotsIndexPage() {
             </div>
           </section>
 
+          {/* スポット追加バナー */}
+          <Link
+            href="/spots/submit"
+            className="flex items-center gap-4 bg-gradient-to-r from-brand-50 to-pink-50 border border-brand-200 rounded-2xl p-4 hover:border-brand-400 transition"
+          >
+            <span className="text-4xl">📝</span>
+            <div className="flex-1">
+              <p className="text-sm font-black text-brand-800">スポットを追加・口コミを投稿する</p>
+              <p className="text-[11px] text-brand-600 mt-0.5">「このスポット行ってよかった！」「授乳室がきれいだった」などの情報をシェアしよう</p>
+            </div>
+          </Link>
+
           {REGIONS.map((region) => {
             const spots = ALL_SPOTS.filter((s) => s.region === region);
             if (spots.length === 0) return null;
