@@ -25,6 +25,10 @@ const ARTICLE_SLUGS = [
   "fukuoka-guide",
   "sapporo-guide",
   "nagoya-guide",
+  "shinjuku-station-guide",
+  "shibuya-station-guide",
+  "ikebukuro-station-guide",
+  "tokyo-station-guide",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -33,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
     { url: `${BASE_URL}/spots`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE_URL}/spots/ranking`, lastModified: now, changeFrequency: "weekly", priority: 0.88 },
     { url: `${BASE_URL}/articles`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/baby-goods`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE_URL}/baby-goods/ehon`, lastModified: now, changeFrequency: "monthly", priority: 0.72 },

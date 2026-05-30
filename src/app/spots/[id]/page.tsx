@@ -4,6 +4,7 @@ import { ALL_SPOTS } from "@/lib/spots-data";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SpotPhotosClient from "./SpotPhotosClient";
+import StrollerScoreCard from "@/components/StrollerScoreCard";
 
 // Generate static pages for all spots at build time
 export function generateStaticParams() {
@@ -165,6 +166,9 @@ export default function SpotPage({ params }: { params: { id: string } }) {
               </div>
             )}
           </section>
+
+          {/* Stroller Score */}
+          <StrollerScoreCard tags={spot.tags} />
 
           {/* Tags */}
           <section className="bg-white rounded-2xl p-5 shadow-sm">

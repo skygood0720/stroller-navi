@@ -51,6 +51,19 @@ export default function SpotsIndexPage() {
             </p>
           </section>
 
+          {/* Ranking banner */}
+          <Link
+            href="/spots/ranking"
+            className="flex items-center gap-4 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 hover:border-emerald-400 transition"
+          >
+            <span className="text-4xl">🏆</span>
+            <div className="flex-1">
+              <p className="text-sm font-black text-emerald-800">ベビーカーフレンドリースコア ランキング</p>
+              <p className="text-[11px] text-emerald-600 mt-0.5">エレベーター・授乳室・スロープを総合採点した独自ランキング</p>
+              <p className="text-[10px] text-emerald-400 mt-1">全{ALL_SPOTS.length}スポットを自動採点 → ランキングを見る</p>
+            </div>
+          </Link>
+
           {/* Region navigation */}
           <section className="bg-white rounded-2xl p-4 shadow-sm">
             <h2 className="text-sm font-bold mb-3">📍 地域から探す</h2>
