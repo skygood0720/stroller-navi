@@ -19,7 +19,7 @@ const REGION_DESCRIPTIONS: Record<string, string> = {
 };
 
 export function generateStaticParams() {
-  return REGIONS.map((region) => ({ region: encodeURIComponent(region) }));
+  return REGIONS.map((region) => ({ region }));
 }
 
 export function generateMetadata({ params }: { params: { region: string } }): Metadata {
