@@ -5,13 +5,14 @@ import { ALL_SPOTS } from "@/lib/spots-data";
 import SpotFilterClient from "@/components/SpotFilterClient";
 
 export const metadata: Metadata = {
-  title: "全国のベビーカーおすすめスポット一覧 | ベビーカーナビ",
-  description: "全国470以上のベビーカー・子連れ向けおすすめスポットを地域別に紹介。授乳室・おむつ替え・エレベーター・ベビーカー貸出の情報付き。",
-  keywords: ["ベビーカー", "おすすめスポット", "子連れ", "授乳室", "全国", "おでかけ"],
+  title: "全国のベビーカーおすすめスポット一覧 | 授乳室・エレベーター情報付き | ベビーカーナビ",
+  description: "全国530以上のベビーカー・子連れ向けスポットを地域別に掲載。授乳室・おむつ替え台・エレベーター・ベビーカー貸出の有無がわかる。東京・大阪・北海道など9地域対応。",
+  keywords: ["ベビーカー おすすめスポット", "子連れ おでかけ", "授乳室 スポット", "エレベーター 観光地", "ベビーカー 公園", "おむつ替え", "バリアフリー スポット"],
   openGraph: {
-    title: "全国のベビーカーおすすめスポット一覧 | ベビーカーナビ",
-    description: "全国470以上のベビーカー・子連れ向けおすすめスポット一覧",
+    title: "全国のベビーカーおすすめスポット530件以上 | ベビーカーナビ",
+    description: "全国530以上のベビーカー・子連れ向けスポット。授乳室・おむつ替え・エレベーターで検索できます。",
     url: "https://stroller-navi.vercel.app/spots",
+    images: [{ url: "https://stroller-navi.vercel.app/opengraph-image.png", width: 1200, height: 630 }],
   },
 };
 

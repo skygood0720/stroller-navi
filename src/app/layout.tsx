@@ -14,16 +14,25 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "ベビーカーナビ | バリアフリールート検索",
-    description: "ベビーカーで安心して外出！全国470以上のスポット情報、天気連動おすすめ、おでかけプラン機能。",
+    description: "ベビーカーで安心して外出！全国530以上のスポット情報、授乳室・エレベーター・おむつ替え台を完全網羅。子連れおでかけをもっと楽しく。",
     url: "https://stroller-navi.vercel.app",
     siteName: "ベビーカーナビ",
     locale: "ja_JP",
     type: "website",
+    images: [
+      {
+        url: "https://stroller-navi.vercel.app/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ベビーカーナビ - 全国530以上のバリアフリースポット情報",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
-    title: "ベビーカーナビ",
-    description: "ベビーカーで安心して外出！バリアフリールート検索アプリ",
+    card: "summary_large_image",
+    title: "ベビーカーナビ | バリアフリールート検索",
+    description: "ベビーカーで安心して外出！全国530以上のスポット情報、授乳室・エレベーター・おむつ替え台を完全網羅。",
+    images: ["https://stroller-navi.vercel.app/opengraph-image.png"],
   },
   verification: {
     google: "yEGzkafnTcanZP_K9veaL_401hLNLo46zklyQc4qFpM",

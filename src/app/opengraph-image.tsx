@@ -12,37 +12,38 @@ export default function Image() {
         style={{
           width: "1200px",
           height: "630px",
-          background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 40%, #FFA726 100%)",
+          background: "linear-gradient(135deg, #FF8A65 0%, #FF7043 45%, #E64A19 100%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           fontFamily: "sans-serif",
           position: "relative",
+          overflow: "hidden",
         }}
       >
         {/* 背景の装飾円 */}
         <div
           style={{
             position: "absolute",
-            top: "-80px",
-            right: "-80px",
-            width: "400px",
-            height: "400px",
+            top: "-120px",
+            right: "-120px",
+            width: "500px",
+            height: "500px",
             borderRadius: "50%",
-            background: "rgba(255,255,255,0.1)",
+            background: "rgba(255,255,255,0.08)",
             display: "flex",
           }}
         />
         <div
           style={{
             position: "absolute",
-            bottom: "-60px",
-            left: "-60px",
-            width: "300px",
-            height: "300px",
+            bottom: "-80px",
+            left: "-80px",
+            width: "350px",
+            height: "350px",
             borderRadius: "50%",
-            background: "rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.06)",
             display: "flex",
           }}
         />
@@ -54,60 +55,61 @@ export default function Image() {
             flexDirection: "column",
             alignItems: "center",
             gap: "20px",
+            zIndex: 1,
+            padding: "0 60px",
           }}
         >
-          {/* アイコン */}
-          <div style={{ fontSize: "80px", display: "flex" }}>🚼</div>
-
-          {/* タイトル */}
-          <div
-            style={{
-              fontSize: "64px",
-              fontWeight: "900",
-              color: "white",
-              textAlign: "center",
-              lineHeight: 1.2,
-              textShadow: "0 2px 10px rgba(0,0,0,0.2)",
-              display: "flex",
-            }}
-          >
-            ベビーカーナビ
+          {/* ロゴ行 */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div style={{ fontSize: "80px", display: "flex" }}>🚼</div>
+            <div
+              style={{
+                fontSize: "60px",
+                fontWeight: "900",
+                color: "white",
+                display: "flex",
+                letterSpacing: "-1px",
+              }}
+            >
+              ベビーカーナビ
+            </div>
           </div>
 
-          {/* サブタイトル */}
+          {/* キャッチコピー */}
           <div
             style={{
               fontSize: "28px",
-              color: "rgba(255,255,255,0.9)",
+              color: "rgba(255,255,255,0.92)",
               textAlign: "center",
               display: "flex",
+              lineHeight: "1.4",
             }}
           >
-            全国470以上のベビーカー・子連れスポット情報
+            赤ちゃんとのおでかけを、もっと安心・もっと楽しく
           </div>
 
-          {/* タグ群 */}
-          <div
-            style={{
-              display: "flex",
-              gap: "12px",
-              marginTop: "10px",
-            }}
-          >
-            {["授乳室", "おむつ替え", "バリアフリー", "子連れランチ"].map((tag) => (
+          {/* 特徴バッジ */}
+          <div style={{ display: "flex", gap: "14px", marginTop: "8px", flexWrap: "wrap", justifyContent: "center" }}>
+            {[
+              "🏥 授乳室530＋件",
+              "🛗 エレベーター対応",
+              "👶 おむつ替え台",
+              "🗾 全国9地域",
+            ].map((badge) => (
               <div
-                key={tag}
+                key={badge}
                 style={{
-                  background: "rgba(255,255,255,0.25)",
+                  background: "rgba(255,255,255,0.22)",
                   color: "white",
-                  padding: "8px 20px",
+                  padding: "10px 22px",
                   borderRadius: "50px",
-                  fontSize: "20px",
+                  fontSize: "21px",
                   fontWeight: "700",
                   display: "flex",
+                  border: "1.5px solid rgba(255,255,255,0.35)",
                 }}
               >
-                {tag}
+                {badge}
               </div>
             ))}
           </div>
@@ -117,10 +119,11 @@ export default function Image() {
         <div
           style={{
             position: "absolute",
-            bottom: "30px",
-            color: "rgba(255,255,255,0.7)",
+            bottom: "28px",
+            color: "rgba(255,255,255,0.55)",
             fontSize: "18px",
             display: "flex",
+            letterSpacing: "0.5px",
           }}
         >
           stroller-navi.vercel.app

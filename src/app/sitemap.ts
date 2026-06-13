@@ -31,6 +31,10 @@ const ARTICLE_SLUGS = [
   "tokyo-station-guide",
   "summer-indoor-spots",
   "autumn-outing-spots",
+  "free-kids-spots-tokyo",
+  "shopping-mall-stroller",
+  "1year-old-outing",
+  "stroller-shinkansen",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
