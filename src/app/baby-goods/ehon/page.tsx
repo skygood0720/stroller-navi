@@ -34,7 +34,7 @@ interface Book {
 
 const BOOKS_0_3: Book[] = [
   {
-    asin: "4062199777",
+    asin: "4799321102",
     title: "もいもい",
     author: "開 一夫 / 市原 淳",
     publisher: "ブロンズ新社",
@@ -43,7 +43,7 @@ const BOOKS_0_3: Book[] = [
     priceRange: "1,100〜1,320円",
   },
   {
-    asin: "4893209388",
+    asin: "4052031113",
     title: "しましまぐるぐる",
     author: "柏原 晃夫",
     publisher: "学研プラス",
@@ -52,7 +52,7 @@ const BOOKS_0_3: Book[] = [
     priceRange: "880〜990円",
   },
   {
-    asin: "4834004392",
+    asin: "4580813952",
     title: "もこ もこもこ",
     author: "谷川 俊太郎 / 元永 定正",
     publisher: "文研出版",
@@ -61,7 +61,7 @@ const BOOKS_0_3: Book[] = [
     priceRange: "990〜1,100円",
   },
   {
-    asin: "4834009793",
+    asin: "483401598X",
     title: "ごぶごぶ ごぼごぼ",
     author: "駒形 克己",
     publisher: "福音館書店",
@@ -127,7 +127,7 @@ const BOOKS_0_3: Book[] = [
 
 const BOOKS_4_6: Book[] = [
   {
-    asin: "4032060304",
+    asin: "4494001015",
     title: "いないいないばあ",
     author: "松谷 みよ子 / 瀬川 康男",
     publisher: "童心社",
@@ -136,7 +136,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "880〜990円",
   },
   {
-    asin: "4893209140",
+    asin: "4031024401",
     title: "じゃあじゃあびりびり",
     author: "まついのりこ",
     publisher: "偕成社",
@@ -145,7 +145,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "660〜770円",
   },
   {
-    asin: "4893095536",
+    asin: "4893094319",
     title: "だるまさんが",
     author: "かがくいひろし",
     publisher: "ブロンズ新社",
@@ -154,7 +154,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "880〜990円",
   },
   {
-    asin: "4893095560",
+    asin: "4893094475",
     title: "だるまさんの",
     author: "かがくいひろし",
     publisher: "ブロンズ新社",
@@ -163,7 +163,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "880〜990円",
   },
   {
-    asin: "4893095579",
+    asin: "4893094521",
     title: "だるまさんと",
     author: "かがくいひろし",
     publisher: "ブロンズ新社",
@@ -172,7 +172,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "880〜990円",
   },
   {
-    asin: "4032030308",
+    asin: "4834006875",
     title: "おつきさまこんばんは",
     author: "林 明子",
     publisher: "福音館書店",
@@ -181,7 +181,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "880〜990円",
   },
   {
-    asin: "4032240108",
+    asin: "4834008533",
     title: "くだもの",
     author: "平山 和子",
     publisher: "福音館書店",
@@ -190,7 +190,7 @@ const BOOKS_4_6: Book[] = [
     priceRange: "990〜1,100円",
   },
   {
-    asin: "4834005615",
+    asin: "4834002187",
     title: "ねないこだれだ",
     author: "せなけいこ",
     publisher: "福音館書店",
@@ -220,7 +220,7 @@ const BOOKS_4_6: Book[] = [
 
 const BOOKS_7_12: Book[] = [
   {
-    asin: "4834009777",
+    asin: "4834008991",
     title: "きんぎょがにげた",
     author: "五味 太郎",
     publisher: "福音館書店",
@@ -238,7 +238,7 @@ const BOOKS_7_12: Book[] = [
     priceRange: "1,100〜1,430円",
   },
   {
-    asin: "4032080100",
+    asin: "4772100318",
     title: "しろくまちゃんのほっとけーき",
     author: "わかやまけん",
     publisher: "こぐま社",
@@ -322,7 +322,7 @@ const BOOKS_1_2: Book[] = [
     priceRange: "990〜1,100円",
   },
   {
-    asin: "4834000109",
+    asin: "4834000621",
     title: "おおきなかぶ",
     author: "A・トルストイ / 内田 莉莎子",
     publisher: "福音館書店",
@@ -331,7 +331,7 @@ const BOOKS_1_2: Book[] = [
     priceRange: "990〜1,100円",
   },
   {
-    asin: "4834001091",
+    asin: "4834000508",
     title: "てぶくろ",
     author: "ウクライナ民話 / ラチョフ 絵",
     publisher: "福音館書店",
@@ -340,7 +340,7 @@ const BOOKS_1_2: Book[] = [
     priceRange: "990〜1,100円",
   },
   {
-    asin: "4032190100",
+    asin: "4834005259",
     title: "はじめてのおつかい",
     author: "筒井 頼子 / 林 明子",
     publisher: "福音館書店",
@@ -349,7 +349,7 @@ const BOOKS_1_2: Book[] = [
     priceRange: "990〜1,100円",
   },
   {
-    asin: "4032060606",
+    asin: "4032060703",
     title: "からすのパンやさん",
     author: "かこさとし",
     publisher: "偕成社",
@@ -406,7 +406,7 @@ const BOOKS_1_2: Book[] = [
 
 const BOOKS_2_3: Book[] = [
   {
-    asin: "4834000030",
+    asin: "4769020015",
     title: "スイミー",
     author: "レオ・レオーニ",
     publisher: "好学社",
@@ -415,7 +415,7 @@ const BOOKS_2_3: Book[] = [
     priceRange: "1,430〜1,650円",
   },
   {
-    asin: "4572000670",
+    asin: "4572002150",
     title: "かいじゅうたちのいるところ",
     author: "モーリス・センダック",
     publisher: "冨山房",
