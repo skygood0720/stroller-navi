@@ -53,7 +53,13 @@ export interface Review {
   spot_id: number;
   user_id: string;
   user_name: string;
-  rating: number;
+  rating: number; // 5カテゴリの平均（表示用）
+  // カテゴリ別評価（任意：古い口コミはnull）
+  rating_stroller: number | null;    // ベビーカー移動のしやすさ
+  rating_nursing: number | null;     // 授乳室・おむつ替え台
+  rating_cleanliness: number | null; // 清潔さ
+  rating_staff: number | null;       // スタッフの対応
+  rating_kids: number | null;        // 子連れのしやすさ
   text: string;
   baby_age: string | null;
   photo_url: string | null;
