@@ -793,7 +793,7 @@ export default function HomePage() {
             {/* 全記事リンク */}
             <a href="/articles"
               className="block text-center py-3 rounded-xl border border-brand-200 text-brand-500 text-xs font-bold hover:bg-brand-50 transition mt-2">
-              すべての記事を見る（19本）→
+              すべての記事を見る（40本）→
             </a>
           </div>
         )}

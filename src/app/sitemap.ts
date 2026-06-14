@@ -35,6 +35,17 @@ const ARTICLE_SLUGS = [
   "shopping-mall-stroller",
   "1year-old-outing",
   "stroller-shinkansen",
+  // 新規追加
+  "spring-outing-spots",
+  "winter-outing-spots",
+  "sendai-guide",
+  "hiroshima-guide",
+  "okinawa-guide",
+  "2year-old-outing",
+  "stroller-choosing-guide",
+  "water-play-spots",
+  "saitama-guide",
+  "disney-stroller",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
