@@ -21,15 +21,40 @@ const NearbySpots = dynamic(() => import("@/components/NearbySpots"), { ssr: fal
 const SpotPhotos = dynamic(() => import("@/components/SpotPhotos"), { ssr: false });
 const OnboardingScreen = dynamic(() => import("@/components/OnboardingScreen"), { ssr: false });
 
+// ボトムナビ用タブ（5つ）
+const BOTTOM_TABS = [
+  { key: "map",      label: "マップ",   icon: (active: boolean) => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill={active ? "#FF7043" : "none"} stroke={active ? "#FF7043" : "#9CA3AF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+      <circle cx="12" cy="9" r="2.5" fill={active ? "#fff" : "none"} stroke={active ? "#FF7043" : "#9CA3AF"}/>
+    </svg>
+  )},
+  { key: "spots",    label: "スポット", icon: (active: boolean) => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill={active ? "#FF7043" : "none"} stroke={active ? "#FF7043" : "#9CA3AF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </svg>
+  )},
+  { key: "route",    label: "ルート",   icon: (active: boolean) => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke={active ? "#FF7043" : "#9CA3AF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="3,11 22,2 13,21 11,13" fill={active ? "#FF7043" : "none"}/>
+    </svg>
+  )},
+  { key: "articles", label: "記事",     icon: (active: boolean) => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke={active ? "#FF7043" : "#9CA3AF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+    </svg>
+  )},
+  { key: "more",     label: "もっと",   icon: (active: boolean) => (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke={active ? "#FF7043" : "#9CA3AF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="1" fill={active ? "#FF7043" : "#9CA3AF"}/><circle cx="19" cy="12" r="1" fill={active ? "#FF7043" : "#9CA3AF"}/><circle cx="5" cy="12" r="1" fill={active ? "#FF7043" : "#9CA3AF"}/>
+    </svg>
+  )},
+];
+
+// 内部タブキー（コンテンツ制御用）
 const TABS = [
-  { key: "map", label: "マップ", icon: "📍" },
-  { key: "spots", label: "スポット", icon: "🍼" },
-  { key: "route", label: "ルート", icon: "🧭" },
-  { key: "baby", label: "赤ちゃん", icon: "👶" },
-  { key: "restaurant", label: "グルメ", icon: "🍽️" },
-  { key: "toilet", label: "トイレ", icon: "🚻" },
-  { key: "plan", label: "プラン", icon: "🗓️" },
-  { key: "articles", label: "記事", icon: "📚" },
+  { key: "map" }, { key: "spots" }, { key: "route" }, { key: "baby" },
+  { key: "restaurant" }, { key: "toilet" }, { key: "plan" }, { key: "articles" },
 ];
 
 export default function HomePage() {
@@ -50,6 +75,7 @@ export default function HomePage() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [hintDismissed, setHintDismissed] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
 
   const supabase = createClient();
 
@@ -215,57 +241,47 @@ export default function HomePage() {
       {showOnboarding && <OnboardingScreen onFinish={handleOnboardingFinish} />}
 
       {/* ─── Header ─── */}
-      <header className="px-5 pt-[18px] pb-3 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white relative z-10">
+      <header className="sticky top-0 z-[9] px-4 pt-4 pb-3
+        bg-gradient-to-r from-[#FF7043] via-[#FF6D3F] to-[#FF8A65] text-white
+        shadow-[0_2px_16px_rgba(255,112,67,0.35)]">
         <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-lg backdrop-blur">
+          {/* Logo */}
+          <div className="w-9 h-9 rounded-2xl bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-inner shrink-0 text-lg">
             🚼
           </div>
-          <div className="flex-1">
-            <h1 className="text-xl font-black tracking-wide">ベビーカーナビ</h1>
-            <p className="text-[11px] opacity-80 font-medium">バリアフリールート検索</p>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-[17px] font-black tracking-wide leading-none">ベビーカーナビ</h1>
+            <p className="text-[10px] opacity-75 mt-0.5 font-medium">赤ちゃんとのおでかけを、もっと安心に</p>
           </div>
+          {/* Baby chip */}
           {babyProfile && ageRange && (
-            <div className="bg-white/20 rounded-full px-3 py-1 text-[11px] font-semibold">
-              {ageRange.emoji} {babyProfile.name}
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl px-2.5 py-1 flex items-center gap-1 shrink-0">
+              <span className="text-sm leading-none">{ageRange.emoji}</span>
+              <span className="text-[11px] font-bold">{babyProfile.name}</span>
             </div>
           )}
-          <button onClick={() => setShowFeedback(true)}
-            className="bg-white/20 rounded-full w-8 h-8 flex items-center justify-center text-sm hover:bg-white/30 transition"
-            title="ご要望・ご意見">
+          {/* Feedback */}
+          <button onClick={() => setShowFeedback(true)} aria-label="ご意見"
+            className="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 active:scale-95 transition shrink-0 text-sm">
             💬
           </button>
+          {/* Auth */}
           {user ? (
             <button onClick={handleLogout}
-              className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
+              className="bg-white/20 backdrop-blur-sm rounded-xl px-2.5 py-1.5 text-[10px] font-bold hover:bg-white/30 active:scale-95 transition shrink-0">
               ログアウト
             </button>
           ) : (
             <button onClick={() => setAuthOpen(true)}
-              className="bg-white/20 rounded-full px-3 py-1 text-[10px] font-semibold hover:bg-white/30 transition">
+              className="bg-white/95 text-brand-600 rounded-xl px-3 py-1.5 text-[10px] font-black hover:opacity-90 active:scale-95 transition shrink-0 shadow-sm">
               ログイン
             </button>
           )}
         </div>
       </header>
 
-      {/* ─── Tab Navigation ─── */}
-      <nav className="flex bg-white border-b border-gray-100 sticky top-0 z-[8] overflow-x-auto">
-        {TABS.map((tab) => (
-          <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-            className={`min-w-[64px] flex-1 py-2.5 flex flex-col items-center gap-1 text-[10px] font-medium
-              border-b-[3px] transition-colors whitespace-nowrap
-              ${activeTab === tab.key
-                ? "border-brand-500 text-brand-700 font-bold bg-brand-50/50"
-                : "border-transparent text-gray-400"
-              }`}>
-            <span className="text-sm">{tab.icon}</span>
-            {tab.label}
-          </button>
-        ))}
-      </nav>
-
       {/* ─── Content ─── */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto pb-24">
 
         {/* ═══ MAP TAB ═══ */}
         {activeTab === "map" && (
@@ -358,52 +374,49 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Quick stats - clickable buttons */}
-            <div className="flex gap-2 px-4 pt-3 overflow-x-auto">
+            {/* Quick stats - gradient cards */}
+            <div className="grid grid-cols-2 gap-2.5 px-4 pt-3">
               <button
-                onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(false); }}
-                className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
-                  hover:shadow-md active:scale-95 transition"
+                onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(false); setShowMoreMenu(false); }}
+                className="bg-gradient-to-br from-[#FF7043] to-[#E64A19] rounded-2xl p-4 text-white shadow-md shadow-orange-200/60 active:scale-95 transition text-left"
               >
-                <span className="text-xl">🍼</span>
-                <div className="text-left">
-                  <div className="text-lg font-black text-brand-500">{regionFilteredSpots.length}</div>
-                  <div className="text-[9px] text-gray-400 font-medium">スポット →</div>
-                </div>
+                <div className="text-3xl font-black leading-none">{regionFilteredSpots.length}</div>
+                <div className="text-xs font-bold mt-1.5 opacity-90">🍼 おすすめスポット</div>
+                <div className="text-[10px] opacity-60 mt-0.5">タップして一覧へ →</div>
               </button>
               <button
-                onClick={() => setActiveTab("restaurant")}
-                className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
-                  hover:shadow-md active:scale-95 transition"
+                onClick={() => { setActiveTab("restaurant"); setShowMoreMenu(false); }}
+                className="bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl p-4 text-white shadow-md shadow-amber-200/60 active:scale-95 transition text-left"
               >
-                <span className="text-xl">🍽️</span>
-                <div className="text-left">
-                  <div className="text-lg font-black text-orange-500">{regionFilteredRestaurants.length}</div>
-                  <div className="text-[9px] text-gray-400 font-medium">レストラン →</div>
-                </div>
+                <div className="text-3xl font-black leading-none">{regionFilteredRestaurants.length}</div>
+                <div className="text-xs font-bold mt-1.5 opacity-90">🍽️ 子連れグルメ</div>
+                <div className="text-[10px] opacity-60 mt-0.5">タップして一覧へ →</div>
               </button>
               <button
-                onClick={() => setActiveTab("toilet")}
-                className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
-                  hover:shadow-md active:scale-95 transition"
+                onClick={() => { setActiveTab("toilet"); setShowMoreMenu(false); }}
+                className="bg-gradient-to-br from-violet-500 to-purple-700 rounded-2xl p-4 text-white shadow-md shadow-purple-200/60 active:scale-95 transition text-left"
               >
-                <span className="text-xl">🚻</span>
-                <div className="text-left">
-                  <div className="text-lg font-black text-toilet-500">{regionFilteredToilets.length}</div>
-                  <div className="text-[9px] text-gray-400 font-medium">トイレ →</div>
-                </div>
+                <div className="text-3xl font-black leading-none">{regionFilteredToilets.length}</div>
+                <div className="text-xs font-bold mt-1.5 opacity-90">🚻 BFトイレ</div>
+                <div className="text-[10px] opacity-60 mt-0.5">タップして一覧へ →</div>
               </button>
-              {user && (
+              {user ? (
                 <button
-                  onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(true); }}
-                  className="flex-shrink-0 min-w-[100px] flex-1 bg-white rounded-xl p-3 shadow flex items-center gap-2
-                    hover:shadow-md active:scale-95 transition"
+                  onClick={() => { setActiveTab("spots"); setShowFavoritesOnly(true); setShowMoreMenu(false); }}
+                  className="bg-gradient-to-br from-rose-400 to-pink-600 rounded-2xl p-4 text-white shadow-md shadow-rose-200/60 active:scale-95 transition text-left"
                 >
-                  <span className="text-xl">❤️</span>
-                  <div className="text-left">
-                    <div className="text-lg font-black text-red-400">{favoriteSpotIds.size}</div>
-                    <div className="text-[9px] text-gray-400 font-medium">お気に入り →</div>
-                  </div>
+                  <div className="text-3xl font-black leading-none">{favoriteSpotIds.size}</div>
+                  <div className="text-xs font-bold mt-1.5 opacity-90">❤️ お気に入り</div>
+                  <div className="text-[10px] opacity-60 mt-0.5">タップして一覧へ →</div>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setAuthOpen(true)}
+                  className="bg-gradient-to-br from-teal-400 to-emerald-600 rounded-2xl p-4 text-white shadow-md shadow-teal-200/60 active:scale-95 transition text-left"
+                >
+                  <div className="text-3xl font-black leading-none">👤</div>
+                  <div className="text-xs font-bold mt-1.5 opacity-90">ログインする</div>
+                  <div className="text-[10px] opacity-60 mt-0.5">お気に入り保存に →</div>
                 </button>
               )}
             </div>
@@ -1089,6 +1102,73 @@ export default function HomePage() {
 
       {/* Site Footer */}
       <SiteFooter />
+
+      {/* ─── "もっと" overlay drawer ─── */}
+      {showMoreMenu && (
+        <div className="fixed inset-0 z-[50] flex items-end justify-center"
+          onClick={() => setShowMoreMenu(false)}>
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+          <div onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-[480px] bg-white rounded-t-3xl p-5 pb-8 shadow-2xl animate-slide-up">
+            <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-5" />
+            <h4 className="text-xs font-bold text-gray-400 mb-3 px-1">その他のメニュー</h4>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { key: "restaurant", emoji: "🍽️", label: "グルメ",        bg: "from-amber-400 to-orange-500" },
+                { key: "toilet",     emoji: "🚻", label: "トイレ",        bg: "from-violet-500 to-purple-700" },
+                { key: "plan",       emoji: "📅", label: "プラン作成",    bg: "from-teal-400 to-emerald-600" },
+                { key: "baby",       emoji: "👶", label: "赤ちゃん登録", bg: "from-rose-400 to-pink-600" },
+                { key: "_fav",       emoji: "❤️", label: "お気に入り",   bg: "from-red-400 to-rose-600" },
+                { key: "_feedback",  emoji: "💬", label: "ご意見",        bg: "from-sky-400 to-blue-600" },
+              ].map((item) => (
+                <button key={item.key}
+                  onClick={() => {
+                    setShowMoreMenu(false);
+                    if (item.key === "_fav") { setActiveTab("spots"); setShowFavoritesOnly(true); }
+                    else if (item.key === "_feedback") setShowFeedback(true);
+                    else setActiveTab(item.key);
+                  }}
+                  className={`bg-gradient-to-br ${item.bg} text-white rounded-2xl py-4 flex flex-col items-center gap-1.5 active:scale-95 transition shadow-sm`}
+                >
+                  <span className="text-2xl leading-none">{item.emoji}</span>
+                  <span className="text-[11px] font-bold">{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Bottom Navigation Bar ─── */}
+      <nav className="fixed bottom-0 left-0 right-0 z-[40] max-w-[480px] mx-auto
+        bg-white/95 backdrop-blur-md border-t border-gray-100
+        shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-safe">
+        <div className="flex">
+          {BOTTOM_TABS.map((tab) => {
+            const isActive = tab.key === "more"
+              ? showMoreMenu
+              : activeTab === tab.key && !showMoreMenu;
+            return (
+              <button key={tab.key}
+                onClick={() => {
+                  if (tab.key === "more") {
+                    setShowMoreMenu((prev) => !prev);
+                  } else {
+                    setShowMoreMenu(false);
+                    setActiveTab(tab.key);
+                  }
+                }}
+                className="flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 transition active:scale-90"
+              >
+                {tab.icon(isActive)}
+                <span className={`text-[10px] font-bold transition-colors ${isActive ? "text-[#FF7043]" : "text-gray-400"}`}>
+                  {tab.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }
