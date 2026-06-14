@@ -20,6 +20,7 @@ const TripPlan = dynamic(() => import("@/components/TripPlan"), { ssr: false });
 const NearbySpots = dynamic(() => import("@/components/NearbySpots"), { ssr: false });
 const SpotPhotos = dynamic(() => import("@/components/SpotPhotos"), { ssr: false });
 const OnboardingScreen = dynamic(() => import("@/components/OnboardingScreen"), { ssr: false });
+const MyStatsModal = dynamic(() => import("@/components/MyStatsModal"), { ssr: false });
 
 // ボトムナビ用タブ（5つ）
 const BOTTOM_TABS = [
@@ -62,6 +63,7 @@ export default function HomePage() {
     user, setUser, babyProfile, babyMonths, setBabyProfile,
     activeTab, setActiveTab, selectedItemId, setSelectedItemId,
     reviewsBySpot, favoriteSpotIds, setFavoriteSpotIds, toggleFavorite,
+    visitedSpotIds, setVisitedSpotIds, toggleVisited,
     selectedRegion, setSelectedRegion,
   } = useAppStore();
 
@@ -76,6 +78,7 @@ export default function HomePage() {
   const [hintDismissed, setHintDismissed] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [showMyStats, setShowMyStats] = useState(false);
 
   const supabase = createClient();
 
@@ -120,6 +123,14 @@ export default function HomePage() {
               setFavoriteSpotIds(new Set(data.favorites.map((f: any) => f.spot_id)));
             }
           } catch {}
+          // Fetch visited spots
+          try {
+            const res = await fetch(`/api/visited-spots?user_id=${session.user.id}`);
+            const data = await res.json();
+            if (data.visited) {
+              setVisitedSpotIds(new Set(data.visited.map((v: any) => v.spot_id)));
+            }
+          } catch {}
         } else {
           setUser(null);
         }
@@ -151,6 +162,30 @@ export default function HomePage() {
       toggleFavorite(spotId); // revert on error
     }
   }, [user, favoriteSpotIds, toggleFavorite, setAuthOpen]);
+
+  // Toggle visited spot with API
+  const handleToggleVisited = useCallback(async (spotId: number) => {
+    if (!user) {
+      setAuthOpen(true);
+      return;
+    }
+    const isVisited = visitedSpotIds.has(spotId);
+    toggleVisited(spotId);
+
+    try {
+      if (isVisited) {
+        await fetch(`/api/visited-spots?user_id=${user.id}&spot_id=${spotId}`, { method: "DELETE" });
+      } else {
+        await fetch("/api/visited-spots", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: user.id, spot_id: spotId }),
+        });
+      }
+    } catch {
+      toggleVisited(spotId); // revert on error
+    }
+  }, [user, visitedSpotIds, toggleVisited, setAuthOpen]);
 
   // Computed
   const ageRange = babyMonths !== null ? getAgeRange(babyMonths) : null;
@@ -419,6 +454,20 @@ export default function HomePage() {
                   <div className="text-[10px] opacity-60 mt-0.5">お気に入り保存に →</div>
                 </button>
               )}
+              <button
+                onClick={() => setShowMyStats(true)}
+                className="col-span-2 bg-gradient-to-br from-brand-500 to-indigo-600 rounded-2xl p-4 text-white shadow-md shadow-brand-200/60 active:scale-95 transition text-left flex items-center gap-4"
+              >
+                <div>
+                  <div className="text-3xl font-black leading-none">{visitedSpotIds.size}</div>
+                  <div className="text-xs font-bold mt-1.5 opacity-90">👣 訪問済みスポット</div>
+                  <div className="text-[10px] opacity-60 mt-0.5">マイ記録・バッジを見る →</div>
+                </div>
+                <div className="ml-auto text-right">
+                  <div className="text-2xl">{visitedSpotIds.size === 0 ? "🌱" : visitedSpotIds.size < 5 ? "🍼" : visitedSpotIds.size < 10 ? "⭐" : visitedSpotIds.size < 20 ? "🏅" : visitedSpotIds.size < 30 ? "🏆" : "👑"}</div>
+                  <div className="text-[9px] opacity-70 mt-0.5">現在のバッジ</div>
+                </div>
+              </button>
             </div>
 
             {/* Top rated */}
@@ -521,14 +570,21 @@ export default function HomePage() {
             {filteredSpots.map((spot) => {
               const avg = getAvgRating(spot.id);
               const reviewCount = (reviewsBySpot[spot.id] || []).length;
+              const isVisited = visitedSpotIds.has(spot.id);
               return (
                 <div key={spot.id}
                   onClick={() => { setSelectedItemId(spot.id); setDetailTab("info"); }}
-                  className="bg-white rounded-2xl p-4 shadow cursor-pointer hover:shadow-md transition">
+                  className={`bg-white rounded-2xl p-4 shadow cursor-pointer hover:shadow-md transition
+                    ${isVisited ? "border-l-4 border-emerald-400" : ""}`}>
                   <div className="flex justify-between items-start mb-1.5">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <h4 className="text-sm font-bold truncate">{spot.name}</h4>
+                        {isVisited && (
+                          <span className="text-[9px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded font-medium shrink-0">
+                            ✅ 行った
+                          </span>
+                        )}
                         {spot.region && (
                           <span className="text-[9px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded font-medium shrink-0">
                             {spot.region}
@@ -935,14 +991,29 @@ export default function HomePage() {
                   </div>
                 )}
 
+                {/* 行った！ボタン（スポットのみ） */}
+                {selectedItem.type === "spot" && (() => {
+                  const isVisited = visitedSpotIds.has(selectedItem.id);
+                  return (
+                    <button
+                      onClick={() => handleToggleVisited(selectedItem.id)}
+                      className={`w-full py-3 rounded-xl text-sm font-bold transition mb-2.5 flex items-center justify-center gap-2
+                        ${isVisited
+                          ? "bg-emerald-500 text-white shadow-md shadow-emerald-200/60"
+                          : "border-2 border-dashed border-emerald-400 text-emerald-600 hover:bg-emerald-50"
+                        }`}
+                    >
+                      {isVisited ? "✅ 行ったことがある！" : "👣 ここに行ったことがある"}
+                    </button>
+                  );
+                })()}
+
                 <div className="flex gap-2.5">
                   <button
                     onClick={() => {
-                      // Close modal, switch to map tab, and open Google Maps for the location
                       setActiveTab("map");
                       setSelectedItemId(null);
                       setDetailTab("info");
-                      // Also open Google Maps with just the location
                       const query = encodeURIComponent(selectedItem.name);
                       window.open(
                         `https://www.google.com/maps/search/?api=1&query=${query}`,
@@ -1070,6 +1141,9 @@ export default function HomePage() {
       {/* Feedback Modal */}
       {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} userEmail={user?.email} />}
 
+      {/* My Stats Modal */}
+      {showMyStats && <MyStatsModal onClose={() => setShowMyStats(false)} />}
+
       {/* SEO Content - visible to search engines */}
       <section className="px-4 py-6 bg-white border-t border-gray-100">
         <div className="max-w-lg mx-auto space-y-4">
@@ -1119,6 +1193,7 @@ export default function HomePage() {
                 { key: "plan",       emoji: "📅", label: "プラン作成",    bg: "from-teal-400 to-emerald-600" },
                 { key: "baby",       emoji: "👶", label: "赤ちゃん登録", bg: "from-rose-400 to-pink-600" },
                 { key: "_fav",       emoji: "❤️", label: "お気に入り",   bg: "from-red-400 to-rose-600" },
+                { key: "_stats",     emoji: "📊", label: "マイ記録",      bg: "from-brand-400 to-brand-600" },
                 { key: "_feedback",  emoji: "💬", label: "ご意見",        bg: "from-sky-400 to-blue-600" },
               ].map((item) => (
                 <button key={item.key}
@@ -1126,6 +1201,7 @@ export default function HomePage() {
                     setShowMoreMenu(false);
                     if (item.key === "_fav") { setActiveTab("spots"); setShowFavoritesOnly(true); }
                     else if (item.key === "_feedback") setShowFeedback(true);
+                    else if (item.key === "_stats") setShowMyStats(true);
                     else setActiveTab(item.key);
                   }}
                   className={`bg-gradient-to-br ${item.bg} text-white rounded-2xl py-4 flex flex-col items-center gap-1.5 active:scale-95 transition shadow-sm`}

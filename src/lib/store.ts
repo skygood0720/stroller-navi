@@ -21,6 +21,11 @@ interface AppStore {
   setFavoriteSpotIds: (ids: Set<number>) => void;
   toggleFavorite: (spotId: number) => void;
 
+  // Visited spots
+  visitedSpotIds: Set<number>;
+  setVisitedSpotIds: (ids: Set<number>) => void;
+  toggleVisited: (spotId: number) => void;
+
   // UI
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -59,6 +64,16 @@ export const useAppStore = create<AppStore>((set) => ({
       if (next.has(spotId)) next.delete(spotId);
       else next.add(spotId);
       return { favoriteSpotIds: next };
+    }),
+
+  visitedSpotIds: new Set(),
+  setVisitedSpotIds: (ids) => set({ visitedSpotIds: ids }),
+  toggleVisited: (spotId) =>
+    set((state) => {
+      const next = new Set(state.visitedSpotIds);
+      if (next.has(spotId)) next.delete(spotId);
+      else next.add(spotId);
+      return { visitedSpotIds: next };
     }),
 
   activeTab: "map",
