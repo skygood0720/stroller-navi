@@ -8,6 +8,7 @@ const AREA_GUIDES = [
     { slug: "odaiba-guide", name: "お台場" },
     { slug: "kichijoji-guide", name: "吉祥寺" },
     { slug: "ueno-guide", name: "上野" },
+    { slug: "tokyo-station-guide", name: "東京駅" },
   ]},
   { slug: "kansai", label: "関西", emoji: "⛩️", guides: [
     { slug: "osaka-guide", name: "大阪" },
@@ -15,6 +16,7 @@ const AREA_GUIDES = [
   ]},
   { slug: "kanto", label: "関東", emoji: "🎡", guides: [
     { slug: "yokohama-guide", name: "横浜" },
+    { slug: "saitama-guide", name: "さいたま" },
   ]},
   { slug: "kyushu", label: "九州", emoji: "🎏", guides: [
     { slug: "fukuoka-guide", name: "福岡" },
@@ -25,6 +27,15 @@ const AREA_GUIDES = [
   { slug: "tokai", label: "東海", emoji: "🏯", guides: [
     { slug: "nagoya-guide", name: "名古屋" },
   ]},
+  { slug: "tohoku", label: "東北", emoji: "⛄", guides: [
+    { slug: "sendai-guide", name: "仙台" },
+  ]},
+  { slug: "chugoku", label: "中国", emoji: "⛩️", guides: [
+    { slug: "hiroshima-guide", name: "広島" },
+  ]},
+  { slug: "okinawa", label: "沖縄", emoji: "🌺", guides: [
+    { slug: "okinawa-guide", name: "沖縄" },
+  ]},
 ];
 
 const HOWTO_ARTICLES = [
@@ -34,6 +45,10 @@ const HOWTO_ARTICLES = [
   { slug: "nursing-room-tips", name: "授乳室の見つけ方と上手な使い方", emoji: "🍼" },
   { slug: "restaurant-tips", name: "子連れランチ攻略法", emoji: "🍽️" },
   { slug: "rainy-day-spots", name: "雨の日でも楽しめる室内スポット特集", emoji: "☔" },
+  { slug: "stroller-choosing-guide", name: "ベビーカーの選び方完全ガイド（A型・B型比較）", emoji: "🛒" },
+  { slug: "1year-old-outing", name: "1歳のおでかけ完全ガイド", emoji: "👣" },
+  { slug: "2year-old-outing", name: "2歳のおでかけ（イヤイヤ期）", emoji: "💪" },
+  { slug: "disney-stroller", name: "ディズニーリゾート子連れガイド", emoji: "🎠" },
 ];
 
 interface Props {
