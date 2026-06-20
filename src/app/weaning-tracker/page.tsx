@@ -71,9 +71,9 @@ const CATEGORIES: FoodCategory[] = [
       { id: "soy",        name: "大豆（豆腐・納豆）",emoji: "🫘", stage: "early",  allergen: true },
     ],
     amazonItems: [
-      { name: "和光堂 はじめての離乳食 裏ごし野菜セット", emoji: "🥕", keyword: "和光堂 はじめての離乳食 裏ごし セット アレルゲン", price: "1,200〜2,000円" },
-      { name: "キユーピー ベビーフード 瓶詰め 初期セット", emoji: "🍼", asin: "B077XGPC5R", price: "1,500〜2,500円" },
-      { name: "和光堂 たっぷり手作り応援 米がゆ", emoji: "🍚", keyword: "和光堂 米がゆ 離乳食 初期", price: "600〜1,200円" },
+      { name: "和光堂 はじめての離乳食 裏ごし5種セット（5ヶ月〜）", emoji: "🥕", asin: "B0DCFKYDH7", price: "1,000〜1,500円" },
+      { name: "キユーピー ベビーフード 瓶詰め バラエティセット 6種（5ヶ月〜）", emoji: "🍼", asin: "B00PBL9U4U", price: "1,500〜2,500円" },
+      { name: "キユーピー ベビーフード おかゆ だし仕立て 70g×12個", emoji: "🍚", asin: "B0BB6NK5QZ", price: "1,000〜1,800円" },
     ],
   },
   {
@@ -93,9 +93,9 @@ const CATEGORIES: FoodCategory[] = [
       { id: "cornflake",   name: "コーンフレーク",   emoji: "🌽", stage: "late",   note: "無糖タイプを牛乳でふやかす" },
     ],
     amazonItems: [
-      { name: "和光堂 お米のおかゆ（5種セット）", emoji: "🍚", keyword: "和光堂 お米のおかゆ 離乳食 セット", price: "800〜1,500円" },
-      { name: "アサヒグループ食品 和光堂 手作り応援 和風だしパック", emoji: "🍜", keyword: "和光堂 手作り応援 だし 離乳食", price: "400〜800円" },
-      { name: "日清 1歳からのかんたんうどん", emoji: "🍜", keyword: "1歳 うどん 離乳食 ベビーフード 麺", price: "500〜1,000円" },
+      { name: "和光堂 手作り応援 和風だし 2.5g×10包", emoji: "🍜", asin: "B009ICIMJ2", price: "300〜600円" },
+      { name: "和光堂 手作り応援 スープ3種パック（5ヶ月〜）", emoji: "🍚", asin: "B009ICILUC", price: "400〜800円" },
+      { name: "日清 1歳からのかんたんうどん 細めん", emoji: "🍜", keyword: "日清 1歳からのかんたんうどん 細めん 離乳食", price: "500〜1,000円" },
     ],
   },
   {
@@ -123,9 +123,9 @@ const CATEGORIES: FoodCategory[] = [
       { id: "negi",        name: "長ねぎ",          emoji: "🧅", stage: "late" },
     ],
     amazonItems: [
-      { name: "キユーピー にんじん・かぼちゃの野菜ピューレ", emoji: "🥕", keyword: "キユーピー 野菜ピューレ 離乳食 にんじん かぼちゃ", price: "1,000〜1,800円" },
-      { name: "和光堂 はじめての離乳食 緑黄色野菜セット", emoji: "🥦", keyword: "和光堂 はじめての離乳食 野菜 緑黄色 セット", price: "1,200〜2,000円" },
-      { name: "コープ BF やさいのたきよせ（冷凍）", emoji: "🥗", keyword: "生協 コープ 離乳食 野菜 冷凍 ベビーフード", price: "800〜1,500円" },
+      { name: "和光堂 手作り応援 かぼちゃとさつまいも 2.3g×8包（5ヶ月〜）", emoji: "🥕", asin: "B00AY8ROOI", price: "400〜800円" },
+      { name: "和光堂 手作り応援 緑黄色野菜3種パック（5ヶ月〜）", emoji: "🥦", asin: "B07HPTDMWF", price: "800〜1,500円" },
+      { name: "キユーピー ベビーフード 角切り野菜ミックス 70g×12個（7ヶ月〜）", emoji: "🥗", asin: "B09WR43LVP", price: "900〜1,500円" },
     ],
   },
   {
@@ -145,8 +145,8 @@ const CATEGORIES: FoodCategory[] = [
       { id: "melon",      name: "メロン",             emoji: "🍈", stage: "middle" },
     ],
     amazonItems: [
-      { name: "和光堂 はじめての果汁 りんご果汁", emoji: "🍎", keyword: "和光堂 果汁 りんご 離乳食 初期", price: "500〜900円" },
-      { name: "キユーピー BF くだものセット", emoji: "🍑", keyword: "キユーピー ベビーフード 果物 くだもの 離乳食", price: "1,000〜1,800円" },
+      { name: "キユーピー こだわりのひとさじ 国産りんご 70g（5ヶ月〜）", emoji: "🍎", asin: "B09F9BCYN7", price: "400〜700円" },
+      { name: "キユーピー ベビーフード にこにこボックス 5種×2個（5ヶ月〜）", emoji: "🍑", asin: "B07Z66KL65", price: "1,000〜1,800円" },
     ],
   },
   {
@@ -165,9 +165,9 @@ const CATEGORIES: FoodCategory[] = [
       { id: "asari",        name: "あさり（出汁のみ）",   emoji: "🐚", stage: "late" },
     ],
     amazonItems: [
-      { name: "和光堂 BF 白身魚のペースト", emoji: "🐟", keyword: "和光堂 離乳食 白身魚 ペースト ベビーフード", price: "700〜1,200円" },
-      { name: "キユーピー 3種の魚と野菜 ベビーフード", emoji: "🐠", keyword: "キユーピー 離乳食 魚 ベビーフード 中期", price: "1,000〜1,800円" },
-      { name: "にしき食品 しらすと野菜のペースト", emoji: "🐟", keyword: "しらす 離乳食 ペースト ベビーフード", price: "600〜1,200円" },
+      { name: "和光堂 はじめての離乳食 裏ごしおさかな 2.6g×6個（5ヶ月〜）", emoji: "🐟", asin: "B0052VL6RI", price: "500〜900円" },
+      { name: "キユーピー ベビーフード 白身魚と野菜のクリーム煮 70g×12個（7ヶ月〜）", emoji: "🐠", asin: "B0BB6PJ4ZD", price: "900〜1,500円" },
+      { name: "にしき食品 フリーズドライ しらす 離乳食", emoji: "🐟", keyword: "にしき食品 フリーズドライ しらす 離乳食", price: "600〜1,200円" },
     ],
   },
   {
@@ -183,9 +183,9 @@ const CATEGORIES: FoodCategory[] = [
       { id: "ham-baby",       name: "ベビー用ハム",   emoji: "🥩", stage: "final",  note: "食塩無添加タイプを" },
     ],
     amazonItems: [
-      { name: "キユーピー 鶏ささみと野菜のおかゆ", emoji: "🍗", keyword: "キユーピー 離乳食 鶏ささみ 野菜 おかゆ", price: "900〜1,500円" },
-      { name: "和光堂 BF 鶏と野菜のポトフ", emoji: "🥘", keyword: "和光堂 離乳食 鶏肉 野菜 ベビーフード 中期", price: "700〜1,300円" },
-      { name: "にしき食品 鶏ひき肉と野菜セット", emoji: "🍗", keyword: "離乳食 鶏肉 ひき肉 冷凍 ベビーフード", price: "1,000〜1,800円" },
+      { name: "キユーピー ベビーフード ささみと緑黄色野菜 70g×12個（7ヶ月〜）", emoji: "🍗", asin: "B008HAU8J8", price: "900〜1,500円" },
+      { name: "和光堂 はじめての離乳食 裏ごし鶏レバーと野菜 2.1g×6個（7ヶ月〜）", emoji: "🥘", asin: "B0052VL646", price: "500〜900円" },
+      { name: "キユーピー ベビーフード 瓶詰め バナナプリン・野菜ミックス（7ヶ月〜）", emoji: "🍗", asin: "B07P5QZ984", price: "1,200〜2,000円" },
     ],
   },
   {
@@ -201,8 +201,8 @@ const CATEGORIES: FoodCategory[] = [
       { id: "soymilk",     name: "豆乳（無調整）",  emoji: "🥛", stage: "late",   note: "アレルギー注意・少量から" },
     ],
     amazonItems: [
-      { name: "キユーピー 絹ごし豆腐のポタージュ", emoji: "🟨", keyword: "離乳食 豆腐 ポタージュ ベビーフード 初期", price: "700〜1,200円" },
-      { name: "和光堂 BF ひきわり納豆入り野菜スープ", emoji: "🟤", keyword: "離乳食 納豆 ベビーフード 中期 野菜", price: "700〜1,200円" },
+      { name: "和光堂 たっぷり手作り応援 野菜スープ徳用 46g", emoji: "🟨", asin: "B009ICJ77S", price: "600〜1,000円" },
+      { name: "和光堂 手作り応援 スープ3種パック（野菜・コーン・かぼちゃ）", emoji: "🟤", asin: "B009ICILUC", price: "400〜800円" },
     ],
   },
   {
@@ -217,8 +217,8 @@ const CATEGORIES: FoodCategory[] = [
       { id: "butter-small", name: "バター・マーガリン（少量）", emoji: "🧈", stage: "middle", note: "少量で風味付けに" },
     ],
     amazonItems: [
-      { name: "明治 ほほえみ 赤ちゃんヨーグルト", emoji: "🍦", keyword: "赤ちゃん ヨーグルト 無糖 プレーン ベビー", price: "300〜600円" },
-      { name: "雪印 4種のチーズ ベビー向け", emoji: "🧀", keyword: "ベビー チーズ 赤ちゃん 乳製品 離乳食", price: "400〜800円" },
+      { name: "赤ちゃん用 プレーンヨーグルト 無糖・無添加 離乳食向け", emoji: "🍦", keyword: "赤ちゃん ヨーグルト プレーン 無糖 無添加 離乳食 7ヶ月", price: "300〜600円" },
+      { name: "ベビーチーズ 無添加 乳製品 離乳食（後期〜）", emoji: "🧀", keyword: "ベビーチーズ 無添加 カッテージチーズ 赤ちゃん 離乳食 後期", price: "400〜800円" },
     ],
   },
   {
@@ -236,19 +236,19 @@ const CATEGORIES: FoodCategory[] = [
       { id: "mayonnaise",   name: "マヨネーズ（完了期〜）",  emoji: "🫙", stage: "final", note: "卵・大豆アレルギー注意" },
     ],
     amazonItems: [
-      { name: "and recipe 赤ちゃん用だしパック", emoji: "🌊", keyword: "赤ちゃん だし パック 無添加 離乳食 昆布", price: "500〜1,000円" },
-      { name: "無添加だし離乳食セット", emoji: "🍜", keyword: "無添加 だし 離乳食 昆布 かつお セット", price: "800〜1,500円" },
+      { name: "和光堂 手作り応援 和風だし 2.5g×10包×6個（まとめ買い）", emoji: "🌊", asin: "B00AY8RK6K", price: "800〜1,500円" },
+      { name: "無添加だしパック 赤ちゃん用 昆布・かつお セット", emoji: "🍜", keyword: "無添加 だしパック 赤ちゃん 離乳食 昆布 かつお 国産 セット", price: "600〜1,200円" },
     ],
   },
 ];
 
 // ─── Amazon未食材おすすめ商品 ─────────────────────────
 const CROSS_PRODUCTS = [
-  { name: "キユーピー 瓶詰めシリーズ 8本セット（初期）", emoji: "🍼", keyword: "キユーピー ベビーフード 瓶詰め 初期 セット 8種", price: "1,800〜3,000円", desc: "白身魚・にんじん・かぼちゃ・ほうれん草など初期食材を網羅" },
-  { name: "和光堂 BF バラエティセット（中期・後期）", emoji: "🥘", keyword: "和光堂 ベビーフード セット 中期 後期 バラエティ", price: "2,000〜3,500円", desc: "肉・魚・野菜の中期〜後期食材を一気に試せるセット" },
-  { name: "にしき食品 フリーズドライ 離乳食 24種セット", emoji: "🍱", keyword: "にしき食品 フリーズドライ 離乳食 セット 24種", price: "3,000〜5,000円", desc: "お湯で戻すだけ。外出先でも使えるフリーズドライタイプ" },
-  { name: "the kindest ベビーフード 定期便", emoji: "🌿", keyword: "the kindest ベビーフード 有機 定期 月齢", price: "3,000〜6,000円/月", desc: "有機野菜使用・添加物なし。月齢に合わせた食材を毎月お届け" },
-  { name: "コドモビオ 離乳食セット（有機野菜）", emoji: "🥦", keyword: "有機 離乳食 コドモビオ 野菜 セット", price: "2,500〜4,500円", desc: "有機JAS認証の野菜のみ使用。アレルゲン表示が明確で安心" },
+  { name: "和光堂 はじめての離乳食 9種類お試しセット（5ヶ月〜）", emoji: "🍼", asin: "B0BWXS9T1C", price: "1,500〜2,500円", desc: "裏ごし野菜・おかゆ・魚介など9種を一度に試せる離乳食スターターセット" },
+  { name: "和光堂 ベビーフード はじめての離乳食 11種類17点セット", emoji: "🥘", asin: "B0C1JK7C9L", price: "2,000〜3,500円", desc: "5ヶ月〜使える和光堂の定番ベビーフード11種類17点が揃ったまとめ買いセット" },
+  { name: "キユーピー ベビーフード 瓶詰め バラエティセット 6種（5ヶ月〜）", emoji: "🍱", asin: "B00PBL9U4U", price: "1,500〜2,500円", desc: "白身魚・にんじん・かぼちゃ・ほうれん草など初期食材6種。小分け冷凍可" },
+  { name: "キユーピー ベビーフード 瓶詰め 7ヶ月頃から バラエティセット", emoji: "🌿", asin: "B07P5QZ984", price: "1,200〜2,000円", desc: "中期食材のバナナプリン・角切り野菜ミックスなど。外出時にもそのまま食べられる" },
+  { name: "フリーズドライ 離乳食 詰め合わせセット お試し", emoji: "🥦", keyword: "フリーズドライ 離乳食 詰め合わせ セット お試し 24食", price: "3,000〜5,000円", desc: "お湯で戻すだけで完成。外出・旅行・非常食としても活躍するフリーズドライタイプ" },
 ];
 
 // ─── ユーティリティ ────────────────────────────────────
@@ -544,7 +544,9 @@ export default function WeaningTracker() {
               <p className="text-[11px] text-gray-500 mb-4">複数の食材を一度に試せるセット商品をまとめました</p>
               <div className="space-y-3">
                 {CROSS_PRODUCTS.map((p) => {
-                  const href = amazonSearchUrl(p.keyword ?? p.name);
+                  const href = p.asin
+                    ? `https://www.amazon.co.jp/dp/${p.asin}?tag=babynabi-22`
+                    : amazonSearchUrl(p.keyword ?? p.name);
                   return (
                     <a
                       key={p.name}
