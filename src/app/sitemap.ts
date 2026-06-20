@@ -46,6 +46,19 @@ const ARTICLE_SLUGS = [
   "water-play-spots",
   "saitama-guide",
   "disney-stroller",
+  // ─── 第2弾追加記事 ───
+  "asakusa-guide",
+  "kobe-guide",
+  "chiba-guide",
+  "3year-old-outing",
+  "airplane-with-baby",
+  "baby-onsen",
+  "kawasaki-guide",
+  "anpanman-museum",
+  "tokyo-aquarium-guide",
+  "baby-camping",
+  "stroller-repair-guide",
+  "baby-weaning-outing",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
