@@ -42,6 +42,7 @@ const FOOTER_LINKS = [
       { href: "/articles/nursing-room-tips", label: "授乳室の探し方" },
       { href: "/articles/restaurant-tips", label: "子連れランチの選び方" },
       { href: "/faq", label: "よくある質問（FAQ）" },
+      { href: "/weaning-tracker", label: "離乳食チェッカー" },
     ],
   },
   {

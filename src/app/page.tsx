@@ -1188,28 +1188,43 @@ export default function HomePage() {
             <h4 className="text-xs font-bold text-gray-400 mb-3 px-1">その他のメニュー</h4>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { key: "restaurant", emoji: "🍽️", label: "グルメ",        bg: "from-amber-400 to-orange-500" },
-                { key: "toilet",     emoji: "🚻", label: "トイレ",        bg: "from-violet-500 to-purple-700" },
-                { key: "plan",       emoji: "📅", label: "プラン作成",    bg: "from-teal-400 to-emerald-600" },
-                { key: "baby",       emoji: "👶", label: "赤ちゃん登録", bg: "from-rose-400 to-pink-600" },
-                { key: "_fav",       emoji: "❤️", label: "お気に入り",   bg: "from-red-400 to-rose-600" },
-                { key: "_stats",     emoji: "📊", label: "マイ記録",      bg: "from-brand-400 to-brand-600" },
-                { key: "_feedback",  emoji: "💬", label: "ご意見",        bg: "from-sky-400 to-blue-600" },
-              ].map((item) => (
-                <button key={item.key}
-                  onClick={() => {
-                    setShowMoreMenu(false);
-                    if (item.key === "_fav") { setActiveTab("spots"); setShowFavoritesOnly(true); }
-                    else if (item.key === "_feedback") setShowFeedback(true);
-                    else if (item.key === "_stats") setShowMyStats(true);
-                    else setActiveTab(item.key);
-                  }}
-                  className={`bg-gradient-to-br ${item.bg} text-white rounded-2xl py-4 flex flex-col items-center gap-1.5 active:scale-95 transition shadow-sm`}
-                >
-                  <span className="text-2xl leading-none">{item.emoji}</span>
-                  <span className="text-[11px] font-bold">{item.label}</span>
-                </button>
-              ))}
+                { key: "restaurant", emoji: "🍽️", label: "グルメ",        bg: "from-amber-400 to-orange-500",   href: null },
+                { key: "toilet",     emoji: "🚻", label: "トイレ",        bg: "from-violet-500 to-purple-700",  href: null },
+                { key: "plan",       emoji: "📅", label: "プラン作成",    bg: "from-teal-400 to-emerald-600",   href: null },
+                { key: "baby",       emoji: "👶", label: "赤ちゃん登録", bg: "from-rose-400 to-pink-600",      href: null },
+                { key: "_fav",       emoji: "❤️", label: "お気に入り",   bg: "from-red-400 to-rose-600",       href: null },
+                { key: "_stats",     emoji: "📊", label: "マイ記録",      bg: "from-brand-400 to-brand-600",    href: null },
+                { key: "_weaning",   emoji: "🥄", label: "離乳食",        bg: "from-yellow-400 to-orange-400",  href: "/weaning-tracker" },
+                { key: "_feedback",  emoji: "💬", label: "ご意見",        bg: "from-sky-400 to-blue-600",       href: null },
+              ].map((item) => {
+                const cls = `bg-gradient-to-br ${item.bg} text-white rounded-2xl py-4 flex flex-col items-center gap-1.5 active:scale-95 transition shadow-sm`;
+                if (item.href) {
+                  return (
+                    <a key={item.key} href={item.href}
+                      onClick={() => setShowMoreMenu(false)}
+                      className={cls}
+                    >
+                      <span className="text-2xl leading-none">{item.emoji}</span>
+                      <span className="text-[11px] font-bold">{item.label}</span>
+                    </a>
+                  );
+                }
+                return (
+                  <button key={item.key}
+                    onClick={() => {
+                      setShowMoreMenu(false);
+                      if (item.key === "_fav") { setActiveTab("spots"); setShowFavoritesOnly(true); }
+                      else if (item.key === "_feedback") setShowFeedback(true);
+                      else if (item.key === "_stats") setShowMyStats(true);
+                      else setActiveTab(item.key);
+                    }}
+                    className={cls}
+                  >
+                    <span className="text-2xl leading-none">{item.emoji}</span>
+                    <span className="text-[11px] font-bold">{item.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
