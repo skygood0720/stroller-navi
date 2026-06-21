@@ -461,6 +461,41 @@ export default function WeaningTracker() {
             </div>
           </div>
 
+          {/* 家族と共有バナー */}
+          {mounted && !familyCode && (
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="w-full flex items-center gap-3 bg-gradient-to-r from-indigo-500 to-violet-500 text-white rounded-2xl px-5 py-4 shadow-sm active:scale-[0.98] transition"
+            >
+              <span className="text-3xl shrink-0">👨‍👩‍👧</span>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-black leading-snug">このリストを家族と共有する</p>
+                <p className="text-[11px] text-white/80 mt-0.5">パパ・ママ・祖父母で進捗を同期できます</p>
+              </div>
+              <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-white/70">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+              </svg>
+            </button>
+          )}
+          {mounted && familyCode && (
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="w-full flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl px-5 py-4 shadow-sm active:scale-[0.98] transition"
+            >
+              <span className="text-2xl shrink-0">✅</span>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-black leading-snug">家族と共有中</p>
+                <p className="text-[11px] text-white/80 mt-0.5">
+                  コード: {familyCode.slice(0, 4)}-{familyCode.slice(4)}
+                  {syncing && " · 同期中…"}
+                </p>
+              </div>
+              <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-white/70">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+              </svg>
+            </button>
+          )}
+
           {/* カテゴリ別達成率（ミニバー） */}
           <div className="bg-white rounded-2xl p-4 shadow-sm">
             <p className="text-xs font-black text-gray-500 mb-3">カテゴリ別の達成率</p>
