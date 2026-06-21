@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { amazonSearchUrl, amazonUrl } from "@/lib/amazon";
+import { getFamilyCode } from "@/lib/family";
+import FamilyShareModal from "@/components/FamilyShareModal";
 
 // ─── 型定義 ───────────────────────────────────────────
 type Stage = "early" | "middle" | "late" | "final";
@@ -267,18 +269,87 @@ function saveChecked(checked: Set<string>) {
 
 // ─── メインコンポーネント ─────────────────────────────
 export default function WeaningTracker() {
-  const [checked, setChecked]       = useState<Set<string>>(new Set());
+  const [checked, setChecked]         = useState<Set<string>>(new Set());
   const [stageFilter, setStageFilter] = useState<Stage | "all">("all");
-  const [catFilter, setCatFilter]   = useState<string>("all");
-  const [mounted, setMounted]       = useState(false);
+  const [catFilter, setCatFilter]     = useState<string>("all");
+  const [mounted, setMounted]         = useState(false);
+  const [familyCode, setFamilyCodeState] = useState<string | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [syncing, setSyncing]         = useState(false);
+  const pollRef                       = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => { setChecked(loadChecked()); setMounted(true); }, []);
+  // Supabase から家族の離乳食チェックを取得してマージ
+  const loadFamilyChecks = useCallback(async (code: string) => {
+    try {
+      const res = await fetch(`/api/family/weaning?room_code=${code}`);
+      if (!res.ok) return;
+      const { checks } = await res.json() as { checks: { food_id: string; checked: boolean }[] };
+      setChecked((prev) => {
+        const next = new Set(prev);
+        checks.forEach(({ food_id, checked: c }) => {
+          if (c) next.add(food_id); else next.delete(food_id);
+        });
+        saveChecked(next);
+        return next;
+      });
+    } catch { /* ignore */ }
+  }, []);
+
+  // 初期化
+  useEffect(() => {
+    const local = loadChecked();
+    setChecked(local);
+    setMounted(true);
+    const code = getFamilyCode();
+    setFamilyCodeState(code);
+    if (code) {
+      // ローカルデータを先にアップロード、次にサーバーから最新を取得
+      const pairs = ALL_FOODS.reduce<Record<string, boolean>>((acc, f) => {
+        acc[f.id] = local.has(f.id);
+        return acc;
+      }, {});
+      fetch("/api/family/weaning", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ room_code: code, checks: pairs }),
+      }).then(() => loadFamilyChecks(code));
+
+      // 30秒ごとにポーリング
+      pollRef.current = setInterval(() => loadFamilyChecks(code), 30_000);
+    }
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 家族コードが変わったとき（モーダルで設定/解除後）
+  const handleCodeChange = useCallback(async (code: string | null) => {
+    setFamilyCodeState(code);
+    if (pollRef.current) clearInterval(pollRef.current);
+    if (code) {
+      await loadFamilyChecks(code);
+      pollRef.current = setInterval(() => loadFamilyChecks(code), 30_000);
+    }
+  }, [loadFamilyChecks]);
+
+  const syncToFamily = useCallback((next: Set<string>, code: string) => {
+    setSyncing(true);
+    const pairs = ALL_FOODS.reduce<Record<string, boolean>>((acc, f) => {
+      acc[f.id] = next.has(f.id);
+      return acc;
+    }, {});
+    fetch("/api/family/weaning", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ room_code: code, checks: pairs }),
+    }).finally(() => setSyncing(false));
+  }, []);
 
   const toggle = (id: string) => {
     setChecked((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id); else next.add(id);
       saveChecked(next);
+      if (familyCode) syncToFamily(next, familyCode);
       return next;
     });
   };
@@ -288,6 +359,7 @@ export default function WeaningTracker() {
       const next = new Set(prev);
       ids.forEach((id) => next.add(id));
       saveChecked(next);
+      if (familyCode) syncToFamily(next, familyCode);
       return next;
     });
   };
@@ -322,12 +394,34 @@ export default function WeaningTracker() {
     <div className="min-h-screen bg-[#FAF7F2]">
       <div className="max-w-[640px] mx-auto">
 
+        {/* 家族共有モーダル */}
+        {showShareModal && (
+          <FamilyShareModal
+            currentCode={familyCode}
+            onClose={() => setShowShareModal(false)}
+            onCodeChange={handleCodeChange}
+          />
+        )}
+
         {/* ヘッダー */}
         <header className="px-5 pt-5 pb-5 bg-gradient-to-br from-amber-400 via-orange-400 to-red-400 text-white">
-          <nav className="text-xs text-white/70 mb-3">
-            <Link href="/" className="hover:text-white">トップ</Link>
-            <span className="mx-1.5">›</span>
-            <span>離乳食チェッカー</span>
+          <nav className="text-xs text-white/70 mb-3 flex items-center justify-between">
+            <div>
+              <Link href="/" className="hover:text-white">トップ</Link>
+              <span className="mx-1.5">›</span>
+              <span>離乳食チェッカー</span>
+            </div>
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white text-[11px] font-bold px-3 py-1.5 rounded-full transition"
+            >
+              {familyCode ? (
+                <>👨‍👩‍👧 <span className="hidden sm:inline">共有中</span> {familyCode.slice(0, 4)}-{familyCode.slice(4)}</>
+              ) : (
+                <>👨‍👩‍👧 家族と共有</>
+              )}
+              {syncing && <span className="ml-1 w-2 h-2 rounded-full bg-white/70 animate-pulse" />}
+            </button>
           </nav>
           <div className="text-4xl mb-2">🥄</div>
           <h1 className="text-xl font-black leading-snug">

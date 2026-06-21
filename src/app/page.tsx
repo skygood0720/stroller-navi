@@ -8,6 +8,8 @@ import { BABY_SPOTS, TOILETS, RESTAURANTS, REGIONS, getMonthsOld, getAgeRange, g
 import { Stars, TagPill, EmptyState } from "@/components/ui";
 import AuthModal from "@/components/AuthModal";
 import SiteFooter from "@/components/SiteFooter";
+import FamilyShareModal from "@/components/FamilyShareModal";
+import { getFamilyCode } from "@/lib/family";
 import type { MapItem } from "@/types";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
@@ -79,15 +81,32 @@ export default function HomePage() {
   const [shareCopied, setShareCopied] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showMyStats, setShowMyStats] = useState(false);
+  const [familyCode, setFamilyCodeState] = useState<string | null>(null);
+  const [showFamilyModal, setShowFamilyModal] = useState(false);
 
   const supabase = createClient();
 
-  // Check first visit for onboarding
+  // Check first visit for onboarding + load family code
   useEffect(() => {
     const onboarded = localStorage.getItem("stroller-navi-onboarded");
     if (!onboarded) setShowOnboarding(true);
     const hintDone = localStorage.getItem("stroller-navi-hint-dismissed");
     if (hintDone) setHintDismissed(true);
+
+    const code = getFamilyCode();
+    setFamilyCodeState(code);
+    if (code) {
+      fetch(`/api/family/visited?room_code=${code}`)
+        .then((r) => r.json())
+        .then(({ visited }: { visited?: { spot_id: number }[] }) => {
+          if (Array.isArray(visited) && visited.length > 0) {
+            const ids = new Set<number>(visited.map((v) => v.spot_id));
+            setVisitedSpotIds(ids);
+          }
+        })
+        .catch(() => {});
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch user-submitted spots
@@ -165,25 +184,44 @@ export default function HomePage() {
 
   // Toggle visited spot with API
   const handleToggleVisited = useCallback(async (spotId: number) => {
-    if (!user) {
+    const code = getFamilyCode();
+    if (!user && !code) {
       setAuthOpen(true);
       return;
     }
     const isVisited = visitedSpotIds.has(spotId);
     toggleVisited(spotId);
 
-    try {
-      if (isVisited) {
-        await fetch(`/api/visited-spots?user_id=${user.id}&spot_id=${spotId}`, { method: "DELETE" });
-      } else {
-        await fetch("/api/visited-spots", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: user.id, spot_id: spotId }),
-        });
+    // 家族コードがあれば家族テーブルに同期
+    if (code) {
+      try {
+        if (isVisited) {
+          await fetch(`/api/family/visited?room_code=${code}&spot_id=${spotId}`, { method: "DELETE" });
+        } else {
+          await fetch("/api/family/visited", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ room_code: code, spot_id: spotId }),
+          });
+        }
+      } catch {}
+    }
+
+    // ログイン済みの場合は個人テーブルにも同期
+    if (user) {
+      try {
+        if (isVisited) {
+          await fetch(`/api/visited-spots?user_id=${user.id}&spot_id=${spotId}`, { method: "DELETE" });
+        } else {
+          await fetch("/api/visited-spots", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: user.id, spot_id: spotId }),
+          });
+        }
+      } catch {
+        if (!code) toggleVisited(spotId); // ログインのみの場合だけrevert
       }
-    } catch {
-      toggleVisited(spotId); // revert on error
     }
   }, [user, visitedSpotIds, toggleVisited, setAuthOpen]);
 
@@ -1144,6 +1182,27 @@ export default function HomePage() {
       {/* My Stats Modal */}
       {showMyStats && <MyStatsModal onClose={() => setShowMyStats(false)} />}
 
+      {/* Family Share Modal */}
+      {showFamilyModal && (
+        <FamilyShareModal
+          currentCode={familyCode}
+          onClose={() => setShowFamilyModal(false)}
+          onCodeChange={(code) => {
+            setFamilyCodeState(code);
+            if (code) {
+              fetch(`/api/family/visited?room_code=${code}`)
+                .then((r) => r.json())
+                .then(({ visited }: { visited?: { spot_id: number }[] }) => {
+                  if (Array.isArray(visited) && visited.length > 0) {
+                    setVisitedSpotIds(new Set<number>(visited.map((v) => v.spot_id)));
+                  }
+                })
+                .catch(() => {});
+            }
+          }}
+        />
+      )}
+
       {/* SEO Content - visible to search engines */}
       <section className="px-4 py-6 bg-white border-t border-gray-100">
         <div className="max-w-lg mx-auto space-y-4">
@@ -1195,6 +1254,7 @@ export default function HomePage() {
                 { key: "_fav",       emoji: "❤️", label: "お気に入り",   bg: "from-red-400 to-rose-600",       href: null },
                 { key: "_stats",     emoji: "📊", label: "マイ記録",      bg: "from-brand-400 to-brand-600",    href: null },
                 { key: "_weaning",   emoji: "🥄", label: "離乳食",        bg: "from-yellow-400 to-orange-400",  href: "/weaning-tracker" },
+                { key: "_family",    emoji: "👨‍👩‍👧", label: familyCode ? "共有中" : "家族共有",  bg: familyCode ? "from-green-400 to-emerald-600" : "from-indigo-400 to-violet-600", href: null },
                 { key: "_feedback",  emoji: "💬", label: "ご意見",        bg: "from-sky-400 to-blue-600",       href: null },
               ].map((item) => {
                 const cls = `bg-gradient-to-br ${item.bg} text-white rounded-2xl py-4 flex flex-col items-center gap-1.5 active:scale-95 transition shadow-sm`;
@@ -1216,6 +1276,7 @@ export default function HomePage() {
                       if (item.key === "_fav") { setActiveTab("spots"); setShowFavoritesOnly(true); }
                       else if (item.key === "_feedback") setShowFeedback(true);
                       else if (item.key === "_stats") setShowMyStats(true);
+                      else if (item.key === "_family") setShowFamilyModal(true);
                       else setActiveTab(item.key);
                     }}
                     className={cls}
