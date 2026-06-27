@@ -59,6 +59,10 @@ const ARTICLE_SLUGS = [
   "baby-camping",
   "stroller-repair-guide",
   "baby-weaning-outing",
+  // ─── 絵本特集記事 ───
+  "ehon-0sai",
+  "ehon-nemuri",
+  "ehon-kotoba",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

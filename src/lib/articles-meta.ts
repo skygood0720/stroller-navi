@@ -249,6 +249,30 @@ export const ARTICLES_META: ArticleMeta[] = [
     tags: ["ランチ", "外食", "個室"],
     regions: [],
   },
+  {
+    slug: "ehon-0sai",
+    title: "0歳赤ちゃんへのおすすめ絵本10選",
+    description: "新生児から読める絵本を月齢別に厳選・読み聞かせ方も解説",
+    emoji: "📚",
+    tags: ["絵本", "0歳", "育児", "読み聞かせ"],
+    regions: [],
+  },
+  {
+    slug: "ehon-nemuri",
+    title: "寝かしつけに効く絵本10選",
+    description: "読んだら眠くなると評判の寝かしつけ絵本ランキング",
+    emoji: "🌙",
+    tags: ["絵本", "寝かしつけ", "育児"],
+    regions: [],
+  },
+  {
+    slug: "ehon-kotoba",
+    title: "言葉を育てるおすすめ絵本10選",
+    description: "発語を促す絵本の選び方と読み聞かせのコツ",
+    emoji: "🗣️",
+    tags: ["絵本", "言葉", "発語", "育児"],
+    regions: [],
+  },
 ];
 
 // スポットのregionとタグから関連記事を返す
