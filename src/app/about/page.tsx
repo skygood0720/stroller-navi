@@ -39,9 +39,9 @@ export default function AboutPage() {
             </p>
             <div className="grid grid-cols-2 gap-3 mt-4">
               {[
-                { num: "470+", label: "掲載スポット数" },
-                { num: "19本", label: "お役立ち記事" },
-                { num: "9地域", label: "対応エリア" },
+                { num: "500+", label: "掲載スポット数" },
+                { num: "52本", label: "お役立ち記事" },
+                { num: "全国", label: "対応エリア" },
                 { num: "2024年", label: "サービス開始" },
               ].map((s) => (
                 <div key={s.label} className="bg-brand-50 rounded-xl p-3 text-center">
@@ -137,12 +137,12 @@ export default function AboutPage() {
                 {
                   icon: "📍",
                   title: "全国スポット検索",
-                  desc: "北海道〜沖縄まで470以上のスポットを地域別に検索。授乳室・おむつ替え・エレベーター情報付き。",
+                  desc: "北海道〜沖縄まで500以上のスポットを地域別に検索。授乳室・おむつ替え・エレベーター情報付き。",
                 },
                 {
                   icon: "📖",
                   title: "おでかけお役立ち記事",
-                  desc: "新宿・渋谷・大阪・京都など全国のエリアガイド19本と、授乳室の探し方・電車マナーなどのハウツー記事。",
+                  desc: "新宿・渋谷・大阪・京都など全国のエリアガイドと、授乳室の探し方・電車マナーなどのハウツー記事を計52本掲載。",
                 },
                 {
                   icon: "🛒",

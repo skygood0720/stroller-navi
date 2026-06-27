@@ -9,6 +9,7 @@ import { Stars, TagPill, EmptyState } from "@/components/ui";
 import AuthModal from "@/components/AuthModal";
 import SiteFooter from "@/components/SiteFooter";
 import FamilyShareModal from "@/components/FamilyShareModal";
+import DiaryEntryModal from "@/components/DiaryEntryModal";
 import { getFamilyCode } from "@/lib/family";
 import type { MapItem } from "@/types";
 
@@ -83,6 +84,8 @@ export default function HomePage() {
   const [showMyStats, setShowMyStats] = useState(false);
   const [familyCode, setFamilyCodeState] = useState<string | null>(null);
   const [showFamilyModal, setShowFamilyModal] = useState(false);
+  const [showDiaryModal, setShowDiaryModal] = useState(false);
+  const [diarySpot, setDiarySpot] = useState<{ name: string; id: number } | null>(null);
 
   const supabase = createClient();
 
@@ -1033,16 +1036,27 @@ export default function HomePage() {
                 {selectedItem.type === "spot" && (() => {
                   const isVisited = visitedSpotIds.has(selectedItem.id);
                   return (
-                    <button
-                      onClick={() => handleToggleVisited(selectedItem.id)}
-                      className={`w-full py-3 rounded-xl text-sm font-bold transition mb-2.5 flex items-center justify-center gap-2
-                        ${isVisited
-                          ? "bg-emerald-500 text-white shadow-md shadow-emerald-200/60"
-                          : "border-2 border-dashed border-emerald-400 text-emerald-600 hover:bg-emerald-50"
-                        }`}
-                    >
-                      {isVisited ? "✅ 行ったことがある！" : "👣 ここに行ったことがある"}
-                    </button>
+                    <div className="space-y-2 mb-2.5">
+                      <button
+                        onClick={() => handleToggleVisited(selectedItem.id)}
+                        className={`w-full py-3 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2
+                          ${isVisited
+                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-200/60"
+                            : "border-2 border-dashed border-emerald-400 text-emerald-600 hover:bg-emerald-50"
+                          }`}
+                      >
+                        {isVisited ? "✅ 行ったことがある！" : "👣 ここに行ったことがある"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setDiarySpot({ name: selectedItem.name, id: selectedItem.id });
+                          setShowDiaryModal(true);
+                        }}
+                        className="w-full py-2.5 rounded-xl text-sm font-bold border-2 border-sky-200 text-sky-600 hover:bg-sky-50 flex items-center justify-center gap-2 transition"
+                      >
+                        📔 おでかけ日記に残す
+                      </button>
+                    </div>
                   );
                 })()}
 
@@ -1182,6 +1196,17 @@ export default function HomePage() {
       {/* My Stats Modal */}
       {showMyStats && <MyStatsModal onClose={() => setShowMyStats(false)} />}
 
+      {/* Diary Entry Modal */}
+      {showDiaryModal && (
+        <DiaryEntryModal
+          spotName={diarySpot?.name ?? ""}
+          spotId={diarySpot?.id}
+          babyMonth={babyMonths ?? undefined}
+          onClose={() => setShowDiaryModal(false)}
+          onSaved={() => { /* エントリ保存後の処理 */ }}
+        />
+      )}
+
       {/* Family Share Modal */}
       {showFamilyModal && (
         <FamilyShareModal
@@ -1254,6 +1279,7 @@ export default function HomePage() {
                 { key: "_fav",       emoji: "❤️", label: "お気に入り",   bg: "from-red-400 to-rose-600",       href: null },
                 { key: "_stats",     emoji: "📊", label: "マイ記録",      bg: "from-brand-400 to-brand-600",    href: null },
                 { key: "_weaning",   emoji: "🥄", label: "離乳食",        bg: "from-yellow-400 to-orange-400",  href: "/weaning-tracker" },
+                { key: "_diary",     emoji: "📔", label: "おでかけ日記",  bg: "from-sky-400 to-blue-500",       href: "/diary" },
                 { key: "_family",    emoji: "👨‍👩‍👧", label: familyCode ? "共有中" : "家族共有",  bg: familyCode ? "from-green-400 to-emerald-600" : "from-indigo-400 to-violet-600", href: null },
                 { key: "_feedback",  emoji: "💬", label: "ご意見",        bg: "from-sky-400 to-blue-600",       href: null },
               ].map((item) => {

@@ -72,6 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/articles`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.78 },
     { url: `${BASE_URL}/weaning-tracker`, lastModified: now, changeFrequency: "monthly", priority: 0.80 },
+    { url: `${BASE_URL}/diary`,           lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE_URL}/baby-goods`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE_URL}/baby-goods/ehon`, lastModified: now, changeFrequency: "monthly", priority: 0.72 },
     { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
@@ -100,5 +101,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
-  return [...staticPages, ...regionPages, ...spotPages, ...articlePages];
+  const SPOT_TAGS = ["授乳室", "おむつ替え", "ベビーカー貸出", "エレベーター", "スロープ", "キッズスペース", "バリアフリー"];
+  const tagPages: MetadataRoute.Sitemap = SPOT_TAGS.map((tag) => ({
+    url: `${BASE_URL}/spots/tag/${encodeURIComponent(tag)}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.82,
+  }));
+
+  return [...staticPages, ...regionPages, ...tagPages, ...spotPages, ...articlePages];
 }

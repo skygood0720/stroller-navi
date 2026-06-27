@@ -423,34 +423,140 @@ const ARTICLES = [
   },
 ];
 
+// カテゴリ定義
+const CATEGORIES = [
+  {
+    key: "area",
+    label: "エリア別ガイド",
+    emoji: "📍",
+    slugs: [
+      "shinjuku-guide", "shibuya-guide", "ikebukuro-guide", "ueno-guide", "asakusa-guide",
+      "kichijoji-guide", "odaiba-guide", "free-kids-spots-tokyo",
+      "shinjuku-station-guide", "shibuya-station-guide", "ikebukuro-station-guide", "tokyo-station-guide",
+      "yokohama-guide", "kawasaki-guide", "saitama-guide", "chiba-guide",
+      "osaka-guide", "kyoto-guide", "kobe-guide", "nagoya-guide",
+      "fukuoka-guide", "sapporo-guide", "sendai-guide", "hiroshima-guide", "okinawa-guide",
+    ],
+  },
+  {
+    key: "age",
+    label: "月齢・年齢別",
+    emoji: "👶",
+    slugs: [
+      "baby-first-outing", "zero-age-outing", "1year-old-outing", "2year-old-outing", "3year-old-outing",
+    ],
+  },
+  {
+    key: "season",
+    label: "季節・テーマ別",
+    emoji: "🌸",
+    slugs: [
+      "spring-outing-spots", "summer-indoor-spots", "autumn-outing-spots", "winter-outing-spots",
+      "rainy-day-spots", "water-play-spots",
+    ],
+  },
+  {
+    key: "facility",
+    label: "施設・テーマパーク",
+    emoji: "🎡",
+    slugs: [
+      "disney-stroller", "anpanman-museum", "shopping-mall-stroller", "tokyo-aquarium-guide",
+    ],
+  },
+  {
+    key: "travel",
+    label: "移動・旅行",
+    emoji: "✈️",
+    slugs: [
+      "stroller-shinkansen", "train-stroller-manner", "airplane-with-baby", "baby-onsen", "baby-camping",
+    ],
+  },
+  {
+    key: "tips",
+    label: "育児・準備",
+    emoji: "🍼",
+    slugs: [
+      "stroller-guide", "stroller-choosing-guide", "stroller-repair-guide",
+      "nursing-room-tips", "restaurant-tips", "baby-weaning-outing",
+    ],
+  },
+];
+
+function ArticleCard({ a }: { a: typeof ARTICLES[number] }) {
+  return (
+    <Link href={`/articles/${a.slug}`}
+      className="flex gap-3 bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition group">
+      <span className="text-2xl shrink-0 w-10 h-10 flex items-center justify-center bg-brand-50 rounded-xl">
+        {a.emoji}
+      </span>
+      <div className="flex-1 min-w-0">
+        <h3 className="text-xs font-bold leading-snug group-hover:text-brand-600 transition line-clamp-2">{a.title}</h3>
+        <p className="text-[10px] text-gray-400 mt-0.5 line-clamp-1">{a.description}</p>
+      </div>
+      <span className="text-gray-300 self-center text-xs shrink-0">›</span>
+    </Link>
+  );
+}
+
 export default function ArticlesPage() {
+  const articleMap = Object.fromEntries(ARTICLES.map((a) => [a.slug, a]));
+
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
       <div className="max-w-[640px] mx-auto">
-        <header className="px-5 pt-5 pb-4 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white">
-          <Link href="/" className="text-xs text-white/70 hover:text-white mb-2 inline-block">← ベビーカーナビ トップへ</Link>
+        <header className="px-5 pt-5 pb-5 bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white">
+          <nav className="text-xs text-white/70 mb-2">
+            <Link href="/" className="hover:text-white">トップ</Link>
+            <span className="mx-1.5">›</span>
+            <span>記事一覧</span>
+          </nav>
           <h1 className="text-xl font-black">お役立ち記事</h1>
-          <p className="text-[11px] opacity-80 mt-1">子育て経験者の視点で、赤ちゃんとのおでかけに役立つ情報をお届け</p>
+          <p className="text-[11px] opacity-80 mt-1">全{ARTICLES.length}記事 ｜ 子育て経験者が執筆</p>
         </header>
-        <main className="p-5 space-y-3">
-          {ARTICLES.map((a) => (
-            <Link key={a.slug} href={`/articles/${a.slug}`}
-              className="block bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition">
-              <div className="flex gap-3">
-                <span className="text-3xl">{a.emoji}</span>
-                <div className="flex-1">
-                  <h2 className="text-sm font-bold mb-1 leading-snug">{a.title}</h2>
-                  <p className="text-xs text-gray-500 leading-relaxed mb-2">{a.description}</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-gray-400">{a.date}</span>
-                    {a.tags.map((t) => (
-                      <span key={t} className="text-[9px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded font-medium">{t}</span>
-                    ))}
-                  </div>
+
+        <main className="p-5 space-y-6">
+          {/* 設備別スポット検索リンク */}
+          <section className="bg-white rounded-2xl p-4 shadow-sm">
+            <p className="text-[11px] font-bold text-gray-500 mb-3">🗺️ 設備でスポットを探す</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { tag: "授乳室", emoji: "🍼" },
+                { tag: "おむつ替え", emoji: "👶" },
+                { tag: "ベビーカー貸出", emoji: "🛒" },
+                { tag: "エレベーター", emoji: "🛗" },
+                { tag: "スロープ", emoji: "♿" },
+                { tag: "キッズスペース", emoji: "🎠" },
+              ].map(({ tag, emoji }) => (
+                <Link
+                  key={tag}
+                  href={`/spots/tag/${encodeURIComponent(tag)}`}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold hover:bg-amber-100 transition"
+                >
+                  {emoji} {tag}あり
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* カテゴリ別記事 */}
+          {CATEGORIES.map((cat) => {
+            const articles = cat.slugs.map((s) => articleMap[s]).filter(Boolean);
+            if (articles.length === 0) return null;
+            return (
+              <section key={cat.key}>
+                <div className="flex items-center gap-2 mb-2">
+                  <h2 className="text-sm font-black text-gray-700">
+                    {cat.emoji} {cat.label}
+                  </h2>
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <span className="text-[10px] text-gray-400">{articles.length}記事</span>
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="space-y-2">
+                  {articles.map((a) => <ArticleCard key={a.slug} a={a} />)}
+                </div>
+              </section>
+            );
+          })}
         </main>
         <SiteFooter />
       </div>

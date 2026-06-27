@@ -43,6 +43,7 @@ const FOOTER_LINKS = [
       { href: "/articles/restaurant-tips", label: "子連れランチの選び方" },
       { href: "/faq", label: "よくある質問（FAQ）" },
       { href: "/weaning-tracker", label: "離乳食チェッカー" },
+      { href: "/diary",           label: "おでかけ日記" },
     ],
   },
   {
@@ -55,6 +56,7 @@ const FOOTER_LINKS = [
       { href: "/about", label: "運営者情報" },
       { href: "/contact", label: "お問い合わせ" },
       { href: "/privacy", label: "プライバシーポリシー" },
+      { href: "/terms",   label: "利用規約" },
     ],
   },
 ];
