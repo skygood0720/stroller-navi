@@ -22,7 +22,7 @@ const SPOT_TAGS = [
 ];
 
 export function generateStaticParams() {
-  return SPOT_TAGS.map((tag) => ({ tag: encodeURIComponent(tag) }));
+  return SPOT_TAGS.map((tag) => ({ tag }));
 }
 
 export function generateMetadata({ params }: { params: { tag: string } }): Metadata {
