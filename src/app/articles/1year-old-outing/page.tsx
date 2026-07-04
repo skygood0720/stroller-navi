@@ -297,6 +297,8 @@ export default function OneYearOldOutingPage() {
                 { href: "/articles/baby-first-outing", title: "赤ちゃんの初めてのおでかけ｜月齢別おすすめスポット", emoji: "👶" },
                 { href: "/articles/zero-age-outing", title: "0歳の赤ちゃんはいつから外出できる？月齢別完全ガイド", emoji: "🌱" },
                 { href: "/articles/free-kids-spots-tokyo", title: "東京の子供が無料で遊べる場所25選", emoji: "🌳" },
+                { href: "/articles/ehon-kotoba", title: "言葉を育てるおすすめ絵本10選｜発語を促す読み聞かせ方", emoji: "🗣️" },
+                { href: "/articles/ehon-nemuri", title: "寝かしつけに効く絵本10選｜赤ちゃんが眠くなる絵本", emoji: "🌙" },
               ].map((link) => (
                 <Link key={link.href} href={link.href}
                   className="flex items-center gap-2 text-xs text-pink-700 hover:text-pink-900 hover:underline">

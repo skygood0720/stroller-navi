@@ -6,7 +6,7 @@ import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "授乳室の見つけ方と上手な使い方｜新米ママ完全マニュアル 2026年版 | ベビーカーナビ",
-  description: "外出先での授乳室の探し方5つの方法、便利な持ち物リスト、知っておきたいマナー、設置型授乳室mamaroの使い方、東京都内おすすめ授乳室ランキングまで完全解説します。",
+  description: "外出先で迷わない！授乳室の探し方5つの方法・持ち物15点チェックリスト・満室時の対処法・授乳マナー・東京都内おすすめ授乳室TOP5まで。新米ママが知りたい情報を全網羅。",
 };
 
 export default function Page() {

@@ -263,6 +263,14 @@ export default function SpotPage({ params }: { params: { id: string } }) {
                   </Link>
                 ))}
               </div>
+              {spot.region && (
+                <Link
+                  href={`/spots/region/${encodeURIComponent(spot.region)}`}
+                  className="mt-3 flex items-center justify-center gap-1.5 text-xs text-brand-600 font-bold py-2.5 rounded-xl bg-brand-50 hover:bg-brand-100 transition"
+                >
+                  {spot.region}のスポットをすべて見る →
+                </Link>
+              )}
             </section>
           )}
 

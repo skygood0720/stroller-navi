@@ -97,6 +97,24 @@ export default function Page() {
             <S t="まとめ">
               <p className="text-sm text-gray-700 leading-relaxed">2歳はイヤイヤ期と言われますが、おでかけの楽しさを一番吸収できる時期でもあります。動物の名前を覚えたり、電車を見て大興奮したり、砂場で集中して遊んだり——その表情ひとつひとつが親の宝物になります。無理のないスケジュールで、2歳ならではのおでかけを満喫しましょう！</p>
             </S>
+            <section className="bg-gradient-to-r from-violet-50 to-purple-50 rounded-2xl p-5 border border-violet-100">
+              <h3 className="text-sm font-bold text-violet-800 mb-3">📚 2歳向けおすすめ絵本</h3>
+              <p className="text-xs text-gray-600 mb-3">おでかけ帰りの読み聞かせで、今日の体験をもっと深めよう。2歳の発語・語彙アップに効く絵本をご紹介。</p>
+              <div className="space-y-2">
+                <Link href="/articles/ehon-kotoba" className="flex items-center gap-2 text-xs text-violet-700 hover:text-violet-900 hover:underline">
+                  <span>🗣️</span>
+                  <span>言葉を育てるおすすめ絵本10選｜発語を促す読み聞かせ方</span>
+                </Link>
+                <Link href="/articles/ehon-nemuri" className="flex items-center gap-2 text-xs text-violet-700 hover:text-violet-900 hover:underline">
+                  <span>🌙</span>
+                  <span>寝かしつけに効く絵本10選｜2歳のイヤイヤ期にもおすすめ</span>
+                </Link>
+                <Link href="/baby-goods/ehon" className="flex items-center gap-2 text-xs text-violet-700 hover:text-violet-900 hover:underline">
+                  <span>📖</span>
+                  <span>2歳向け絵本を月齢別50冊から探す →</span>
+                </Link>
+              </div>
+            </section>
             <section className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 text-center">
               <Link href="/" className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 text-white text-sm font-bold hover:opacity-90 transition">2歳向けスポットをアプリで探す</Link>
             </section>

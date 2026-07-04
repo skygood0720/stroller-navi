@@ -6,7 +6,7 @@ import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "0歳の赤ちゃんはいつから外出できる？初めてのおでかけ完全ガイド | ベビーカーナビ",
-  description: "0歳の赤ちゃんのおでかけはいつから？1ヶ月健診後から外出OK。初めての外出で準備するもの・注意点・おすすめスポットをまとめました。ベビーカーデビューの時期も解説。",
+  description: "0歳の赤ちゃんのおでかけはいつから？1ヶ月健診後から外出OK。月齢別外出の目安・持ち物チェックリスト・注意点・おすすめスポット4選を完全網羅。初めてのベビーカーデビューも解説。",
   keywords: ["0歳 外出 いつから", "赤ちゃん おでかけ いつから", "生後1ヶ月 外出", "ベビーカー いつから", "赤ちゃん 外出 準備", "新生児 外出"],
   openGraph: {
     title: "0歳の赤ちゃんはいつから外出できる？初めてのおでかけ完全ガイド",
@@ -259,6 +259,13 @@ export default function ZeroAgeOutingPage() {
                 <div>
                   <div className="text-xs font-bold">ベビーカーで電車に乗るときのマナー</div>
                   <div className="text-[10px] text-gray-500">折りたたみ必要？混雑時のコツ</div>
+                </div>
+              </Link>
+              <Link href="/articles/ehon-0sai" className="flex items-center gap-2 bg-violet-50 hover:bg-violet-100 rounded-xl p-3 transition">
+                <span className="text-xl">📚</span>
+                <div>
+                  <div className="text-xs font-bold">0歳赤ちゃんへのおすすめ絵本10選</div>
+                  <div className="text-[10px] text-gray-500">月齢別・読み聞かせ方も解説【2026年版】</div>
                 </div>
               </Link>
             </div>

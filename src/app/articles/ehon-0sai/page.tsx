@@ -203,9 +203,9 @@ export default function Page() {
             {/* ランキング */}
             <section className="space-y-3">
               <h2 className="text-base font-bold px-1">おすすめ絵本ランキングTOP10</h2>
-              {BOOKS.map((book) => {
+              {BOOKS.flatMap((book, idx) => {
                 const href = book.asin ? amazonUrl(book.asin) : amazonSearchUrl(book.searchKeyword ?? book.title);
-                return (
+                const card = (
                   <div key={book.rank} className="bg-white rounded-2xl shadow-sm overflow-hidden">
                     <div className="flex items-center gap-2 px-4 pt-4 mb-2">
                       <span className="w-7 h-7 rounded-full bg-violet-100 text-violet-700 text-xs font-black flex items-center justify-center shrink-0">
@@ -237,6 +237,19 @@ export default function Page() {
                     </div>
                   </div>
                 );
+                if (idx === 5) {
+                  return [
+                    <div key="mid-cta" className="bg-gradient-to-r from-violet-500 to-purple-600 rounded-2xl p-5 text-white text-center">
+                      <p className="text-lg font-black mb-1">📚 残り5冊をチェック！</p>
+                      <p className="text-xs opacity-80 mb-4">月齢別おすすめ絵本50冊をまとめて見られます</p>
+                      <Link href="/baby-goods/ehon" className="inline-block bg-white text-violet-700 font-bold text-sm px-6 py-2.5 rounded-xl hover:opacity-90 transition">
+                        月齢別おすすめ絵本50冊を見る →
+                      </Link>
+                    </div>,
+                    card,
+                  ];
+                }
+                return [card];
               })}
             </section>
 

@@ -5,8 +5,8 @@ import ArticleAreaNav from "@/components/ArticleAreaNav";
 import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
-  title: "雨の日でも大丈夫！赤ちゃん・子連れで楽しめる室内スポット【東京・関東】2026年版 | ベビーカーナビ",
-  description: "雨の日・猛暑・真冬でも赤ちゃんと楽しめる室内スポットを東京中心に厳選。無料施設から水族館・科学館・屋内遊び場まで、授乳室・ベビーカーOK情報付きで紹介します。",
+  title: "雨の日でも大丈夫！赤ちゃん・子連れ室内スポット11選【東京・関東】2026年版 | ベビーカーナビ",
+  description: "雨の日・猛暑・真冬でも安心して楽しめる室内スポットを東京中心に11か所厳選。無料施設4選・水族館・科学館・屋内遊び場まで授乳室・ベビーカーOK情報付きで徹底解説。",
 };
 
 export default function Page() {

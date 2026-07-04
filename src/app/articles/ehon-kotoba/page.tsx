@@ -203,9 +203,9 @@ export default function Page() {
             <section className="space-y-3">
               <h2 className="text-base font-bold px-1">言葉を育てるおすすめ絵本TOP10</h2>
               <p className="text-xs text-gray-500 px-1">🗣️の数は語彙発達効果の目安（編集部独自評価）</p>
-              {BOOKS.map((book) => {
+              {BOOKS.flatMap((book, idx) => {
                 const href = book.asin ? amazonUrl(book.asin) : amazonSearchUrl(book.searchKeyword ?? book.title);
-                return (
+                const card = (
                   <div key={book.rank} className="bg-white rounded-2xl shadow-sm overflow-hidden">
                     <div className="flex items-center gap-2 px-4 pt-4 mb-2">
                       <span className="w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-black flex items-center justify-center shrink-0">
@@ -235,6 +235,19 @@ export default function Page() {
                     </div>
                   </div>
                 );
+                if (idx === 5) {
+                  return [
+                    <div key="mid-cta" className="bg-gradient-to-r from-teal-500 to-green-600 rounded-2xl p-5 text-white text-center">
+                      <p className="text-lg font-black mb-1">🗣️ 言葉を育てる絵本をもっと探す</p>
+                      <p className="text-xs opacity-80 mb-4">0〜3歳の月齢別おすすめ絵本50冊を一覧でチェック</p>
+                      <Link href="/baby-goods/ehon" className="inline-block bg-white text-teal-700 font-bold text-sm px-6 py-2.5 rounded-xl hover:opacity-90 transition">
+                        月齢別おすすめ絵本50冊を見る →
+                      </Link>
+                    </div>,
+                    card,
+                  ];
+                }
+                return [card];
               })}
             </section>
 

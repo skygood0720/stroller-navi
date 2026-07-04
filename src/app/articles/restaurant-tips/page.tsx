@@ -6,7 +6,7 @@ import ArticleAuthor from "@/components/ArticleAuthor";
 
 export const metadata: Metadata = {
   title: "ベビーカーで入れるレストランの見分け方｜子連れランチ攻略法 2026年版 | ベビーカーナビ",
-  description: "入店前にチェックすべき5つのポイント、予約のコツ、月齢別メニュー選び、東京都内おすすめ子連れチェーン店7選、持ち物リストを完全解説。",
+  description: "失敗しない子連れランチの選び方！入店前にチェックすべき5つのポイント・予約必勝法・月齢別メニュー選び・東京都内おすすめ子連れチェーン7選・持ち物リストを完全解説。",
 };
 
 export default function Page() {
