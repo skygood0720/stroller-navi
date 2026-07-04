@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
 import ArticleAuthor from "@/components/ArticleAuthor";
+import ShareButtons from "@/components/ShareButtons";
 
 export const metadata: Metadata = {
   title: "0歳の赤ちゃんはいつから外出できる？初めてのおでかけ完全ガイド | ベビーカーナビ",
@@ -279,6 +280,7 @@ export default function ZeroAgeOutingPage() {
               🗺️ 授乳室があるスポットを探す
             </Link>
           </div>
+                  <ShareButtons title="0歳のおでかけ完全ガイド" url="/articles/zero-age-outing" />
                   <ArticleAreaNav currentSlug="zero-age-outing" />
         </main>
         <SiteFooter />

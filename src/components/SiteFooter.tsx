@@ -16,6 +16,9 @@ const FOOTER_LINKS = [
       { href: "/articles/hiroshima-guide", label: "広島" },
       { href: "/articles/okinawa-guide", label: "沖縄" },
       { href: "/articles/saitama-guide", label: "さいたま" },
+      { href: "/articles/shibuya-lunch", label: "渋谷ランチ" },
+      { href: "/articles/ikebukuro-lunch", label: "池袋ランチ" },
+      { href: "/articles/yokohama-lunch", label: "横浜ランチ" },
     ],
   },
   {
@@ -29,6 +32,8 @@ const FOOTER_LINKS = [
       { href: "/articles/rainy-day-spots", label: "雨の日スポット" },
       { href: "/articles/free-kids-spots-tokyo", label: "東京の無料スポット" },
       { href: "/articles/disney-stroller", label: "ディズニー子連れガイド" },
+      { href: "/articles/kids-cafe-tokyo", label: "東京の子連れカフェ15選" },
+      { href: "/articles/kosodate-center-tokyo", label: "子育て支援センター東京" },
     ],
   },
   {

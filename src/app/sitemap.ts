@@ -63,6 +63,12 @@ const ARTICLE_SLUGS = [
   "ehon-0sai",
   "ehon-nemuri",
   "ehon-kotoba",
+  // ─── エリア別ランチ・カフェ記事 ───
+  "shibuya-lunch",
+  "ikebukuro-lunch",
+  "yokohama-lunch",
+  "kids-cafe-tokyo",
+  "kosodate-center-tokyo",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

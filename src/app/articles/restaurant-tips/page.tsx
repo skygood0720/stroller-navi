@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
 import ArticleAuthor from "@/components/ArticleAuthor";
+import ShareButtons from "@/components/ShareButtons";
 
 export const metadata: Metadata = {
   title: "ベビーカーで入れるレストランの見分け方｜子連れランチ攻略法 2026年版 | ベビーカーナビ",
@@ -334,6 +335,27 @@ export default function Page() {
               </p>
             </section>
 
+            <section className="bg-white rounded-2xl p-5 shadow-sm">
+              <h2 className="text-base font-bold mb-3">🗺️ エリア別 子連れランチガイド</h2>
+              <p className="text-xs text-gray-500 mb-3">各エリアのおすすめ店舗・授乳室情報・ベビーチェアあり情報をまとめました</p>
+              <div className="space-y-2">
+                {[
+                  { href: "/articles/shibuya-lunch", label: "渋谷・代官山・恵比寿 子連れランチ10選", emoji: "🌿" },
+                  { href: "/articles/ikebukuro-lunch", label: "池袋 子連れランチ10選【個室あり】", emoji: "🍜" },
+                  { href: "/articles/yokohama-lunch", label: "横浜・みなとみらい 子連れランチ10選", emoji: "⚓" },
+                  { href: "/articles/kids-cafe-tokyo", label: "東京の子連れカフェ15選", emoji: "☕" },
+                  { href: "/articles/shinjuku-guide", label: "新宿エリア 子連れおでかけ完全ガイド", emoji: "🗼" },
+                  { href: "/articles/kichijoji-guide", label: "吉祥寺エリア 子連れおでかけ完全ガイド", emoji: "🌳" },
+                ].map(l => (
+                  <Link key={l.href} href={l.href} className="flex items-center gap-2 bg-orange-50 hover:bg-orange-100 rounded-xl px-4 py-2.5 transition">
+                    <span>{l.emoji}</span>
+                    <span className="text-xs font-bold text-orange-700">{l.label}</span>
+                    <span className="ml-auto text-orange-400 text-sm">›</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
             <section className="bg-gradient-to-r from-brand-50 to-orange-50 rounded-2xl p-5 text-center">
               <p className="text-sm font-bold text-brand-700 mb-2">🍽️ 子連れランチスポットを探す</p>
               <p className="text-xs text-gray-500 mb-3">ベビーカーナビで現在地から近いベビーカーOKレストランを検索</p>
@@ -342,6 +364,7 @@ export default function Page() {
               </Link>
             </section>
           </article>
+          <ShareButtons title="子連れランチ完全攻略法 2026年版" url="/articles/restaurant-tips" />
           <ArticleAreaNav currentSlug="restaurant-tips" />
         </main>
         <SiteFooter />

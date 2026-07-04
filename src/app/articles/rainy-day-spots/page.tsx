@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleAreaNav from "@/components/ArticleAreaNav";
 import ArticleAuthor from "@/components/ArticleAuthor";
+import ShareButtons from "@/components/ShareButtons";
 
 export const metadata: Metadata = {
   title: "雨の日でも大丈夫！赤ちゃん・子連れ室内スポット11選【東京・関東】2026年版 | ベビーカーナビ",
@@ -285,6 +286,7 @@ export default function Page() {
               </Link>
             </section>
           </article>
+          <ShareButtons title="雨の日でも大丈夫！子連れ室内スポット11選" url="/articles/rainy-day-spots" />
           <ArticleAreaNav currentSlug="rainy-day-spots" />
         </main>
         <SiteFooter />

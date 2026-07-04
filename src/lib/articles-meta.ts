@@ -273,6 +273,46 @@ export const ARTICLES_META: ArticleMeta[] = [
     tags: ["絵本", "言葉", "発語", "育児"],
     regions: [],
   },
+  {
+    slug: "shibuya-lunch",
+    title: "渋谷・代官山・恵比寿 子連れランチ10選",
+    description: "個室・授乳室・ベビーチェア情報付きで子連れランチを徹底ガイド",
+    emoji: "🍽️",
+    tags: ["ランチ", "授乳室", "個室", "渋谷"],
+    regions: ["東京"],
+  },
+  {
+    slug: "ikebukuro-lunch",
+    title: "池袋 子連れランチ10選",
+    description: "サンシャインシティ・東武・西武など個室あり・授乳室近くのお店を紹介",
+    emoji: "🍜",
+    tags: ["ランチ", "授乳室", "個室", "池袋"],
+    regions: ["東京"],
+  },
+  {
+    slug: "yokohama-lunch",
+    title: "横浜・みなとみらい 子連れランチ10選",
+    description: "ランドマークプラザ・中華街など個室あり・授乳室近くのお店を紹介",
+    emoji: "⚓",
+    tags: ["ランチ", "授乳室", "個室", "横浜"],
+    regions: ["神奈川"],
+  },
+  {
+    slug: "kids-cafe-tokyo",
+    title: "東京の子連れカフェ15選",
+    description: "吉祥寺・代官山・二子玉川などベビーカーOK・授乳室近くのカフェ",
+    emoji: "☕",
+    tags: ["カフェ", "授乳室", "ベビーカー", "東京"],
+    regions: ["東京"],
+  },
+  {
+    slug: "kosodate-center-tokyo",
+    title: "東京の子育て支援センター活用ガイド",
+    description: "無料で遊べる・育児相談できる地域子育て支援センターを区別に解説",
+    emoji: "🌱",
+    tags: ["無料", "キッズスペース", "育児", "東京"],
+    regions: ["東京"],
+  },
 ];
 
 // スポットのregionとタグから関連記事を返す
