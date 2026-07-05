@@ -303,16 +303,34 @@ export default function WeaningTracker() {
     const code = getFamilyCode();
     setFamilyCodeState(code);
     if (code) {
-      // ローカルデータを先にアップロード、次にサーバーから最新を取得
-      const pairs = ALL_FOODS.reduce<Record<string, boolean>>((acc, f) => {
-        acc[f.id] = local.has(f.id);
-        return acc;
-      }, {});
-      fetch("/api/family/weaning", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ room_code: code, checks: pairs }),
-      }).then(() => loadFamilyChecks(code));
+      // サーバーデータを先に取得し、ローカルと和集合（union）でマージ
+      // ※先にローカルをPUTするとパートナーのチェック済みデータが消えるためNG
+      (async () => {
+        try {
+          const res = await fetch(`/api/family/weaning?room_code=${code}`);
+          if (!res.ok) return;
+          const { checks } = await res.json() as { checks: { food_id: string; checked: boolean }[] };
+          setChecked((localPrev) => {
+            const merged = new Set(localPrev);
+            // サーバーのチェック済みをローカルに追加（削除はしない＝union）
+            checks.forEach(({ food_id, checked: c }) => {
+              if (c) merged.add(food_id);
+            });
+            saveChecked(merged);
+            // マージ結果をサーバーに書き戻す
+            const pairs = ALL_FOODS.reduce<Record<string, boolean>>((acc, f) => {
+              acc[f.id] = merged.has(f.id);
+              return acc;
+            }, {});
+            fetch("/api/family/weaning", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ room_code: code, checks: pairs }),
+            });
+            return merged;
+          });
+        } catch { /* ignore */ }
+      })();
 
       // 30秒ごとにポーリング
       pollRef.current = setInterval(() => loadFamilyChecks(code), 30_000);
@@ -331,25 +349,23 @@ export default function WeaningTracker() {
     }
   }, [loadFamilyChecks]);
 
-  const syncToFamily = useCallback((next: Set<string>, code: string) => {
+  // 単一食材をサーバーに同期（競合を避けるためPOST単体を使用）
+  const syncToFamily = useCallback((foodId: string, isChecked: boolean, code: string) => {
     setSyncing(true);
-    const pairs = ALL_FOODS.reduce<Record<string, boolean>>((acc, f) => {
-      acc[f.id] = next.has(f.id);
-      return acc;
-    }, {});
     fetch("/api/family/weaning", {
-      method: "PUT",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ room_code: code, checks: pairs }),
+      body: JSON.stringify({ room_code: code, food_id: foodId, checked: isChecked }),
     }).finally(() => setSyncing(false));
   }, []);
 
   const toggle = (id: string) => {
     setChecked((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      const nowChecked = !prev.has(id);
+      if (nowChecked) next.add(id); else next.delete(id);
       saveChecked(next);
-      if (familyCode) syncToFamily(next, familyCode);
+      if (familyCode) syncToFamily(id, nowChecked, familyCode);
       return next;
     });
   };
@@ -357,9 +373,12 @@ export default function WeaningTracker() {
   const checkAll = (ids: string[]) => {
     setChecked((prev) => {
       const next = new Set(prev);
+      const newIds = ids.filter((id) => !prev.has(id));
       ids.forEach((id) => next.add(id));
       saveChecked(next);
-      if (familyCode) syncToFamily(next, familyCode);
+      if (familyCode) {
+        newIds.forEach((id) => syncToFamily(id, true, familyCode));
+      }
       return next;
     });
   };
