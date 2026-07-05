@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import type { MapItem, RouteInfo } from "@/types";
+import type { MapItem, BabySpot, RouteInfo } from "@/types";
 
 const TOKYO_CENTER = { lat: 35.6762, lng: 139.6503 };
 
@@ -52,17 +52,35 @@ export function useGoogleMap(containerRef: React.RefObject<HTMLDivElement | null
       if (!mapRef.current || !isLoaded) return;
 
       items.forEach((item) => {
-        const isSpot = item.type === "spot";
-        const isUserSpot = isSpot && "is_user_submitted" in item && (item as any).is_user_submitted;
+        const isUserSpot = item.type === "spot" && "is_user_submitted" in item && (item as any).is_user_submitted;
 
-        let fillColor = "#7E57C2"; // toilet purple
-        let labelText = "🚻";
-        if (isSpot && isUserSpot) {
+        let fillColor: string;
+        let labelText: string;
+
+        if (isUserSpot) {
           fillColor = "#43A047"; // green for user-submitted
           labelText = "📍";
-        } else if (isSpot) {
-          fillColor = "#FF8A65"; // orange for built-in
-          labelText = "🍼";
+        } else if (item.type === "restaurant") {
+          fillColor = "#EF5350"; // red for restaurants
+          labelText = "🍴";
+        } else if (item.type === "toilet") {
+          fillColor = "#7E57C2"; // purple for barrier-free toilets
+          labelText = "🚻";
+        } else if (item.type === "spot") {
+          const tags = (item as BabySpot).tags;
+          if (tags.includes("授乳室")) {
+            fillColor = "#F06292"; // pink for nursing rooms
+            labelText = "🍼";
+          } else if (tags.includes("おむつ替え")) {
+            fillColor = "#42A5F5"; // light blue for diaper changing
+            labelText = "🚼";
+          } else {
+            fillColor = "#FF8A65"; // orange for general spots
+            labelText = "🧸";
+          }
+        } else {
+          fillColor = "#FF8A65";
+          labelText = "🧸";
         }
 
         const marker = new google.maps.Marker({

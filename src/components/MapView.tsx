@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useGoogleMap } from "@/lib/useGoogleMap";
-import { BABY_SPOTS, TOILETS } from "@/lib/constants";
+import { BABY_SPOTS, TOILETS, RESTAURANTS } from "@/lib/constants";
 import { useAppStore } from "@/lib/store";
 import type { MapItem, BabySpot } from "@/types";
 
@@ -41,7 +41,7 @@ export default function MapView() {
   // Place markers when map loads or user spots change
   useEffect(() => {
     if (!isLoaded) return;
-    const items: MapItem[] = [...BABY_SPOTS, ...userSpots, ...TOILETS];
+    const items: MapItem[] = [...BABY_SPOTS, ...userSpots, ...TOILETS, ...RESTAURANTS];
     setMarkers(items, (item) => {
       setSelectedItemId(item.id);
     });
@@ -73,15 +73,23 @@ export default function MapView() {
 
       <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur rounded-xl px-3 py-2 text-xs z-10 shadow">
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-brand-500 font-bold">●</span>
-          <span>ベビーカースポット</span>
+          <span>🍼</span>
+          <span>授乳室</span>
         </div>
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-toilet-500 font-bold">●</span>
-          <span>バリアフリートイレ</span>
+          <span>🚼</span>
+          <span>おむつ替え</span>
+        </div>
+        <div className="flex items-center gap-1.5 mb-1">
+          <span>🧸</span>
+          <span>スポット</span>
+        </div>
+        <div className="flex items-center gap-1.5 mb-1">
+          <span>🍴</span>
+          <span>レストラン</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="text-green-500 font-bold">●</span>
+          <span>📍</span>
           <span>ユーザー投稿</span>
         </div>
       </div>
