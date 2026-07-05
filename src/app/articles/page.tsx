@@ -421,6 +421,71 @@ const ARTICLES = [
     tags: ["離乳食", "外食", "5ヶ月〜"],
     emoji: "🥄",
   },
+  // ─── エリア別ランチ記事 ───
+  {
+    slug: "shibuya-lunch",
+    title: "渋谷・代官山・恵比寿 子連れランチ10選【個室・授乳室情報付き】2026年版",
+    description: "渋谷ヒカリエ・スクランブルスクエア・代官山など個室あり・ベビーチェアあり・授乳室近くのお店をエリア別に解説。",
+    date: "2026年6月25日",
+    tags: ["渋谷", "ランチ", "個室"],
+    emoji: "🌿",
+  },
+  {
+    slug: "ikebukuro-lunch",
+    title: "池袋 子連れランチ10選【個室あり・授乳室近く】2026年版",
+    description: "サンシャインシティ・東武・西武など個室あり・授乳室近くのお店を紹介。",
+    date: "2026年6月25日",
+    tags: ["池袋", "ランチ", "個室"],
+    emoji: "🐧",
+  },
+  {
+    slug: "yokohama-lunch",
+    title: "横浜・みなとみらい 子連れランチ10選【個室・授乳室情報付き】2026年版",
+    description: "ランドマークプラザ・中華街など個室あり・授乳室近くのお店を紹介。",
+    date: "2026年6月25日",
+    tags: ["横浜", "ランチ", "個室"],
+    emoji: "⚓",
+  },
+  {
+    slug: "shinjuku-lunch",
+    title: "新宿 子連れランチ10選【個室・授乳室情報付き】2026年版",
+    description: "高島屋タイムズスクエア・NEWoMan・伊勢丹など個室あり・ベビーチェアあり・授乳室近くのお店をエリア別に解説。",
+    date: "2026年7月5日",
+    tags: ["新宿", "ランチ", "個室"],
+    emoji: "🗼",
+  },
+  {
+    slug: "osaka-lunch",
+    title: "大阪 子連れランチ10選【個室・授乳室情報付き】2026年版",
+    description: "グランフロント・なんばパークス・天王寺MIOなど個室あり・授乳室近くのお店をエリア別に解説。",
+    date: "2026年7月5日",
+    tags: ["大阪", "ランチ", "個室"],
+    emoji: "🏯",
+  },
+  {
+    slug: "nagoya-lunch",
+    title: "名古屋 子連れランチ10選【個室・授乳室情報付き】2026年版",
+    description: "JRゲートタワー・ミッドランドスクエア・松坂屋など個室あり・授乳室近くのお店をエリア別に解説。",
+    date: "2026年7月5日",
+    tags: ["名古屋", "ランチ", "個室"],
+    emoji: "🏯",
+  },
+  {
+    slug: "kids-cafe-tokyo",
+    title: "東京の子連れカフェ・キッズスペースつきカフェ15選【2026年版】",
+    description: "吉祥寺・代官山・二子玉川などベビーカーOK・授乳室近くのカフェを15店厳選。",
+    date: "2026年6月25日",
+    tags: ["東京", "カフェ", "授乳室"],
+    emoji: "☕",
+  },
+  {
+    slug: "kosodate-center-tokyo",
+    title: "東京の子育て支援センター・地域子育て支援拠点を活用する方法【2026年版】",
+    description: "無料で遊べる・育児相談できる地域子育て支援センターを区別に解説。",
+    date: "2026年6月25日",
+    tags: ["東京", "無料", "育児"],
+    emoji: "🌱",
+  },
 ];
 
 // カテゴリ定義
@@ -472,12 +537,23 @@ const CATEGORIES = [
     ],
   },
   {
+    key: "lunch",
+    label: "エリア別ランチガイド",
+    emoji: "🍽️",
+    slugs: [
+      "restaurant-tips",
+      "shinjuku-lunch", "shibuya-lunch", "ikebukuro-lunch", "yokohama-lunch",
+      "osaka-lunch", "nagoya-lunch",
+      "kids-cafe-tokyo",
+    ],
+  },
+  {
     key: "tips",
     label: "育児・準備",
     emoji: "🍼",
     slugs: [
       "stroller-guide", "stroller-choosing-guide", "stroller-repair-guide",
-      "nursing-room-tips", "restaurant-tips", "baby-weaning-outing",
+      "nursing-room-tips", "baby-weaning-outing", "kosodate-center-tokyo",
     ],
   },
 ];

@@ -69,6 +69,10 @@ const ARTICLE_SLUGS = [
   "yokohama-lunch",
   "kids-cafe-tokyo",
   "kosodate-center-tokyo",
+  // ─── 全国エリア別ランチ記事 ───
+  "shinjuku-lunch",
+  "osaka-lunch",
+  "nagoya-lunch",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

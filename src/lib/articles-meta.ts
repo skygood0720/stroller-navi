@@ -313,6 +313,30 @@ export const ARTICLES_META: ArticleMeta[] = [
     tags: ["無料", "キッズスペース", "育児", "東京"],
     regions: ["東京"],
   },
+  {
+    slug: "shinjuku-lunch",
+    title: "新宿 子連れランチ10選",
+    description: "高島屋・NEWoMan・伊勢丹など個室あり・授乳室近くのお店をエリア別に解説",
+    emoji: "🗼",
+    tags: ["ランチ", "授乳室", "個室", "新宿"],
+    regions: ["東京"],
+  },
+  {
+    slug: "osaka-lunch",
+    title: "大阪 子連れランチ10選",
+    description: "グランフロント・なんばパークス・天王寺MIOなど個室あり・授乳室近くのお店を紹介",
+    emoji: "🏯",
+    tags: ["ランチ", "授乳室", "個室", "大阪"],
+    regions: ["大阪"],
+  },
+  {
+    slug: "nagoya-lunch",
+    title: "名古屋 子連れランチ10選",
+    description: "JRゲートタワー・ミッドランドスクエア・松坂屋など個室あり・授乳室近くのお店を紹介",
+    emoji: "🏯",
+    tags: ["ランチ", "授乳室", "個室", "名古屋"],
+    regions: ["愛知"],
+  },
 ];
 
 // スポットのregionとタグから関連記事を返す
