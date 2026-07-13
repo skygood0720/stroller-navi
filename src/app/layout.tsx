@@ -58,6 +58,7 @@ export const viewport: Viewport = {
 
 import BottomNav from "@/components/BottomNav";
 import BackToTop from "@/components/BackToTop";
+import CookieConsent from "@/components/CookieConsent";
 
 export default function RootLayout({
   children,
@@ -147,7 +148,14 @@ export default function RootLayout({
           ]) }}
         />
         {adsenseId && (
-          <meta name="google-adsense-account" content={adsenseId} />
+          <>
+            <meta name="google-adsense-account" content={adsenseId} />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
+              crossOrigin="anonymous"
+            />
+          </>
         )}
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {
@@ -161,6 +169,7 @@ export default function RootLayout({
         {children}
         <BottomNav />
         <BackToTop />
+        <CookieConsent />
       </body>
     </html>
   );
