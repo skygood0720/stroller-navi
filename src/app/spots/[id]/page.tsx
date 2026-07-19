@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ALL_SPOTS } from "@/lib/spots-data";
+import { ALL_SPOTS, ALL_RESTAURANTS } from "@/lib/spots-data";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import SpotPhotosClient from "./SpotPhotosClient";
@@ -8,35 +8,155 @@ import StrollerScoreCard from "@/components/StrollerScoreCard";
 import ShareButtons from "@/components/ShareButtons";
 import FavoriteButton from "@/components/FavoriteButton";
 import RelatedArticles from "@/components/RelatedArticles";
+import type { BabyFriendlyRestaurant } from "@/types";
 
-// Generate static pages for all spots at build time
+// Generate static pages for all spots + restaurants at build time
 export function generateStaticParams() {
-  return ALL_SPOTS.map((spot) => ({ id: String(spot.id) }));
+  return [
+    ...ALL_SPOTS.map((spot) => ({ id: String(spot.id) })),
+    ...ALL_RESTAURANTS.map((r) => ({ id: String(r.id) })),
+  ];
 }
 
 // Dynamic metadata for SEO
 export function generateMetadata({ params }: { params: { id: string } }): Metadata {
   const spot = ALL_SPOTS.find((s) => String(s.id) === params.id);
-  if (!spot) return { title: "スポットが見つかりません" };
-
-  const tags = spot.tags.join("・");
-  return {
-    title: `${spot.name} | ベビーカーナビ - バリアフリー情報`,
-    description: `${spot.name}のベビーカー・子連れ向け情報。${tags}。${spot.desc}`,
-    keywords: [spot.name, "ベビーカー", "授乳室", "バリアフリー", spot.region || "", "子連れ", "おでかけ"].filter(Boolean),
-    openGraph: {
-      title: `${spot.name} | ベビーカーナビ`,
-      description: `${spot.desc} | 設備: ${tags}`,
-      url: `https://stroller-navi.vercel.app/spots/${spot.id}`,
-      siteName: "ベビーカーナビ",
-      locale: "ja_JP",
-      type: "article",
-    },
-  };
+  if (spot) {
+    const tags = spot.tags.join("・");
+    return {
+      title: `${spot.name} | ベビーカーナビ - バリアフリー情報`,
+      description: `${spot.name}のベビーカー・子連れ向け情報。${tags}。${spot.desc}`,
+      keywords: [spot.name, "ベビーカー", "授乳室", "バリアフリー", spot.region || "", "子連れ", "おでかけ"].filter(Boolean),
+      openGraph: {
+        title: `${spot.name} | ベビーカーナビ`,
+        description: `${spot.desc} | 設備: ${tags}`,
+        url: `https://stroller-navi.vercel.app/spots/${spot.id}`,
+        siteName: "ベビーカーナビ",
+        locale: "ja_JP",
+        type: "article",
+      },
+    };
+  }
+  const restaurant = ALL_RESTAURANTS.find((r) => String(r.id) === params.id);
+  if (restaurant) {
+    return {
+      title: `${restaurant.name} | ベビーカーナビ - 子連れレストラン`,
+      description: `${restaurant.name}の子連れ・ベビーカー向け情報。${restaurant.desc}`,
+      keywords: [restaurant.name, "子連れランチ", "ベビーカー", restaurant.cuisine, restaurant.region || ""].filter(Boolean),
+      openGraph: {
+        title: `${restaurant.name} | ベビーカーナビ`,
+        description: restaurant.desc,
+        url: `https://stroller-navi.vercel.app/spots/${restaurant.id}`,
+        siteName: "ベビーカーナビ",
+        locale: "ja_JP",
+        type: "article",
+      },
+    };
+  }
+  return { title: "スポットが見つかりません" };
 }
 
 export default function SpotPage({ params }: { params: { id: string } }) {
   const spot = ALL_SPOTS.find((s) => String(s.id) === params.id);
+  const restaurant: BabyFriendlyRestaurant | undefined = !spot
+    ? ALL_RESTAURANTS.find((r) => String(r.id) === params.id)
+    : undefined;
+
+  if (!spot && !restaurant) notFound();
+
+  // ─── レストラン詳細ページ ───
+  if (restaurant) {
+    return (
+      <div className="min-h-screen bg-[#FAF7F2]">
+        <div className="max-w-[640px] mx-auto">
+          <header className="px-5 pt-5 pb-4 bg-gradient-to-br from-red-400 via-rose-500 to-pink-500 text-white">
+            <nav className="text-xs text-white/70 mb-2">
+              <Link href="/" className="hover:text-white">トップ</Link>
+              <span className="mx-1.5">›</span>
+              <Link href="/spots" className="hover:text-white">スポット一覧</Link>
+              {restaurant.region && (
+                <>
+                  <span className="mx-1.5">›</span>
+                  <Link href={`/spots/region/${encodeURIComponent(restaurant.region)}`} className="hover:text-white">
+                    {restaurant.region}
+                  </Link>
+                </>
+              )}
+            </nav>
+            <h1 className="text-xl font-black">{restaurant.name}</h1>
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <span className="bg-white/20 rounded-full px-2.5 py-0.5 text-[11px] font-semibold">🍴 {restaurant.cuisine}</span>
+              {restaurant.price_range && (
+                <span className="bg-white/20 rounded-full px-2.5 py-0.5 text-[11px] font-semibold">💰 {restaurant.price_range}</span>
+              )}
+              {restaurant.region && (
+                <span className="bg-white/20 rounded-full px-2.5 py-0.5 text-[11px]">{restaurant.region}</span>
+              )}
+            </div>
+          </header>
+
+          <main className="p-5 space-y-4">
+            <section className="bg-white rounded-2xl p-5 shadow-sm">
+              <p className="text-sm text-gray-700 leading-relaxed">{restaurant.desc}</p>
+            </section>
+
+            {restaurant.tags.length > 0 && (
+              <section className="bg-white rounded-2xl p-5 shadow-sm">
+                <h2 className="text-sm font-bold mb-3">子連れ向け設備</h2>
+                <div className="flex flex-wrap gap-2">
+                  {restaurant.tags.map((tag) => (
+                    <span key={tag} className="bg-rose-50 text-rose-600 text-xs font-semibold rounded-full px-3 py-1">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {(restaurant.address || restaurant.hours) && (
+              <section className="bg-white rounded-2xl p-5 shadow-sm space-y-2">
+                {restaurant.address && (
+                  <div className="flex gap-2 text-sm text-gray-700">
+                    <span className="text-base shrink-0">📍</span>
+                    <span>{restaurant.address}</span>
+                  </div>
+                )}
+                {restaurant.hours && (
+                  <div className="flex gap-2 text-sm text-gray-700">
+                    <span className="text-base shrink-0">🕐</span>
+                    <span>{restaurant.hours}</span>
+                  </div>
+                )}
+              </section>
+            )}
+
+            <div className="flex gap-3">
+              {restaurant.website && (
+                <a href={restaurant.website} target="_blank" rel="noopener noreferrer"
+                  className="flex-1 text-center py-3 rounded-xl bg-brand-500 text-white text-xs font-bold hover:bg-brand-600 transition">
+                  公式サイト →
+                </a>
+              )}
+              {restaurant.tabelog_url && (
+                <a href={restaurant.tabelog_url} target="_blank" rel="noopener noreferrer"
+                  className="flex-1 text-center py-3 rounded-xl border border-brand-300 text-brand-600 text-xs font-bold hover:bg-brand-50 transition">
+                  食べログで見る →
+                </a>
+              )}
+              {restaurant.region && (
+                <Link href={`/spots/region/${encodeURIComponent(restaurant.region)}`}
+                  className="flex-1 text-center py-3 rounded-xl border border-gray-200 text-gray-600 text-xs font-bold hover:bg-gray-50 transition">
+                  {restaurant.region}のスポット
+                </Link>
+              )}
+            </div>
+          </main>
+          <SiteFooter />
+        </div>
+      </div>
+    );
+  }
+
   if (!spot) notFound();
 
   const ageTipsEntries = Object.entries(spot.age_tips || {});
