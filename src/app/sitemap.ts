@@ -78,6 +78,10 @@ const ARTICLE_SLUGS = [
   "nara-guide",
   "kamakura-guide",
   "hakone-guide",
+  // ─── 季節・行事コンテンツ ───
+  "halloween-baby",
+  "christmas-baby",
+  "shichigosan-guide",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -91,6 +95,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/articles`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.78 },
     { url: `${BASE_URL}/weaning-tracker`, lastModified: now, changeFrequency: "monthly", priority: 0.80 },
+    { url: `${BASE_URL}/milestone`, lastModified: now, changeFrequency: "monthly", priority: 0.80 },
     { url: `${BASE_URL}/diary`,           lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE_URL}/baby-goods`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE_URL}/baby-goods/ehon`, lastModified: now, changeFrequency: "monthly", priority: 0.72 },
