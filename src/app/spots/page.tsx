@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { ALL_SPOTS } from "@/lib/spots-data";
 import SpotFilterClient from "@/components/SpotFilterClient";
+import AdUnit from "@/components/AdUnit";
 
 export const metadata: Metadata = {
   title: "全国のベビーカーおすすめスポット一覧 | 授乳室・エレベーター情報付き | ベビーカーナビ",
@@ -52,6 +53,8 @@ export default function SpotsIndexPage() {
               ベビーカーナビでは、全国{ALL_SPOTS.length}以上のベビーカー・子連れ向けおすすめスポットを掲載しています。各スポットには授乳室・おむつ替え台・エレベーター・スロープ・ベビーカー貸出などの設備情報に加え、0歳から3歳まで月齢に合わせたおすすめポイントを記載。実際にベビーカーで訪れた経験をもとに、「本当に行きやすい」スポットを厳選しています。
             </p>
           </section>
+
+          <AdUnit format="auto" className="my-2" />
 
           {/* Ranking banner */}
           <Link
