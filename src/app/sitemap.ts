@@ -73,6 +73,11 @@ const ARTICLE_SLUGS = [
   "shinjuku-lunch",
   "osaka-lunch",
   "nagoya-lunch",
+  // ─── 観光地子連れガイド ───
+  "kanazawa-guide",
+  "nara-guide",
+  "kamakura-guide",
+  "hakone-guide",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
